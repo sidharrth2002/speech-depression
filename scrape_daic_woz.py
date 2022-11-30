@@ -8,9 +8,17 @@ sys.setrecursionlimit(10000)
 url = 'https://dcapswoz.ict.usc.edu/wwwdaicwoz/'
 
 def download_link_to_file(link, file_path):
+    # check if link is in log.txt
+    with open('./log.txt', 'r') as f:
+        if link in f.read():
+            return
+    print(f'Started downloading {link}')
     with open(file_path, 'wb') as f:
-        print(f'Downloading {link}')
         f.write(requests.get(link).content)
+        # once the file is downloaded, write to log so we don't download it again
+        print(f'Done downloading {link}')
+        with open('./log.txt', 'a') as f:
+            f.write(link + '\n')
     # wget.download(link, out=file_path, no_check_certificate=True)
     return True
 
@@ -28,6 +36,6 @@ if __name__ == '__main__':
             # get content of a tag
             function_arguments.append(l)
 
-    pool = multiprocessing.Pool(processes=4)
+    pool = multiprocessing.Pool(processes=2)
     outputs = pool.map(download, function_arguments)
 
