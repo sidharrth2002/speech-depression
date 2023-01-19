@@ -7,6 +7,7 @@ sys.setrecursionlimit(10000)
 
 url = 'https://dcapswoz.ict.usc.edu/wwwdaicwoz/'
 
+
 def download_link_to_file(link, file_path):
     # check if link is in log.txt
     with open('./log.txt', 'r') as f:
@@ -22,8 +23,10 @@ def download_link_to_file(link, file_path):
     # wget.download(link, out=file_path, no_check_certificate=True)
     return True
 
+
 def download(l):
     return download_link_to_file(url + l.get('href'), '/Volumes/Files/monash/daic_woz/' + l.get_text())
+
 
 if __name__ == '__main__':
     # download all files in the directory
@@ -38,4 +41,3 @@ if __name__ == '__main__':
 
     pool = multiprocessing.Pool(processes=2)
     outputs = pool.map(download, function_arguments)
-

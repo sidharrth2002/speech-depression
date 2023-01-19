@@ -21,6 +21,7 @@ class LogMelExtractor:
     Output
         logmel_spectrogram: numpy.array - The log-Mel spectrogram
     """
+
     def __init__(self, sample_rate, window_size, hop_size, mel_bins, fmin,
                  fmax, window_func, log=True, snv=False):
         self.window_size = window_size
@@ -201,7 +202,7 @@ def create_delta(feature, n_total=2, delta_order=2):
 
 
 def feature_segmenter(feature, folder, clss, score, feature_exp, dim,
-                     convert_to_image=False):
+                      convert_to_image=False):
     """
     Segments the features into dimensions specified by feature.shape[-1] and
     dim. The number of extra dimensions is used to create lists of the

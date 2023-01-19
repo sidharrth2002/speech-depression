@@ -8,6 +8,7 @@
 7. Teager Energy Operator Based Features
 '''
 import librosa
+import numpy as np
 
 
 def prosodic_features(wave):

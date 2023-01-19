@@ -122,7 +122,7 @@ def max_min_values(current_directory, win_size, hop_size, audio_paths,
     total_windows_in_file_min = (total_windows_in_file_min // hop_size) + 1
 
     return max_value, min_value, sample_rate, total_windows_in_file_max, \
-           total_windows_in_file_min, output_data
+        total_windows_in_file_min, output_data
 
 
 def create_database(labels, sample_rate, total_windows_in_file_max, max_value,
@@ -284,7 +284,8 @@ def create_database(labels, sample_rate, total_windows_in_file_max, max_value,
             feat_reshaped = updated_file
             if snv:
                 feat_reshaped = \
-                    audio_feature_extractor.standard_normal_variate(feat_reshaped)
+                    audio_feature_extractor.standard_normal_variate(
+                        feat_reshaped)
             if whole_train:
                 length = feat_reshaped.shape[0]
                 if length < max_value:
@@ -360,9 +361,9 @@ def process_organise_data(main_logger,
     main_logger.info(f"The on_off_times are: {on_off_times}")
     # FOR DEBUGGING USE FILES 6:9 IN ORDER TO GET ONE CLASS "1"s
     max_value, min_value, sample_rate, total_windows_in_file_max, \
-    total_windows_in_file_min, output_data = max_min_values(
-        current_directory, win_size, hop_size, audio_paths, on_off_times,
-        mode_for_background)
+        total_windows_in_file_min, output_data = max_min_values(
+            current_directory, win_size, hop_size, audio_paths, on_off_times,
+            mode_for_background)
     print('max_value is: ', max_value, ' number of windows in each file '
                                        'is: ', total_windows_in_file_max)
     print('min_value is: ', min_value, 'number of windows in each file '
