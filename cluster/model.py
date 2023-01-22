@@ -3,7 +3,7 @@ from transformers import ASTFeatureExtractor, ASTModel, ASTForAudioClassificatio
 from torch import nn
 import torch
 
-from cluster.layer_utils import MLP, calc_mlp_dims, hf_loss_func
+from cluster.layer_utils import MLP, calc_mlp_dims, glorot, hf_loss_func, zeros
 
 processor = ASTFeatureExtractor.from_pretrained(
     "MIT/ast-finetuned-audioset-10-10-0.4593")
@@ -64,6 +64,10 @@ class HandcraftedModel(nn.Module):
 
 
 class TabularAST(ASTForAudioClassification):
+    '''
+    Transformer speech features are keys that attend to tabular features
+    '''
+
     def __init__(self, hf_model_config):
         super().__init__(hf_model_config)
         combined_feat_dim = 100
@@ -78,6 +82,73 @@ class TabularAST(ASTForAudioClassification):
             dropout_prob=dropout_prob,
             hidden_channels=dims,
             bn=True)
+
+        # tabular combiner stuff
+        self.text_out_dim = 100
+        output_dim = self.text_out_dim
+        self.audio_feat_dim = 100
+        if self.audio_feat_dim > 0:
+            if self.audio_feat_dim > self.speech_out_dim:
+                output_dim_audio = self.speeech_out_dim
+                dims = calc_mlp_dims(
+                    self.audio_feat_dim,
+                    division=4,
+                    output_dim=output_dim_audio)
+                self.audio_mlp = MLP(
+                    self.audio_feat_dim,
+                    output_dim_audio,
+                    num_hidden_lyr=len(dims),
+                    dropout_prob=dropout_prob,
+                    hidden_channels=dims,
+                    bn=True)
+            else:
+                output_dim_audio = self.audio_feat_dim
+
+            self.weight_audio = nn.Parameter(
+                torch.rand((output_dim_audio, output_dim)))
+
+            self.bias_audio = nn.Parameter(torch.rand((output_dim)))
+
+        self.weight_transformer = nn.Parameter(
+            torch.rand((self.speech_out_dim, output_dim)))
+        self.weight_a = nn.Parameter(torch.rand((1, output_dim + output_dim)))
+        self.bias_transformer = nn.Parameter(torch.rand((output_dim)))
+        self.bias = nn.Parameter(torch.rand((output_dim)))
+        self.negative_slope = 0.2
+        self.final_out_dim = output_dim
+        self.__reset_parameters()
+
+    def __reset_parameters(self):
+        glorot(self.weight_a)
+        if hasattr(self, 'weight_audio'):
+            glorot(self.weight_audio)
+            zeros(self.bias_audio)
+        glorot(self.weight_transformer)
+        zeros(self.bias_transformer)
+
+    def tabular_combiner(self, speech_features, tabular_features):
+        w_speech = torch.mm(speech_features, self.weight_transformer)
+        g_speech = (torch.cat([w_speech, w_speech], dim=-1)
+                    * self.weight_a).sum(dim=1).unsqueeze(0).T
+
+        if tabular_features.shape[1] != 0:
+            if self.audio_feat_dim > self.speech_out_dim:
+                tabular_features = self.audio_mlp(tabular_features)
+            w_audio = torch.mm(tabular_features, self.weight_audio)
+            g_audio = (torch.cat([w_speech, w_audio], dim=-1)
+                       * self.weight_a).sum(dim=1).unsqueeze(0).T
+        else:
+            w_audio = None
+            g_audio = torch.zeros(0, device=g_audio.device)
+
+        alpha = torch.cat([g_speech, g_audio], dim=1)
+        alpha = F.leaky_relu(alpha, self.negative_slope)
+        alpha = F.softmax(alpha, -1)
+        stack_tensors = [tensor for tensor in [
+            w_speech, w_audio] if tensor is not None]
+        combined = torch.stack(stack_tensors, dim=1)
+        outputs_with_attention = alpha[:, :, None] * combined
+        combined_feats = outputs_with_attention.sum(dim=1)
 
     def forward(
         self,
