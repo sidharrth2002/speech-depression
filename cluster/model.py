@@ -85,12 +85,13 @@ class TabularAST(ASTForAudioClassification):
             bn=True)
 
         # tabular combiner stuff
-        self.text_out_dim = 100
-        output_dim = self.text_out_dim
+        self.speech_out_dim = 100
+        output_dim = self.speech_out_dim
         self.audio_feat_dim = 100
+
         if self.audio_feat_dim > 0:
             if self.audio_feat_dim > self.speech_out_dim:
-                output_dim_audio = self.speeech_out_dim
+                output_dim_audio = self.speech_out_dim
                 dims = calc_mlp_dims(
                     self.audio_feat_dim,
                     division=4,
