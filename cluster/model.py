@@ -2,6 +2,7 @@ from typing import Optional
 from transformers import ASTFeatureExtractor, ASTModel, ASTForAudioClassification
 from torch import nn
 import torch
+import torch.nn.functional as F
 
 from cluster.layer_utils import MLP, calc_mlp_dims, glorot, hf_loss_func, zeros
 
