@@ -1,6 +1,9 @@
-from transformers import ASTFeatureExtractor, ASTModel
+from typing import Optional
+from transformers import ASTFeatureExtractor, ASTModel, ASTForAudioClassification
 from torch import nn
 import torch
+
+from cluster.layer_utils import MLP, calc_mlp_dims, hf_loss_func
 
 processor = ASTFeatureExtractor.from_pretrained(
     "MIT/ast-finetuned-audioset-10-10-0.4593")
@@ -20,6 +23,10 @@ Build a convolutional model that takes the above features as input and outputs t
 
 
 class HandcraftedModel(nn.Module):
+    '''
+    Classification using only handcrafted features
+    '''
+
     def __init__(self, num_classes):
         super(HandcraftedModel, self).__init__()
         self.prosodic_conv = nn.Conv1d(1, 2, 3)
@@ -46,8 +53,7 @@ class HandcraftedModel(nn.Module):
         voice = self.voice_conv(x[:, 5, :].unsqueeze(1))
         teo = self.teo_conv(x[:, 6, :].unsqueeze(1))
         x = torch.cat((prosodic, spectral, mfcc, lpcc, gfcc, voice, teo), 1)
-        # print shape
-        # reshape
+
         x = x.view(x.size(0), -1)
         x = self.fc1(x)
         x = self.relu(x)
@@ -57,19 +63,64 @@ class HandcraftedModel(nn.Module):
         return x
 
 
+class TabularAST(ASTForAudioClassification):
+    def __init__(self, hf_model_config):
+        super().__init__(hf_model_config)
+        combined_feat_dim = 100
+        num_labels = 8
+        dropout_prob = 0.5
+        dims = calc_mlp_dims(combined_feat_dim, division=4,
+                             output_dim=num_labels)
+        self.tabular_classifier = MLP(
+            combined_feat_dim,
+            num_labels,
+            num_hidden_lyr=len(dims),
+            dropout_prob=dropout_prob,
+            hidden_channels=dims,
+            bn=True)
+
+    def forward(
+        self,
+        input_values: Optional[torch.Tensor] = None,
+        head_mask: Optional[torch.Tensor] = None,
+        labels: Optional[torch.Tensor] = None,
+        output_attentions: Optional[bool] = None,
+        output_hidden_states: Optional[bool] = None,
+        return_dict: Optional[bool] = None,
+        audio_features: Optional[torch.Tensor] = None,
+        class_weights: Optional[torch.Tensor] = None,
+    ):
+        outputs = self.audio_spectrogram_transformer(
+            input_values,
+            head_mask=head_mask,
+            labels=labels,
+            output_attentions=output_attentions,
+            output_hidden_states=output_hidden_states,
+            return_dict=return_dict,
+        )
+        pooled_output = outputs[1]
+        pooled_output = self.dropout(pooled_output)
+        combined_feats = self.tabular_combiner(
+            pooled_output, audio_features)
+        loss, logits, classifier_layer_outputs = hf_loss_func(
+            combined_feats, self.tabular_classifier, labels, self.num_labels, class_weights)
+
+        return loss, logits, classifier_layer_outputs
+
+
 model = HandcraftedModel(8)
 # test model with random input
 inp = torch.rand(1, 7, 100)
 print(inp[:, 1, :].unsqueeze(1))
 
-# print(model(torch.rand(1, 7, 100)))
-# prediction = torch.argmax(model(torch.rand(1, 7, 100)), dim=1)
-# print(prediction)
+print(model(torch.rand(1, 7, 100)))
+prediction = torch.argmax(model(torch.rand(1, 7, 100)), dim=1)
+print(prediction)
 
 
-class ASTHandcrafted(nn.Module):
+class ASTConcat(nn.Module):
     def __init__(self, num_classes):
-        super(ASTHandcrafted, self).__init__()
+        super(ASTConcat, self).__init__()
         self.ast = model
         self.fc1 = nn.Linear(1280 + 20, 512)
         self.fc2 = nn.Linear(512, num_classes)
