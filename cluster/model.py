@@ -1,10 +1,12 @@
 from typing import Optional
-from transformers import ASTFeatureExtractor, ASTModel, ASTForAudioClassification
+from transformers import ASTFeatureExtractor, ASTModel, ASTForAudioClassification, AutoConfig
 from torch import nn
 import torch
 import torch.nn.functional as F
+from tabular_config import ModelArguments
+from tabular_config import TabularConfig
 
-from cluster.layer_utils import MLP, calc_mlp_dims, glorot, hf_loss_func, zeros
+from layer_utils import MLP, calc_mlp_dims, glorot, hf_loss_func, zeros
 
 processor = ASTFeatureExtractor.from_pretrained(
     "MIT/ast-finetuned-audioset-10-10-0.4593")
@@ -60,7 +62,7 @@ class HandcraftedModel(nn.Module):
         x = self.relu(x)
         x = self.dropout(x)
         x = self.fc2(x)
-        x = self.softmax(x)
+        # x = self.softmax(x)
         return x
 
 
@@ -83,6 +85,8 @@ class TabularAST(ASTForAudioClassification):
             dropout_prob=dropout_prob,
             hidden_channels=dims,
             bn=True)
+
+        self.audio_features_model = HandcraftedModel(num_classes=8)
 
         # tabular combiner stuff
         self.speech_out_dim = 100
@@ -166,13 +170,13 @@ class TabularAST(ASTForAudioClassification):
         outputs = self.audio_spectrogram_transformer(
             input_values,
             head_mask=head_mask,
-            labels=labels,
             output_attentions=output_attentions,
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
         )
         pooled_output = outputs[1]
         pooled_output = self.dropout(pooled_output)
+        audio_features = self.audio_features_model(audio_features)
         combined_feats = self.tabular_combiner(
             pooled_output, audio_features)
         loss, logits, classifier_layer_outputs = hf_loss_func(
@@ -181,14 +185,29 @@ class TabularAST(ASTForAudioClassification):
         return loss, logits, classifier_layer_outputs
 
 
-model = HandcraftedModel(8)
-# test model with random input
-inp = torch.rand(1, 7, 100)
-print(inp[:, 1, :].unsqueeze(1))
+model_args = ModelArguments(
+    model_name_or_path='MIT/ast-finetuned-audioset-10-10-0.4593',
+)
 
-print(model(torch.rand(1, 7, 100)))
-prediction = torch.argmax(model(torch.rand(1, 7, 100)), dim=1)
-print(prediction)
+config = AutoConfig.from_pretrained(
+    model_args.config_name if model_args.config_name else model_args.model_name_or_path,
+    cache_dir=model_args.cache_dir,
+)
+tabular_config = TabularConfig(num_labels=8)
+config.tabular_config = tabular_config
+model = TabularAST(config)
+print(model)
+# print(model(torch.rand(1, 7, 100), torch.rand(1, 20)))
+
+
+# model = HandcraftedModel(8)
+# # test model with random input
+# inp = torch.rand(1, 7, 100)
+# print(inp[:, 1, :].unsqueeze(1))
+
+# print(model(torch.rand(1, 7, 100)))
+# prediction = torch.argmax(model(torch.rand(1, 7, 100)), dim=1)
+# print(prediction)
 
 
 class ASTConcat(nn.Module):
