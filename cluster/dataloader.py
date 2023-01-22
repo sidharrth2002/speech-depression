@@ -7,6 +7,10 @@ import pandas as pd
 
 
 class DaicWozDataset(datasets.GeneratorBasedBuilder):
+    '''
+    Return only the audio and labels
+    '''
+
     def _info(self):
         return datasets.DatasetInfo(
             description="DAIC-WOZ dataset",
