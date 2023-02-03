@@ -1,0 +1,26 @@
+[ 02.02.2023 - 20:37:06 ]
+    (MSG) [2] SMILEapi: openSMILE starting!
+[ 02.02.2023 - 20:37:06 ]
+    (MSG) [2] SMILEapi: config file is: /Users/SidharrthNagappan/Documents/work/monash/code/cluster/config/is09-13/IS09_emotion.conf
+[ 02.02.2023 - 20:37:06 ]
+    (MSG) [2] cComponentManager: successfully registered 102 component types.
+[ 02.02.2023 - 20:37:06 ]
+    (ERR) [0] commandlineParser: parse: unknown option '-sink' on commandline!
+[ 02.02.2023 - 20:37:06 ]
+    (ERR) [0] commandlineParser: parse: unknown option '-sinkLevel' on commandline!
+[ 02.02.2023 - 20:37:06 ]
+    (ERR) [0] commandlineParser: parse: unknown option '-source' on commandline!
+[ 02.02.2023 - 20:37:06 ]
+    (MSG) [2] instance 'lldsink': No filename given, disabling this sink component.
+[ 02.02.2023 - 20:37:06 ]
+    (MSG) [2] instance 'lldhtksink': No filename given, disabling this sink component.
+[ 02.02.2023 - 20:37:06 ]
+    (MSG) [2] instance 'lldarffsink': No filename given, disabling this sink component.
+[ 02.02.2023 - 20:37:06 ]
+    (MSG) [2] instance 'arffsink': No filename given, disabling this sink component.
+[ 02.02.2023 - 20:37:06 ]
+    (MSG) [2] instance 'csvsink': No filename given, disabling this sink component.
+[ 02.02.2023 - 20:37:06 ]
+    (MSG) [2] instance 'htksink': No filename given, disabling this sink component.
+[ 02.02.2023 - 20:37:06 ]
+    (ERR) [1] cWaveSource: failed to open input file 'test.wav'

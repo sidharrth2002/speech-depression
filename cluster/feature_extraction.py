@@ -11,6 +11,29 @@ import librosa
 import numpy as np
 import scipy
 import torch
+import opensmile
+
+# gemaps features from wave
+def gemaps(wave):
+    # load SMILE extractor
+    smile = opensmile.Smile(
+        feature_set=opensmile.FeatureSet.eGeMAPSv02,
+        feature_level=opensmile.FeatureLevel.Functionals
+    )
+    # load wave
+    x, sr = librosa.load(wave)
+    # extract features
+    features = smile.process_signal(x, sr)
+    # return torch tensor
+    return features
+
+if __name__ == '__main__':
+    # test
+    wave = 'test_files/test1.wav'
+    feature_df = gemaps(wave)
+    feature_df.to_csv('test_files/test1_features.csv')
+    print(feature_df)
+
 
 
 def describe_frequency(wave):
