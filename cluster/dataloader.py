@@ -6,10 +6,26 @@ import datasets
 import pandas as pd
 
 
+class DaicWozConfig(datasets.BuilderConfig):
+    """
+    Builder config for DAIC-WOZ dataset
+    """
+
+    def __init__(self, **kwargs):
+        super(DaicWozConfig, self).__init__(
+            version=datasets.Version("0.0.1", ""), **kwargs)
+
+
 class DaicWozDataset(datasets.GeneratorBasedBuilder):
     '''
     Return only the audio and labels
     '''
+    BUILDER_CONFIGS = [
+        DaicWozConfig(
+            name="clean",
+            description="DAIC-WOZ dataset",
+        ),
+    ]
 
     def _info(self):
         return datasets.DatasetInfo(
@@ -17,6 +33,7 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
             features=datasets.Features(
                 {
                     "file": datasets.Value("string"),
+                    "audio": datasets.features.Audio(sampling_rate=16_000),
                     "label": datasets.Value("string"),
                 }
             ),
@@ -25,7 +42,7 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
 
     def _split_generators(self, dl_manager):
         # already downloaded to a specified directory
-        data_dir = '/Volumes/Files/monash/daic_woz/'
+        data_dir = './daic_woz/'
         if self.config.name == 'clean':
             train_splits = [
                 datasets.SplitGenerator(
@@ -44,7 +61,7 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
         key = 0
         examples = []
 
-        audio_dir = "/Volumes/Files/monash/daic_woz/"
+        audio_dir = "./daic_woz/"
 
         if not os.path.exists(audio_dir):
             raise FileNotFoundError(
@@ -71,6 +88,7 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
                         examples.append(
                             {
                                 "file": os.path.join(audio_dir, folder, file),
+                                "audio": os.path.join(audio_dir, folder, file),
                                 # from 300P to 300
                                 "label": label_file.loc[int(folder[:3])]["PHQ8_Score"],
                             }

@@ -30,15 +30,15 @@ class HandcraftedModel(nn.Module):
     Classification using only handcrafted features
     '''
 
-    def __init__(self, num_classes):
+    def __init__(self, num_classes, num_features=450):
         super(HandcraftedModel, self).__init__()
-        self.prosodic_conv = nn.Conv1d(1, 2, 3)
-        self.spectral_conv = nn.Conv1d(1, 2, 3)
-        self.mfcc_conv = nn.Conv1d(1, 2, 3)
-        self.lpcc_conv = nn.Conv1d(1, 2, 3)
-        self.gfcc_conv = nn.Conv1d(1, 2, 3)
-        self.voice_conv = nn.Conv1d(1, 2, 3)
-        self.teo_conv = nn.Conv1d(1, 2, 3)
+
+        # 3 convolutional layers
+        # number of features is 450
+        self.conv1 = nn.Conv1d(1, 32, 3)
+        self.conv2 = nn.Conv1d(32, 64, 3)
+        self.conv3 = nn.Conv1d(64, 128, 3)
+
         # compute fc1 input size
         self.fc1 = nn.Linear(1372, 512)
         self.fc2 = nn.Linear(512, num_classes)
