@@ -30,8 +30,10 @@ class HandcraftedModel(nn.Module):
     Classification using only handcrafted features
     '''
 
-    def __init__(self, num_classes, num_features=450):
+    def __init__(self, num_classes, num_features=450, direct_classification=False):
         super(HandcraftedModel, self).__init__()
+
+        self.direct_classification = direct_classification
 
         # 3 convolutional layers
         # number of features is 450
@@ -39,32 +41,59 @@ class HandcraftedModel(nn.Module):
         self.conv2 = nn.Conv1d(32, 64, 3)
         self.conv3 = nn.Conv1d(64, 128, 3)
 
+        # add batchnorm layers
+        self.bn1 = nn.BatchNorm1d(32)
+        self.bn2 = nn.BatchNorm1d(64)
+        self.bn3 = nn.BatchNorm1d(128)
+
         # compute fc1 input size
-        self.fc1 = nn.Linear(1372, 512)
+        self.fc1 = nn.Linear(56832, 512)
         self.fc2 = nn.Linear(512, num_classes)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(0.5)
         self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
-        # torch multi-channel convolution
-        prosodic = self.prosodic_conv(x[:, 0, :].unsqueeze(1))
-        spectral = self.spectral_conv(x[:, 1, :].unsqueeze(1))
-        mfcc = self.mfcc_conv(x[:, 2, :].unsqueeze(1))
-        lpcc = self.lpcc_conv(x[:, 3, :].unsqueeze(1))
-        gfcc = self.gfcc_conv(x[:, 4, :].unsqueeze(1))
-        voice = self.voice_conv(x[:, 5, :].unsqueeze(1))
-        teo = self.teo_conv(x[:, 6, :].unsqueeze(1))
-        x = torch.cat((prosodic, spectral, mfcc, lpcc, gfcc, voice, teo), 1)
+        # torch convolution
+        # x is a tensor of shape (batch_size, 1, 450)
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x)
 
+        x = self.conv2(x)
+        x = self.bn2(x)
+        x = self.relu(x)
+
+        x = self.conv3(x)
+        x = self.bn3(x)
+        x = self.relu(x)
+
+        # flatten
         x = x.view(x.size(0), -1)
+
+        # fc layers
         x = self.fc1(x)
         x = self.relu(x)
         x = self.dropout(x)
-        x = self.fc2(x)
-        # x = self.softmax(x)
-        return x
 
+        if self.direct_classification:
+            x = self.fc2(x)
+            x = self.softmax(x)
+
+            return x
+        else:
+            return x
+
+if __name__ == "__main__":
+    # generate random vector of shape (320 x 450)
+    x = torch.rand(64, 450)
+    # reshape to (100 x 1 x 450)
+    x = x.view(64, 1, 450)
+    # pass through model with batch size 64
+    model = HandcraftedModel(num_classes=8)
+    output = model(x)
+    # find argmax
+    print(output.argmax(dim=1))
 
 class TabularAST(ASTForAudioClassification):
     '''
@@ -185,18 +214,18 @@ class TabularAST(ASTForAudioClassification):
         return loss, logits, classifier_layer_outputs
 
 
-model_args = ModelArguments(
-    model_name_or_path='MIT/ast-finetuned-audioset-10-10-0.4593',
-)
+# model_args = ModelArguments(
+#     model_name_or_path='MIT/ast-finetuned-audioset-10-10-0.4593',
+# )
 
-config = AutoConfig.from_pretrained(
-    model_args.config_name if model_args.config_name else model_args.model_name_or_path,
-    cache_dir=model_args.cache_dir,
-)
-tabular_config = TabularConfig(num_labels=8)
-config.tabular_config = tabular_config
-model = TabularAST(config)
-print(model)
+# config = AutoConfig.from_pretrained(
+#     model_args.config_name if model_args.config_name else model_args.model_name_or_path,
+#     cache_dir=model_args.cache_dir,
+# )
+# tabular_config = TabularConfig(num_labels=8)
+# config.tabular_config = tabular_config
+# model = TabularAST(config)
+# print(model)
 # print(model(torch.rand(1, 7, 100), torch.rand(1, 20)))
 
 
