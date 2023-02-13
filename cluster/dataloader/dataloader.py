@@ -27,6 +27,10 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
         ),
     ]
 
+    def __init__(self, *args, writer_batch_size=None, split='train', **kwargs):
+        super().__init__(*args, writer_batch_size=writer_batch_size, **kwargs)
+        self.split = split
+
     def _info(self):
         return datasets.DatasetInfo(
             description="DAIC-WOZ dataset",
@@ -42,7 +46,15 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
 
     def _split_generators(self, dl_manager):
         # already downloaded to a specified directory
-        data_dir = './daic_woz/'
+        data_dir_train = './daic_woz/train'
+        data_dir_val = './daic_woz/val'
+        data_dir_test = './daic_woz/test'
+        if self.split == 'train':
+            data_dir = data_dir_train
+        elif self.split == 'val':
+            data_dir = data_dir_val
+        else:
+            data_dir = data_dir_test
         if self.config.name == 'clean':
             train_splits = [
                 datasets.SplitGenerator(
