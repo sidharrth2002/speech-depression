@@ -24,7 +24,7 @@ validation_dataset = DaicWozDataset(split='validation')
 
 if args.model_type == 'ast':
     logging.info("Starting training of pure AST model...")
-    training_args = TrainingArguments(output_dir="test_trainer", evaluation_strategy="epoch", num_train_epochs=100)
+    training_args = TrainingArguments(output_dir="./trained_models/ast", evaluation_strategy="epoch", num_train_epochs=100)
     trainer = Trainer(
         model=PureModel,
         args=training_args,
@@ -33,3 +33,5 @@ if args.model_type == 'ast':
         compute_metrics=compute_metrics,
     )
     trainer.train()
+    logging.info("Finished training of pure AST model.")
+    logging.info("Saved in ./trained_models/ast")
