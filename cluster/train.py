@@ -6,7 +6,7 @@ import argparse
 from transformers import AutoFeatureExtractor, TrainingArguments, Trainer
 from cluster.dataloader.dataloader import DaicWozDataset
 from cluster.training.utilities import compute_metrics
-from models.pure_ast import model as PureModel
+from models.pure_ast import feature_extractor, model as PureModel
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -31,6 +31,7 @@ if args.model_type == 'ast':
         train_dataset=train_dataset,
         eval_dataset=validation_dataset,
         compute_metrics=compute_metrics,
+        tokenizer=feature_extractor
     )
     trainer.train()
     logging.info("Finished training of pure AST model.")
