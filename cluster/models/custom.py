@@ -37,6 +37,8 @@ class HandcraftedModel(nn.Module):
 
         # 3 convolutional layers
         # number of features is 450
+        self.input_fc = nn.Linear(num_features, 450)
+        
         self.conv1 = nn.Conv1d(1, 32, 3)
         self.conv2 = nn.Conv1d(32, 64, 3)
         self.conv3 = nn.Conv1d(64, 128, 3)
@@ -108,8 +110,8 @@ class TabularAST(ASTForAudioClassification):
         dims = calc_mlp_dims(combined_feat_dim, division=4,
                              output_dim=num_labels)
         self.tabular_classifier = MLP(
-            combined_feat_dim,
-            num_labels,
+            input_dim=combined_feat_dim,
+            output_dim=num_labels,
             num_hidden_lyr=len(dims),
             dropout_prob=dropout_prob,
             hidden_channels=dims,

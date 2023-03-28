@@ -1,5 +1,6 @@
 # Lint as: python3
 """DAIC-WOZ Dataset."""
+"""Main file for DAIC-WOZ dataset"""
 
 '''
 Custom huggingface dataloader to return audio and labels
@@ -90,14 +91,6 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
             raise FileNotFoundError(
                 f"{audio_dir} does not exist. Make sure you insert the correct path to the audio directory."
             )
-
-        # load labels file
-        # if name == "train":
-        #     label_file = os.path.join(audio_dir, "train.csv")
-        # elif name == "validation":
-        #     label_file = os.path.join(audio_dir, "validation.csv")
-        # else:
-        #     label_file = os.path.join(audio_dir, "test.csv")
 
         label_file = os.path.join(self.dataset_path, "labels.csv")
 
