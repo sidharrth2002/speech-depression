@@ -106,16 +106,14 @@ data_collator = DataCollator(processor=processor)
 
 if args.model_type == 'ast':
     logging.info("Starting training of pure AST model...")
-    training_args = TrainingArguments(output_dir="./trained_models/ast", evaluation_strategy="epoch", num_train_epochs=100, max_steps=1000)
+    training_args = TrainingArguments(output_dir="./trained_models/ast", evaluation_strategy="epoch", num_train_epochs=4, per_device_train_batch_size=4, per_device_eval_batch_size=4, gradient_accumulation_steps=4, eval_accumulation_steps=4, logging_steps=6)
     trainer = Trainer(
         model=PureModel,
         args=training_args,
         train_dataset=encoded_dataset["train"],
         eval_dataset=encoded_dataset["validation"],
         compute_metrics=compute_metrics,
-        # data_collator=data_collator,
         tokenizer=feature_extractor,
-        # tokenizer=processor,
     )
     trainer.train()
     logging.info("Finished training of pure AST model.")
