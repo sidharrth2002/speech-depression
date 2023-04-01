@@ -8,6 +8,7 @@ Custom huggingface dataloader to return audio and labels
 import json
 import logging
 import os
+import random
 import datasets
 import pandas as pd
 import librosa
@@ -80,6 +81,32 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
             supervised_keys=("file", "label"),
         )
 
+    def _choose_number_chunks(self, audio_dir):
+        '''
+        Choose number of samples to extract from each participant based on the participant with the least number of producible samples
+        '''
+        min_num_chunks = 1000000
+        for folder in os.listdir(audio_dir):
+            # check if folder is a directory and that the first 3 characters are numeric
+            if os.path.isdir(os.path.join(audio_dir, folder)) and folder[:3].isnumeric():
+                if training_config['break_audio_into_chunks']:
+                    for file in os.listdir(os.path.join(audio_dir, folder)):
+                        if file.endswith("PARTICIPANT_merged.wav") and not file.startswith('._'):
+                            # break audio into chunks of 8 seconds each
+                            # then save each chunk as a separate file
+                            audio, sr = librosa.load(os.path.join(audio_dir, folder, file), sr=16000)
+                            
+                            # remove pauses in audio
+                            audio, _ = librosa.effects.trim(audio, top_db=20, frame_length=2, hop_length=500)
+                            
+                            # break audio into chunks of 8 seconds each, with no silence
+                            # check how many chunks can be produced
+                            num_chunks = int(len(audio) / (sr * 8))
+                            if num_chunks < min_num_chunks:
+                                min_num_chunks = num_chunks
+        return min_num_chunks
+
+
     def _split_generators(self, dl_manager):
         # already downloaded to a specified directory
         data_dir_train = f'{self.dataset_path}/splits/train'
@@ -135,6 +162,8 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
                     # delete the file
                     os.remove(os.path.join(audio_dir, folder, file))
 
+        num_chunks = self._choose_number_chunks(audio_dir)
+
         for folder in os.listdir(audio_dir):
             print(folder)
             # check if folder is a directory and that the first 3 characters are numeric
@@ -151,12 +180,23 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
                             
                             # break audio into chunks of 8 seconds each, with no silence
                             # then save each chunk as a separate file
+                            chunks = {}
                             for i in range(0, len(audio), 8 * sr):
                                 chunk = audio[i:i + 8 * sr]
                                 # save chunk
                                 # check if chunk is not empty and file does not already exist
                                 if chunk.size > 0 and not os.path.exists(os.path.join(audio_dir, folder, f"{file[:-4]}_chunk_{i}.wav")):
-                                    soundfile.write(os.path.join(audio_dir, folder, f"{file[:-4]}_chunk_{i}.wav"), chunk, sr)
+                                    chunks[f"{file[:-4]}_chunk_{i}.wav"] = chunk
+
+                            # randomly select num_chunks from chunks
+                            if len(chunks) > num_chunks:
+                                chunks = random.sample(list(chunks.items()), num_chunks)
+                            else:
+                                chunks = list(chunks.items())
+                            
+                            # save chunks
+                            for chunk in chunks:
+                                librosa.output.write_wav(os.path.join(audio_dir, folder, chunk[0]), chunk[1], sr)
                                                         
                 for file in os.listdir(os.path.join(audio_dir, folder)):
                     if training_config['break_audio_into_chunks']:
