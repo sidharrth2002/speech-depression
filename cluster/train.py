@@ -55,7 +55,7 @@ def prepare_dataset(batch):
     return inputs
 
 # encoded_train = ds["train"].map(prepare_dataset, batched=True, batch_size=4)
-encoded_dataset = ds.map(prepare_dataset, batched=True, batch_size=4)
+encoded_dataset = ds.map(prepare_dataset, batched=True, batch_size=8)
 
 # print length of each split
 logging.debug("Train length: ", len(ds["train"]))
@@ -64,9 +64,10 @@ logging.debug("Test length: ", len(ds["test"]))
 
 model = get_model(training_config=training_config)
 
+# load model from "./trained_models/ast"
 if args.model_type == 'ast':
     logging.info("Starting training of pure AST model...")
-    training_args = TrainingArguments(output_dir="./trained_models/ast", evaluation_strategy="epoch", num_train_epochs=5, per_device_train_batch_size=2, per_device_eval_batch_size=2, gradient_accumulation_steps=4, eval_accumulation_steps=4, logging_steps=6, save_steps=6)
+    training_args = TrainingArguments(output_dir="./trained_models/ast_5class", evaluation_strategy="epoch", num_train_epochs=4, per_device_train_batch_size=16, per_device_eval_batch_size=16, gradient_accumulation_steps=16, eval_accumulation_steps=16, logging_steps=6, save_steps=6)
     trainer = Trainer(
         model=model,
         args=training_args,
