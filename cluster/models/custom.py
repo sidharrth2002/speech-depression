@@ -3,10 +3,10 @@ from transformers import ASTFeatureExtractor, ASTModel, ASTForAudioClassificatio
 from torch import nn
 import torch
 import torch.nn.functional as F
-from tabular_config import ModelArguments
-from tabular_config import TabularConfig
+# from tabular_config import ModelArguments
+# from tabular_config import TabularConfig
 
-from layer_utils import MLP, calc_mlp_dims, glorot, hf_loss_func, zeros
+from models.layer_utils import MLP, calc_mlp_dims, glorot, hf_loss_func, zeros
 
 processor = ASTFeatureExtractor.from_pretrained(
     "MIT/ast-finetuned-audioset-10-10-0.4593")
@@ -23,7 +23,6 @@ model = ASTModel.from_pretrained(
 7. Teager energy operator (TEO)
 Build a convolutional model that takes the above features as input and outputs the PHQ-8 score
 '''
-
 
 class HandcraftedModel(nn.Module):
     '''
@@ -85,6 +84,32 @@ class HandcraftedModel(nn.Module):
             return x
         else:
             return x
+
+class ConvModel(nn.Module):
+    # CNN to classify grayscale spectogram images
+    def __init__(self, num_classes):
+        super(ConvModel, self).__init__()
+        self.conv1 = nn.Conv2d(1, 32, 3, 1)
+        self.conv2 = nn.Conv2d(32, 64, 3, 1)
+        self.dropout1 = nn.Dropout2d(0.25)
+        self.dropout2 = nn.Dropout2d(0.5)
+        self.fc1 = nn.Linear(476160, 128)
+        self.fc2 = nn.Linear(128, num_classes)
+        
+    def forward(self, x):
+        x = self.conv1(x)
+        x = F.relu(x)
+        x = self.conv2(x)
+        x = F.relu(x)
+        x = F.max_pool2d(x, 2)
+        x = self.dropout1(x)
+        x = torch.flatten(x, 1)
+        x = self.fc1(x)
+        x = F.relu(x)
+        x = self.dropout2(x)
+        x = self.fc2(x)
+        output = F.log_softmax(x, dim=1)
+        return output
 
 if __name__ == "__main__":
     # generate random vector of shape (320 x 450)

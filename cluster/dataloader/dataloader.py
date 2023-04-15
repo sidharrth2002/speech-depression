@@ -81,7 +81,7 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
             supervised_keys=("file", "label"),
         )
 
-    def _choose_number_chunks(self, audio_dir):
+    def _choose_number_chunks(self, audio_dir, chunk_size=5):
         '''
         Choose number of samples to extract from each participant based on the participant with the least number of producible samples
         '''
@@ -92,18 +92,20 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
                 if training_config['break_audio_into_chunks']:
                     for file in os.listdir(os.path.join(audio_dir, folder)):
                         if file.endswith("PARTICIPANT_merged.wav") and not file.startswith('._'):
-                            # break audio into chunks of 8 seconds each
+                            # break audio into chunks of chunk_size seconds each
                             # then save each chunk as a separate file
-                            audio, sr = librosa.load(os.path.join(audio_dir, folder, file), sr=16000)
-                            
-                            # remove pauses in audio
-                            audio, _ = librosa.effects.trim(audio, top_db=20, frame_length=2, hop_length=500)
-                            
-                            # break audio into chunks of 8 seconds each, with no silence
-                            # check how many chunks can be produced
-                            num_chunks = int(len(audio) / (sr * 8))
+                            audio_file = os.path.join(audio_dir, folder, file)
+                            y, sr = librosa.load(audio_file, sr=16000)
+                            # break audio into chunks of 5 seconds each
+                            # then save each chunk as a separate file
+                            num_chunks = int(len(y) / (chunk_size * sr))
                             if num_chunks < min_num_chunks:
                                 min_num_chunks = num_chunks
+                            else:
+                                num_chunks = 1
+                                if num_chunks < min_num_chunks:
+                                    min_num_chunks = num_chunks
+                            
         return min_num_chunks
 
 
@@ -162,10 +164,12 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
                     # delete the file
                     os.remove(os.path.join(audio_dir, folder, file))
 
-        num_chunks = self._choose_number_chunks(audio_dir)
+        chunk_size = training_config['chunk_size']
+
+        # num_chunks = self._choose_number_chunks(audio_dir, chunk_size)
+        # print(f'Minimum number of chunks: {num_chunks}')
 
         for folder in os.listdir(audio_dir):
-            print(folder)
             # check if folder is a directory and that the first 3 characters are numeric
             if os.path.isdir(os.path.join(audio_dir, folder)) and folder[:3].isnumeric():
                 if training_config['break_audio_into_chunks']:
@@ -178,26 +182,29 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
                             # remove pauses in audio
                             audio, _ = librosa.effects.trim(audio, top_db=20, frame_length=2, hop_length=500)
                             
-                            # break audio into chunks of 8 seconds each, with no silence
+                            # break audio into chunks of chunk_size seconds each, with no silence
                             # then save each chunk as a separate file
                             chunks = {}
-                            for i in range(0, len(audio), 8 * sr):
-                                chunk = audio[i:i + 8 * sr]
+                            for i in range(0, len(audio), chunk_size * sr):
+                                chunk = audio[i:i + chunk_size * sr]
                                 # save chunk
                                 # check if chunk is not empty and file does not already exist
                                 if chunk.size > 0 and not os.path.exists(os.path.join(audio_dir, folder, f"{file[:-4]}_chunk_{i}.wav")):
                                     chunks[f"{file[:-4]}_chunk_{i}.wav"] = chunk
 
-                            # randomly select num_chunks from chunks
-                            if len(chunks) > num_chunks:
-                                chunks = random.sample(list(chunks.items()), num_chunks)
-                            else:
-                                chunks = list(chunks.items())
+                            # # randomly select num_chunks from chunks
+                            # if len(chunks) > num_chunks:
+                            #     chunks = random.sample(list(chunks.items()), num_chunks)
+                            # else:
+                            #     chunks = list(chunks.items())
                             
                             # save chunks
+                            chunks = list(chunks.items())
+                            
                             for chunk in chunks:
-                                librosa.output.write_wav(os.path.join(audio_dir, folder, chunk[0]), chunk[1], sr)
-                                                        
+                                print(chunk[0])
+                                soundfile.write(os.path.join(audio_dir, folder, chunk[0]), chunk[1], sr)
+                                                            
                 for file in os.listdir(os.path.join(audio_dir, folder)):
                     if training_config['break_audio_into_chunks']:
                         # only use chunk files
@@ -243,6 +250,7 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
                                     }
                                 )
 
+        print(f"Number of examples: {len(examples)}")
         for example in examples:
             yield key, {**example}
             key += 1
@@ -295,3 +303,14 @@ class DaicWozDataset(datasets.GeneratorBasedBuilder):
     def __len__(self):
         return len(self.get_data(self.split))
     
+    
+# audio, sr = librosa.load(os.path.join(audio_dir, folder, file), sr=16000)
+                            
+#                             # remove pauses in audio
+#                             audio, _ = librosa.effects.trim(audio, top_db=20, frame_length=2, hop_length=500)
+                            
+#                             # break audio into chunks of 8 seconds each, with no silence
+#                             # check how many chunks can be produced
+#                             num_chunks = int(len(audio) / (sr * 8))
+#                             if num_chunks < min_num_chunks:
+#                                 min_num_chunks = num_chunks
