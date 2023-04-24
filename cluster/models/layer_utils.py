@@ -1,8 +1,10 @@
+import logging
 import math
 import torch
 import torch.nn as nn
 from torch.nn import CrossEntropyLoss, MSELoss
 
+logging.basicConfig(level=logging.INFO)
 
 class MLP(nn.Module):
     """mlp can specify number of hidden layers and hidden layer channels"""
@@ -19,6 +21,9 @@ class MLP(nn.Module):
         elif len(hidden_channels) != num_hidden_lyr:
             raise ValueError(
                 "number of hidden layers should be the same as the lengh of hidden_channels")
+            
+        logging.info("output_dim: " + str(output_dim))
+    
         self.layer_channels = [input_dim] + hidden_channels + [output_dim]
         self.act_name = act
         self.activation = create_act(act)
@@ -109,6 +114,7 @@ def zeros(tensor):
 
 def hf_loss_func(inputs, classifier, labels, num_labels, class_weights):
     logits = classifier(inputs)
+    # logging.info(f"Shape of logits: {logits.shape}")
     if type(logits) is tuple:
         logits, layer_outputs = logits[0], logits[1]
     else:  # simple classifier

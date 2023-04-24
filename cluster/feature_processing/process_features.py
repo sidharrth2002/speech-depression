@@ -4,24 +4,30 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-with open('sample_features_is09.txt', 'r') as f:
-    sample_features = f.read()
-    num_features_is09 = 0
-    for line in sample_features.splitlines():
-        if line.startswith('@attribute'):
-            num_features_is09 += 1
+def get_num_features(feature_set='egemaps'):
+    if feature_set == 'egemaps':
+        num_features_egemaps = 0
+        # random file
+        with open('/home/snag0027/daic_woz/splits/train/454_P/454_PARTICIPANT_merged_chunk_80000.csv', 'r') as f:
+            sample_features = f.read()
+            for line in sample_features.splitlines():
+                if line.startswith('@attribute'):
+                    num_features_egemaps += 1
+        return num_features_egemaps
+    
+    elif feature_set == 'is09':
+        num_features_is09 = 0
+        # random file
+        with open('/home/snag0027/daic_woz/splits/val/362_P/362_IS09.txt', 'r') as f:
+            sample_features = f.read()
+            for line in sample_features.splitlines():
+                if line.startswith('@attribute'):
+                    num_features_is09 += 1
+        return num_features_is09
 
-print(f"Number of is09 features: {num_features_is09}")
-
-with open('/home/snag0027/speech-depression/cluster/feature_processing/sample_features_egemaps.txt', 'r') as f:
-    sample_features = f.read()
-    num_features_egemaps = 0
-    for line in sample_features.splitlines():
-        if line.startswith('@attribute'):
-            num_features_egemaps += 1
-
-logging.info(f"Number of egemaps features: {num_features_egemaps}")
-logging.info(f"Total number of features: {num_features_is09 + num_features_egemaps}")
+logging.info(f"Number of egemaps features: {get_num_features('egemaps')}")
+logging.info(f"Number of is09 features: {get_num_features('is09')}")
+logging.info(f"Total number of features: {get_num_features('is09') + get_num_features('egemaps')}")
 
 def process_features(txt_file):
     with open(txt_file, 'r') as f:
@@ -34,7 +40,7 @@ def process_features(txt_file):
                 break
         if data == '':
             logging.info(f"Could not find data in {txt_file}")
-            return [0] * (num_features_is09 + num_features_egemaps)
+            return [0] * (get_num_features('egemaps'))
         # split data by comma
         data = data.split(',')
         # remove first and last element
