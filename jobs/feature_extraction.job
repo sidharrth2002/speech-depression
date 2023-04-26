@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#SBATCH --job-name=feature_extraction
+#SBATCH --time=10:00:00
+#SBATCH --mem=8196
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=2
+#SBATCH --partition=cpu1
+
+module load python
+
+python /home/snag0027/cluster/feature_extraction_script.py

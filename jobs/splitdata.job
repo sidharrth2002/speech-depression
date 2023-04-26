@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#SBATCH --job-name=process_features
+#SBATCH --time=10:00
+#SBATCH --mem=1000
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --partition=cpu1,cpu2
+
+module load python
+
+python /home/snag0027/speech-depression/preprocessing/split_data.py

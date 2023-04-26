@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#SBATCH --job-name=binarytrainast
+#SBATCH --time=10:00:00
+#SBATCH --mem=16384
+#SBATCH --ntasks=2
+#SBATCH --cpus-per-task=4
+#SBATCH --partition=gpu.medium
+
+module load python
+pip install transformers datasets evaluate librosa
+
+python /home/snag0027/speech-depression/cluster/train.py

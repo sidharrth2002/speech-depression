@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#SBATCH --job-name=trainplaintransformer
+#SBATCH --time=10:00:00
+#SBATCH --mem=8192
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --partition=cpu1
+
+module load python
+
+python /home/snag0027/daic_woz/weed_out_nonnumeric.py

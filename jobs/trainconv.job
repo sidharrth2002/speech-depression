@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#SBATCH --job-name=convnet
+#SBATCH --time=40:00:00
+#SBATCH --mem=32768
+#SBATCH --ntasks=4
+#SBATCH --cpus-per-task=4
+#SBATCH --partition=gpu.large
+
+module load python
+pip install transformers datasets evaluate librosa torchmetrics
+
+python /home/snag0027/speech-depression/cluster/train_conv.py --evaluate-only
