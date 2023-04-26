@@ -1,0 +1,71 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: transformers in ./.local/lib/python3.10/site-packages (4.27.3)
+Requirement already satisfied: datasets in ./.local/lib/python3.10/site-packages (2.10.1)
+Requirement already satisfied: evaluate in ./.local/lib/python3.10/site-packages (0.4.0)
+Requirement already satisfied: librosa in ./.local/lib/python3.10/site-packages (0.10.0.post2)
+Requirement already satisfied: filelock in ./.local/lib/python3.10/site-packages (from transformers) (3.10.2)
+Requirement already satisfied: regex!=2019.12.17 in ./.local/lib/python3.10/site-packages (from transformers) (2023.3.23)
+Requirement already satisfied: numpy>=1.17 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (1.22.4)
+Requirement already satisfied: tokenizers!=0.11.3,<0.14,>=0.11.1 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.2)
+Requirement already satisfied: packaging>=20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (21.3)
+Requirement already satisfied: requests in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (2.28.1)
+Requirement already satisfied: tqdm>=4.27 in ./.local/lib/python3.10/site-packages (from transformers) (4.65.0)
+Requirement already satisfied: pyyaml>=5.1 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (6.0)
+Requirement already satisfied: huggingface-hub<1.0,>=0.11.0 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.3)
+Requirement already satisfied: multiprocess in ./.local/lib/python3.10/site-packages (from datasets) (0.70.14)
+Requirement already satisfied: aiohttp in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (3.8.3)
+Requirement already satisfied: responses<0.19 in ./.local/lib/python3.10/site-packages (from datasets) (0.18.0)
+Requirement already satisfied: dill<0.3.7,>=0.3.0 in ./.local/lib/python3.10/site-packages (from datasets) (0.3.6)
+Requirement already satisfied: fsspec[http]>=2021.11.1 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (2022.5.0)
+Requirement already satisfied: pandas in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (1.4.3)
+Requirement already satisfied: xxhash in ./.local/lib/python3.10/site-packages (from datasets) (3.2.0)
+Requirement already satisfied: pyarrow>=6.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (8.0.0)
+Requirement already satisfied: audioread>=2.1.9 in ./.local/lib/python3.10/site-packages (from librosa) (3.0.0)
+Requirement already satisfied: msgpack>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.0.4)
+Requirement already satisfied: soxr>=0.3.2 in ./.local/lib/python3.10/site-packages (from librosa) (0.3.4)
+Requirement already satisfied: scipy>=1.2.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.8.1)
+Requirement already satisfied: decorator>=4.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (5.1.1)
+Requirement already satisfied: soundfile>=0.12.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.12.1)
+Requirement already satisfied: pooch<1.7,>=1.0 in ./.local/lib/python3.10/site-packages (from librosa) (1.6.0)
+Requirement already satisfied: typing-extensions>=4.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (4.3.0)
+Requirement already satisfied: scikit-learn>=0.20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.1)
+Requirement already satisfied: joblib>=0.14 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.0)
+Requirement already satisfied: numba>=0.51.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (0.55.2)
+Requirement already satisfied: lazy-loader>=0.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.2)
+Requirement already satisfied: setuptools in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (58.1.0)
+Requirement already satisfied: llvmlite<0.39,>=0.38.0rc1 in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (0.38.1)
+Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in /app/python/3.10.5/lib/python3.10/site-packages (from packaging>=20.0->transformers) (3.0.9)
+Requirement already satisfied: appdirs>=1.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from pooch<1.7,>=1.0->librosa) (1.4.4)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (1.26.9)
+Requirement already satisfied: certifi>=2017.4.17 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2022.6.15)
+Requirement already satisfied: charset-normalizer<3,>=2 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2.1.0)
+Requirement already satisfied: idna<4,>=2.5 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (3.3)
+Requirement already satisfied: threadpoolctl>=2.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from scikit-learn>=0.20.0->librosa) (3.1.0)
+Requirement already satisfied: cffi>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from soundfile>=0.12.1->librosa) (1.15.1)
+Requirement already satisfied: async-timeout<5.0,>=4.0.0a3 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (4.0.2)
+Requirement already satisfied: attrs>=17.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (22.1.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (6.0.2)
+Requirement already satisfied: aiosignal>=1.1.2 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.2.0)
+Requirement already satisfied: yarl<2.0,>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.8.1)
+Requirement already satisfied: frozenlist>=1.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.3.1)
+Requirement already satisfied: python-dateutil>=2.8.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2.8.2)
+Requirement already satisfied: pytz>=2020.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2022.1)
+Requirement already satisfied: pycparser in /app/python/3.10.5/lib/python3.10/site-packages (from cffi>=1.0->soundfile>=0.12.1->librosa) (2.21)
+Requirement already satisfied: six>=1.5 in /app/python/3.10.5/lib/python3.10/site-packages (from python-dateutil>=2.8.1->pandas->datasets) (1.16.0)
+
+[notice] A new release of pip available: 22.3.1 -> 23.0.1
+[notice] To update, run: pip install --upgrade pip
+2023-03-26 23:05:50.628750: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+Could not find image processor class in the image processor config or the model config. Loading based on pattern matching with the model's feature extractor configuration.
+WARNING:datasets.builder:Found cached dataset dataloader (/ibm/gpfs/home/snag0027/speech-depression/cluster/cache_daic_woz/dataloader/daic_woz-data_dir=./0.0.1/5b00cefa9b002548292269d0b8cc821ebd20b5575d0b86b9cb013a76ebd73e2a)
+  0%|          | 0/3 [00:00<?, ?it/s]100%|██████████| 3/3 [00:00<00:00, 1158.75it/s]
+Printing type
+Dataset({
+    features: ['file', 'audio', 'label'],
+    num_rows: 151
+})
+Dataset({
+    features: ['file', 'audio', 'label'],
+    num_rows: 151
+})
+Map:   0%|          | 0/151 [00:00<?, ? examples/s]Map:   1%|▏         | 2/151 [00:17<21:44,  8.75s/ examples]Map:   3%|▎         | 4/151 [00:31<19:12,  7.84s/ examples]Map:   4%|▍         | 6/151 [00:37<13:27,  5.57s/ examples]Map:   5%|▌         | 8/151 [00:49<13:39,  5.73s/ examples]Map:   7%|▋         | 10/151 [01:07<16:20,  6.95s/ examples]Map:   8%|▊         | 12/151 [01:17<14:34,  6.29s/ examples]Map:   9%|▉         | 14/151 [01:28<13:46,  6.04s/ examples]Map:  11%|█         | 16/151 [01:37<12:25,  5.53s/ examples]Map:  12%|█▏        | 18/151 [01:54<14:14,  6.42s/ examples]Map:  13%|█▎        | 20/151 [02:12<15:38,  7.16s/ examples]Map:  15%|█▍        | 22/151 [02:27<15:51,  7.38s/ examples]Map:  16%|█▌        | 24/151 [02:33<12:33,  5.93s/ examples]Map:  17%|█▋        | 26/151 [02:42<11:31,  5.53s/ examples]Map:  19%|█▊        | 28/151 [02:51<10:52,  5.31s/ examples]Map:  20%|█▉        | 30/151 [03:03<10:53,  5.40s/ examples]Map:  21%|██        | 32/151 [03:14<10:57,  5.53s/ examples]Map:  23%|██▎       | 34/151 [03:30<12:08,  6.22s/ examples]Map:  24%|██▍       | 36/151 [03:41<11:28,  5.99s/ examples]Map:  25%|██▌       | 38/151 [03:52<11:05,  5.89s/ examples]Map:  26%|██▋       | 40/151 [04:00<09:47,  5.29s/ examples]Map:  28%|██▊       | 42/151 [04:17<11:19,  6.24s/ examples]Map:  29%|██▉       | 44/151 [04:28<10:49,  6.07s/ examples]Map:  30%|███       | 46/151 [04:44<11:28,  6.55s/ examples]Map:  32%|███▏      | 48/151 [04:53<10:20,  6.03s/ examples]Map:  33%|███▎      | 50/151 [05:00<08:45,  5.20s/ examples]Map:  34%|███▍      | 52/151 [05:19<10:49,  6.56s/ examples]Map:  36%|███▌      | 54/151 [05:28<09:32,  5.90s/ examples]Map:  37%|███▋      | 56/151 [05:34<07:59,  5.05s/ examples]Map:  38%|███▊      | 58/151 [05:40<06:50,  4.41s/ examples]Map:  40%|███▉      | 60/151 [05:53<07:32,  4.98s/ examples]Map:  41%|████      | 62/151 [06:01<06:57,  4.69s/ examples]Map:  42%|████▏     | 64/151 [06:19<08:51,  6.11s/ examples]Map:  44%|████▎     | 66/151 [06:27<07:41,  5.43s/ examples]Map:  45%|████▌     | 68/151 [06:34<06:44,  4.87s/ examples]Map:  46%|████▋     | 70/151 [06:40<05:42,  4.23s/ examples]Map:  48%|████▊     | 72/151 [06:52<06:15,  4.76s/ examples]Map:  49%|████▉     | 74/151 [07:01<06:02,  4.71s/ examples]Map:  50%|█████     | 76/151 [07:11<06:03,  4.84s/ examples]Map:  52%|█████▏    | 78/151 [07:29<07:22,  6.06s/ examples]Map:  53%|█████▎    | 80/151 [07:42<07:19,  6.19s/ examples]Map:  54%|█████▍    | 82/151 [07:59<07:56,  6.90s/ examples]Map:  56%|█████▌    | 84/151 [08:07<06:45,  6.05s/ examples]Map:  57%|█████▋    | 86/151 [08:25<07:31,  6.95s/ examples]Map:  58%|█████▊    | 88/151 [08:38<07:03,  6.72s/ examples]Map:  60%|█████▉    | 90/151 [09:00<08:14,  8.10s/ examples]Map:  61%|██████    | 92/151 [09:16<07:56,  8.08s/ examples]Map:  62%|██████▏   | 94/151 [09:25<06:37,  6.97s/ examples]slurmstepd: error: *** JOB 9494 ON mum-hpc2-gpu1 CANCELLED AT 2023-03-26T23:15:50 DUE TO TIME LIMIT ***

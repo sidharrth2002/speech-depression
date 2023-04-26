@@ -1,0 +1,98 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: transformers in ./.local/lib/python3.10/site-packages (4.27.3)
+Requirement already satisfied: datasets in ./.local/lib/python3.10/site-packages (2.10.1)
+Requirement already satisfied: evaluate in ./.local/lib/python3.10/site-packages (0.4.0)
+Requirement already satisfied: librosa in ./.local/lib/python3.10/site-packages (0.10.0.post2)
+Requirement already satisfied: torchmetrics in ./.local/lib/python3.10/site-packages (0.11.4)
+Collecting opensmile
+  Downloading opensmile-2.4.2-py3-none-any.whl (4.5 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 5.2 MB/s eta 0:00:00
+Requirement already satisfied: tokenizers!=0.11.3,<0.14,>=0.11.1 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.2)
+Requirement already satisfied: huggingface-hub<1.0,>=0.11.0 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.3)
+Requirement already satisfied: regex!=2019.12.17 in ./.local/lib/python3.10/site-packages (from transformers) (2023.3.23)
+Requirement already satisfied: numpy>=1.17 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (1.22.4)
+Requirement already satisfied: filelock in ./.local/lib/python3.10/site-packages (from transformers) (3.10.2)
+Requirement already satisfied: tqdm>=4.27 in ./.local/lib/python3.10/site-packages (from transformers) (4.65.0)
+Requirement already satisfied: requests in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (2.28.1)
+Requirement already satisfied: packaging>=20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (21.3)
+Requirement already satisfied: pyyaml>=5.1 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (6.0)
+Requirement already satisfied: pyarrow>=6.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (8.0.0)
+Requirement already satisfied: dill<0.3.7,>=0.3.0 in ./.local/lib/python3.10/site-packages (from datasets) (0.3.6)
+Requirement already satisfied: responses<0.19 in ./.local/lib/python3.10/site-packages (from datasets) (0.18.0)
+Requirement already satisfied: aiohttp in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (3.8.3)
+Requirement already satisfied: pandas in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (1.4.3)
+Requirement already satisfied: fsspec[http]>=2021.11.1 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (2022.5.0)
+Requirement already satisfied: multiprocess in ./.local/lib/python3.10/site-packages (from datasets) (0.70.14)
+Requirement already satisfied: xxhash in ./.local/lib/python3.10/site-packages (from datasets) (3.2.0)
+Requirement already satisfied: lazy-loader>=0.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.2)
+Requirement already satisfied: soxr>=0.3.2 in ./.local/lib/python3.10/site-packages (from librosa) (0.3.4)
+Requirement already satisfied: numba>=0.51.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (0.55.2)
+Requirement already satisfied: msgpack>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.0.4)
+Requirement already satisfied: decorator>=4.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (5.1.1)
+Requirement already satisfied: joblib>=0.14 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.0)
+Requirement already satisfied: typing-extensions>=4.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (4.3.0)
+Requirement already satisfied: pooch<1.7,>=1.0 in ./.local/lib/python3.10/site-packages (from librosa) (1.6.0)
+Requirement already satisfied: audioread>=2.1.9 in ./.local/lib/python3.10/site-packages (from librosa) (3.0.0)
+Requirement already satisfied: soundfile>=0.12.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.12.1)
+Requirement already satisfied: scikit-learn>=0.20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.1)
+Requirement already satisfied: scipy>=1.2.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.8.1)
+Requirement already satisfied: torch>=1.8.1 in /app/python/3.10.5/lib/python3.10/site-packages (from torchmetrics) (1.12.0+cu116)
+Collecting audinterface>=0.7.0
+  Downloading audinterface-1.0.1-py3-none-any.whl (31 kB)
+Collecting audobject>=0.6.1
+  Downloading audobject-0.7.9-py3-none-any.whl (24 kB)
+Collecting audresample<2.0.0,>=1.1.0
+  Downloading audresample-1.2.1-py3-none-any.whl (494 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 494.3/494.3 kB 50.8 MB/s eta 0:00:00
+Collecting audmath>=1.2.1
+  Downloading audmath-1.2.1-py3-none-any.whl (10 kB)
+Collecting audformat<2.0.0,>=0.15.3
+  Downloading audformat-0.16.1-py3-none-any.whl (64 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.3/64.3 kB 9.7 MB/s eta 0:00:00
+Collecting audeer>=1.18.0
+  Downloading audeer-1.19.0-py3-none-any.whl (20 kB)
+Collecting oyaml
+  Downloading oyaml-1.0-py2.py3-none-any.whl (3.0 kB)
+Collecting importlib-metadata>=4.8.0
+  Downloading importlib_metadata-6.4.1-py3-none-any.whl (22 kB)
+Requirement already satisfied: llvmlite<0.39,>=0.38.0rc1 in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (0.38.1)
+Requirement already satisfied: setuptools in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (58.1.0)
+Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in /app/python/3.10.5/lib/python3.10/site-packages (from packaging>=20.0->transformers) (3.0.9)
+Requirement already satisfied: appdirs>=1.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from pooch<1.7,>=1.0->librosa) (1.4.4)
+Requirement already satisfied: certifi>=2017.4.17 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2022.6.15)
+Requirement already satisfied: charset-normalizer<3,>=2 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2.1.0)
+Requirement already satisfied: idna<4,>=2.5 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (3.3)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (1.26.9)
+Requirement already satisfied: threadpoolctl>=2.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from scikit-learn>=0.20.0->librosa) (3.1.0)
+Requirement already satisfied: cffi>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from soundfile>=0.12.1->librosa) (1.15.1)
+Requirement already satisfied: async-timeout<5.0,>=4.0.0a3 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (4.0.2)
+Requirement already satisfied: multidict<7.0,>=4.5 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (6.0.2)
+Requirement already satisfied: aiosignal>=1.1.2 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.2.0)
+Requirement already satisfied: frozenlist>=1.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.3.1)
+Requirement already satisfied: yarl<2.0,>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.8.1)
+Requirement already satisfied: attrs>=17.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (22.1.0)
+Requirement already satisfied: pytz>=2020.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2022.1)
+Requirement already satisfied: python-dateutil>=2.8.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2.8.2)
+Collecting iso-639
+  Downloading iso-639-0.4.5.tar.gz (167 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 167.4/167.4 kB 26.2 MB/s eta 0:00:00
+  Preparing metadata (setup.py): started
+  Preparing metadata (setup.py): finished with status 'done'
+Collecting iso3166
+  Downloading iso3166-2.1.1-py3-none-any.whl (9.8 kB)
+Collecting audiofile>=0.4.0
+  Downloading audiofile-1.2.1-py3-none-any.whl (14 kB)
+Requirement already satisfied: pycparser in /app/python/3.10.5/lib/python3.10/site-packages (from cffi>=1.0->soundfile>=0.12.1->librosa) (2.21)
+Collecting zipp>=0.5
+  Downloading zipp-3.15.0-py3-none-any.whl (6.8 kB)
+Requirement already satisfied: six>=1.5 in /app/python/3.10.5/lib/python3.10/site-packages (from python-dateutil>=2.8.1->pandas->datasets) (1.16.0)
+Building wheels for collected packages: iso-639
+  Building wheel for iso-639 (setup.py): started
+  Building wheel for iso-639 (setup.py): finished with status 'done'
+  Created wheel for iso-639: filename=iso_639-0.4.5-py3-none-any.whl size=169061 sha256=c943d4a61c05d6cbbcfef6f0f84004286125477207c49e278e4ab84786292cd9
+  Stored in directory: /ibm/gpfs/home/snag0027/.cache/pip/wheels/d8/78/cc/5478ca3b1c3f602eae6f8cdbd78f909c0a0bfa0bbcb5c7771f
+Successfully built iso-639
+Installing collected packages: iso-639, zipp, oyaml, iso3166, audresample, audmath, audeer, importlib-metadata, audobject, audiofile, audformat, audinterface, opensmile
+Successfully installed audeer-1.19.0 audformat-0.16.1 audinterface-1.0.1 audiofile-1.2.1 audmath-1.2.1 audobject-0.7.9 audresample-1.2.1 importlib-metadata-6.4.1 iso-639-0.4.5 iso3166-2.1.1 opensmile-2.4.2 oyaml-1.0 zipp-3.15.0
+2023-04-17 19:22:59.445318: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+slurmstepd: error: *** JOB 10402 ON mum-hpc2-gpu5 CANCELLED AT 2023-04-17T19:23:01 ***

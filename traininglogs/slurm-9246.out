@@ -1,0 +1,110 @@
+Defaulting to user installation because normal site-packages is not writeable
+Collecting transformers
+  Downloading transformers-4.27.3-py3-none-any.whl (6.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.8/6.8 MB 2.2 MB/s eta 0:00:00
+Collecting datasets
+  Downloading datasets-2.10.1-py3-none-any.whl (469 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 469.0/469.0 kB 61.4 MB/s eta 0:00:00
+Collecting evaluate
+  Downloading evaluate-0.4.0-py3-none-any.whl (81 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 81.4/81.4 kB 20.7 MB/s eta 0:00:00
+Collecting librosa
+  Downloading librosa-0.10.0.post2-py3-none-any.whl (253 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 253.0/253.0 kB 45.4 MB/s eta 0:00:00
+Requirement already satisfied: pyyaml>=5.1 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (6.0)
+Requirement already satisfied: requests in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (2.28.1)
+Collecting tqdm>=4.27
+  Downloading tqdm-4.65.0-py3-none-any.whl (77 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 77.1/77.1 kB 13.3 MB/s eta 0:00:00
+Collecting regex!=2019.12.17
+  Downloading regex-2023.3.23-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (769 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 769.6/769.6 kB 68.1 MB/s eta 0:00:00
+Collecting filelock
+  Downloading filelock-3.10.2-py3-none-any.whl (10.0 kB)
+Requirement already satisfied: packaging>=20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (21.3)
+Collecting huggingface-hub<1.0,>=0.11.0
+  Downloading huggingface_hub-0.13.3-py3-none-any.whl (199 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 199.8/199.8 kB 29.1 MB/s eta 0:00:00
+Collecting tokenizers!=0.11.3,<0.14,>=0.11.1
+  Downloading tokenizers-0.13.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (7.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.6/7.6 MB 85.4 MB/s eta 0:00:00
+Requirement already satisfied: numpy>=1.17 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (1.22.4)
+Requirement already satisfied: pyarrow>=6.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (8.0.0)
+Collecting multiprocess
+  Downloading multiprocess-0.70.14-py310-none-any.whl (134 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.3/134.3 kB 24.4 MB/s eta 0:00:00
+Requirement already satisfied: aiohttp in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (3.8.3)
+Requirement already satisfied: fsspec[http]>=2021.11.1 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (2022.5.0)
+Collecting responses<0.19
+  Downloading responses-0.18.0-py3-none-any.whl (38 kB)
+Collecting xxhash
+  Downloading xxhash-3.2.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (212 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 212.5/212.5 kB 30.3 MB/s eta 0:00:00
+Collecting dill<0.3.7,>=0.3.0
+  Downloading dill-0.3.6-py3-none-any.whl (110 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 110.5/110.5 kB 21.4 MB/s eta 0:00:00
+Requirement already satisfied: pandas in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (1.4.3)
+Requirement already satisfied: numba>=0.51.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (0.55.2)
+Collecting pooch<1.7,>=1.0
+  Downloading pooch-1.6.0-py3-none-any.whl (56 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 56.3/56.3 kB 10.2 MB/s eta 0:00:00
+Requirement already satisfied: joblib>=0.14 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.0)
+Collecting lazy-loader>=0.1
+  Downloading lazy_loader-0.2-py3-none-any.whl (8.6 kB)
+Collecting audioread>=2.1.9
+  Downloading audioread-3.0.0.tar.gz (377 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 377.0/377.0 kB 48.8 MB/s eta 0:00:00
+  Preparing metadata (setup.py): started
+  Preparing metadata (setup.py): finished with status 'done'
+Requirement already satisfied: typing-extensions>=4.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (4.3.0)
+Requirement already satisfied: decorator>=4.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (5.1.1)
+Requirement already satisfied: scikit-learn>=0.20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.1)
+Requirement already satisfied: scipy>=1.2.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.8.1)
+Requirement already satisfied: msgpack>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.0.4)
+Collecting soundfile>=0.12.1
+  Downloading soundfile-0.12.1-py2.py3-none-any.whl (24 kB)
+Collecting soxr>=0.3.2
+  Downloading soxr-0.3.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.2 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 65.7 MB/s eta 0:00:00
+Requirement already satisfied: setuptools in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (58.1.0)
+Requirement already satisfied: llvmlite<0.39,>=0.38.0rc1 in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (0.38.1)
+Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in /app/python/3.10.5/lib/python3.10/site-packages (from packaging>=20.0->transformers) (3.0.9)
+Requirement already satisfied: appdirs>=1.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from pooch<1.7,>=1.0->librosa) (1.4.4)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (1.26.9)
+Requirement already satisfied: charset-normalizer<3,>=2 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2.1.0)
+Requirement already satisfied: certifi>=2017.4.17 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2022.6.15)
+Requirement already satisfied: idna<4,>=2.5 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (3.3)
+Requirement already satisfied: threadpoolctl>=2.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from scikit-learn>=0.20.0->librosa) (3.1.0)
+Requirement already satisfied: cffi>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from soundfile>=0.12.1->librosa) (1.15.1)
+Requirement already satisfied: attrs>=17.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (22.1.0)
+Requirement already satisfied: async-timeout<5.0,>=4.0.0a3 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (4.0.2)
+Requirement already satisfied: yarl<2.0,>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.8.1)
+Requirement already satisfied: frozenlist>=1.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.3.1)
+Requirement already satisfied: multidict<7.0,>=4.5 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (6.0.2)
+Requirement already satisfied: aiosignal>=1.1.2 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.2.0)
+Requirement already satisfied: pytz>=2020.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2022.1)
+Requirement already satisfied: python-dateutil>=2.8.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2.8.2)
+Requirement already satisfied: pycparser in /app/python/3.10.5/lib/python3.10/site-packages (from cffi>=1.0->soundfile>=0.12.1->librosa) (2.21)
+Requirement already satisfied: six>=1.5 in /app/python/3.10.5/lib/python3.10/site-packages (from python-dateutil>=2.8.1->pandas->datasets) (1.16.0)
+Building wheels for collected packages: audioread
+  Building wheel for audioread (setup.py): started
+  Building wheel for audioread (setup.py): finished with status 'done'
+  Created wheel for audioread: filename=audioread-3.0.0-py3-none-any.whl size=23706 sha256=19340e5e6d6206ab5502fcf199b2a358bba346c8ee100a8c8448d69b23b1668c
+  Stored in directory: /ibm/gpfs/home/snag0027/.cache/pip/wheels/3d/e0/4b/51b8aa4a0e2b6361c14943f7a7c2c7adb7b9cd419e0a1b720d
+Successfully built audioread
+Installing collected packages: tokenizers, xxhash, tqdm, soxr, regex, lazy-loader, filelock, dill, audioread, soundfile, responses, pooch, multiprocess, huggingface-hub, transformers, librosa, datasets, evaluate
+Successfully installed audioread-3.0.0 datasets-2.10.1 dill-0.3.6 evaluate-0.4.0 filelock-3.10.2 huggingface-hub-0.13.3 lazy-loader-0.2 librosa-0.10.0.post2 multiprocess-0.70.14 pooch-1.6.0 regex-2023.3.23 responses-0.18.0 soundfile-0.12.1 soxr-0.3.4 tokenizers-0.13.2 tqdm-4.65.0 transformers-4.27.3 xxhash-3.2.0
+
+[notice] A new release of pip available: 22.3.1 -> 23.0.1
+[notice] To update, run: pip install --upgrade pip
+311_P
+Traceback (most recent call last):
+  File "/home/snag0027/speech-depression/preprocessing/split_data.py", line 34, in <module>
+    shutil.copytree(os.path.join(data_path, file), os.path.join(data_path, 'splits', 'train', file))
+  File "/app/python/3.10.5/lib/python3.10/shutil.py", line 558, in copytree
+    return _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,
+  File "/app/python/3.10.5/lib/python3.10/shutil.py", line 457, in _copytree
+    os.makedirs(dst, exist_ok=dirs_exist_ok)
+  File "/app/python/3.10.5/lib/python3.10/os.py", line 225, in makedirs
+    mkdir(name, mode)
+FileExistsError: [Errno 17] File exists: '/home/snag0027/daic_woz/splits/train/311_P'

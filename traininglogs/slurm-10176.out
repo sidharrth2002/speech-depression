@@ -1,0 +1,240 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: transformers in ./.local/lib/python3.10/site-packages (4.27.3)
+Requirement already satisfied: datasets in ./.local/lib/python3.10/site-packages (2.10.1)
+Requirement already satisfied: evaluate in ./.local/lib/python3.10/site-packages (0.4.0)
+Requirement already satisfied: librosa in ./.local/lib/python3.10/site-packages (0.10.0.post2)
+Requirement already satisfied: numpy>=1.17 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (1.22.4)
+Requirement already satisfied: packaging>=20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (21.3)
+Requirement already satisfied: regex!=2019.12.17 in ./.local/lib/python3.10/site-packages (from transformers) (2023.3.23)
+Requirement already satisfied: huggingface-hub<1.0,>=0.11.0 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.3)
+Requirement already satisfied: requests in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (2.28.1)
+Requirement already satisfied: pyyaml>=5.1 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (6.0)
+Requirement already satisfied: tqdm>=4.27 in ./.local/lib/python3.10/site-packages (from transformers) (4.65.0)
+Requirement already satisfied: tokenizers!=0.11.3,<0.14,>=0.11.1 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.2)
+Requirement already satisfied: filelock in ./.local/lib/python3.10/site-packages (from transformers) (3.10.2)
+Requirement already satisfied: aiohttp in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (3.8.3)
+Requirement already satisfied: fsspec[http]>=2021.11.1 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (2022.5.0)
+Requirement already satisfied: pyarrow>=6.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (8.0.0)
+Requirement already satisfied: pandas in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (1.4.3)
+Requirement already satisfied: multiprocess in ./.local/lib/python3.10/site-packages (from datasets) (0.70.14)
+Requirement already satisfied: xxhash in ./.local/lib/python3.10/site-packages (from datasets) (3.2.0)
+Requirement already satisfied: dill<0.3.7,>=0.3.0 in ./.local/lib/python3.10/site-packages (from datasets) (0.3.6)
+Requirement already satisfied: responses<0.19 in ./.local/lib/python3.10/site-packages (from datasets) (0.18.0)
+Requirement already satisfied: decorator>=4.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (5.1.1)
+Requirement already satisfied: numba>=0.51.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (0.55.2)
+Requirement already satisfied: typing-extensions>=4.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (4.3.0)
+Requirement already satisfied: soxr>=0.3.2 in ./.local/lib/python3.10/site-packages (from librosa) (0.3.4)
+Requirement already satisfied: scipy>=1.2.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.8.1)
+Requirement already satisfied: soundfile>=0.12.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.12.1)
+Requirement already satisfied: lazy-loader>=0.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.2)
+Requirement already satisfied: scikit-learn>=0.20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.1)
+Requirement already satisfied: joblib>=0.14 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.0)
+Requirement already satisfied: pooch<1.7,>=1.0 in ./.local/lib/python3.10/site-packages (from librosa) (1.6.0)
+Requirement already satisfied: audioread>=2.1.9 in ./.local/lib/python3.10/site-packages (from librosa) (3.0.0)
+Requirement already satisfied: msgpack>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.0.4)
+Requirement already satisfied: llvmlite<0.39,>=0.38.0rc1 in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (0.38.1)
+Requirement already satisfied: setuptools in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (58.1.0)
+Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in /app/python/3.10.5/lib/python3.10/site-packages (from packaging>=20.0->transformers) (3.0.9)
+Requirement already satisfied: appdirs>=1.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from pooch<1.7,>=1.0->librosa) (1.4.4)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (1.26.9)
+Requirement already satisfied: certifi>=2017.4.17 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2022.6.15)
+Requirement already satisfied: charset-normalizer<3,>=2 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2.1.0)
+Requirement already satisfied: idna<4,>=2.5 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (3.3)
+Requirement already satisfied: threadpoolctl>=2.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from scikit-learn>=0.20.0->librosa) (3.1.0)
+Requirement already satisfied: cffi>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from soundfile>=0.12.1->librosa) (1.15.1)
+Requirement already satisfied: multidict<7.0,>=4.5 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (6.0.2)
+Requirement already satisfied: attrs>=17.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (22.1.0)
+Requirement already satisfied: aiosignal>=1.1.2 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.2.0)
+Requirement already satisfied: async-timeout<5.0,>=4.0.0a3 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (4.0.2)
+Requirement already satisfied: yarl<2.0,>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.8.1)
+Requirement already satisfied: frozenlist>=1.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.3.1)
+Requirement already satisfied: python-dateutil>=2.8.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2.8.2)
+Requirement already satisfied: pytz>=2020.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2022.1)
+Requirement already satisfied: pycparser in /app/python/3.10.5/lib/python3.10/site-packages (from cffi>=1.0->soundfile>=0.12.1->librosa) (2.21)
+Requirement already satisfied: six>=1.5 in /app/python/3.10.5/lib/python3.10/site-packages (from python-dateutil>=2.8.1->pandas->datasets) (1.16.0)
+2023-04-12 00:24:51.454842: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+Some weights of the model checkpoint at MIT/ast-finetuned-audioset-10-10-0.4593 were not used when initializing ASTModel: ['classifier.layernorm.weight', 'classifier.dense.weight', 'classifier.dense.bias', 'classifier.layernorm.bias']
+- This IS expected if you are initializing ASTModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing ASTModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+WARNING:datasets.builder:Found cached dataset dataloader (/ibm/gpfs/home/snag0027/speech-depression/cluster/cache_daic_woz/dataloader/daic_woz-data_dir=./0.0.1/07367e08c8b9749796c685f302c6b8c50669800dc84e1948701764b666f8aabd)
+  0%|          | 0/3 [00:00<?, ?it/s]100%|██████████| 3/3 [00:00<00:00, 77.58it/s]
+WARNING:datasets.arrow_dataset:Loading cached processed dataset at /ibm/gpfs/home/snag0027/speech-depression/cluster/cache_daic_woz/dataloader/daic_woz-data_dir=./0.0.1/07367e08c8b9749796c685f302c6b8c50669800dc84e1948701764b666f8aabd/cache-9a012a3ca4632bad.arrow
+WARNING:datasets.arrow_dataset:Loading cached processed dataset at /ibm/gpfs/home/snag0027/speech-depression/cluster/cache_daic_woz/dataloader/daic_woz-data_dir=./0.0.1/07367e08c8b9749796c685f302c6b8c50669800dc84e1948701764b666f8aabd/cache-9d01ce45df70d11b.arrow
+WARNING:datasets.arrow_dataset:Loading cached processed dataset at /ibm/gpfs/home/snag0027/speech-depression/cluster/cache_daic_woz/dataloader/daic_woz-data_dir=./0.0.1/07367e08c8b9749796c685f302c6b8c50669800dc84e1948701764b666f8aabd/cache-7f1937a6f759831f.arrow
+INFO:root:Train length: 13364
+INFO:root:Validation length: 2337
+INFO:root:Test length: 1837
+INFO:root:Epoch 0
+/app/python/3.10.5/lib/python3.10/site-packages/torch/nn/functional.py:1331: UserWarning: dropout2d: Received a 2-D input to dropout2d, which is deprecated and will result in an error in a future release. To retain the behavior and silence this warning, please use dropout instead. Note that dropout2d exists to provide channel-wise dropout on inputs with 2 spatial dimensions, a channel dimension, and an optional batch dimension (i.e. 3D or 4D inputs).
+  warnings.warn(warn_msg)
+INFO:root:Loss: 1.0099146366119385
+INFO:root:Validation loss for epoch 0: 0.4472808241844177
+INFO:root:Validation loss for epoch 0: 0.40789636969566345
+INFO:root:Validation loss for epoch 0: 0.38735178112983704
+INFO:root:Validation loss for epoch 0: 0.5914591550827026
+INFO:root:Validation loss for epoch 0: 1.2308906316757202
+INFO:root:Validation loss for epoch 0: 1.282164454460144
+INFO:root:Validation loss for epoch 0: 1.2879209518432617
+INFO:root:Validation loss for epoch 0: 1.2175906896591187
+INFO:root:Validation loss for epoch 0: 1.4786044359207153
+INFO:root:Validation loss for epoch 0: 1.1825661659240723
+INFO:root:Validation loss for epoch 0: 1.0739696025848389
+INFO:root:Validation loss for epoch 0: 1.1984832286834717
+INFO:root:Validation loss for epoch 0: 0.5458845496177673
+INFO:root:Validation loss for epoch 0: 0.46162357926368713
+INFO:root:Validation loss for epoch 0: 0.4775845408439636
+INFO:root:Validation loss for epoch 0: 0.5063918828964233
+INFO:root:Validation loss for epoch 0: 0.5045675039291382
+INFO:root:Validation loss for epoch 0: 0.5137836933135986
+INFO:root:Validation loss for epoch 0: 0.49722057580947876
+INFO:root:Validation loss for epoch 0: 0.3285408020019531
+INFO:root:Validation loss for epoch 0: 0.33719614148139954
+INFO:root:Validation loss for epoch 0: 0.38975879549980164
+INFO:root:Validation loss for epoch 0: 0.3827028274536133
+INFO:root:Validation loss for epoch 0: 0.3358723819255829
+INFO:root:Validation loss for epoch 0: 0.3384987711906433
+INFO:root:Validation loss for epoch 0: 0.5179216861724854
+INFO:root:Validation loss for epoch 0: 0.5592082738876343
+INFO:root:Validation loss for epoch 0: 0.5727811455726624
+INFO:root:Validation loss for epoch 0: 0.5356771349906921
+INFO:root:Validation loss for epoch 0: 0.5746767520904541
+INFO:root:Validation loss for epoch 0: 0.5272886157035828
+INFO:root:Validation loss for epoch 0: 0.5099043250083923
+INFO:root:Validation loss for epoch 0: 0.9312189221382141
+INFO:root:Validation loss for epoch 0: 1.116729736328125
+INFO:root:Validation loss for epoch 0: 1.1461563110351562
+INFO:root:Validation loss for epoch 0: 1.1306887865066528
+INFO:root:Validation loss for epoch 0: 0.7886775732040405
+INFO:root:Validation loss for epoch 0: 0.44922879338264465
+INFO:root:Validation loss for epoch 0: 0.4921298623085022
+INFO:root:Validation loss for epoch 0: 0.5205025672912598
+INFO:root:Validation loss for epoch 0: 1.1302043199539185
+INFO:root:Validation loss for epoch 0: 1.0218160152435303
+INFO:root:Validation loss for epoch 0: 0.49053674936294556
+INFO:root:Validation loss for epoch 0: 0.4859175682067871
+INFO:root:Validation loss for epoch 0: 0.4263714849948883
+INFO:root:Validation loss for epoch 0: 0.48069843649864197
+INFO:root:Validation loss for epoch 0: 0.41763412952423096
+INFO:root:Validation loss for epoch 0: 0.43831828236579895
+INFO:root:Validation loss for epoch 0: 0.42308521270751953
+INFO:root:Validation loss for epoch 0: 0.37978723645210266
+INFO:root:Validation loss for epoch 0: 0.36162203550338745
+INFO:root:Validation loss for epoch 0: 0.34747207164764404
+INFO:root:Validation loss for epoch 0: 0.8292084336280823
+INFO:root:Validation loss for epoch 0: 1.0463204383850098
+INFO:root:Validation loss for epoch 0: 1.0681570768356323
+INFO:root:Validation loss for epoch 0: 1.0335471630096436
+INFO:root:Validation loss for epoch 0: 1.013880968093872
+INFO:root:Validation loss for epoch 0: 1.0852794647216797
+INFO:root:Validation loss for epoch 0: 1.0812994241714478
+INFO:root:Validation loss for epoch 0: 0.9727634191513062
+INFO:root:Validation loss for epoch 0: 0.5216161608695984
+INFO:root:Validation loss for epoch 0: 0.4998546540737152
+INFO:root:Validation loss for epoch 0: 0.4978729784488678
+INFO:root:Validation loss for epoch 0: 0.49308985471725464
+INFO:root:Validation loss for epoch 0: 0.5357447266578674
+INFO:root:Validation loss for epoch 0: 0.512805700302124
+INFO:root:Validation loss for epoch 0: 0.5255134701728821
+INFO:root:Validation loss for epoch 0: 0.4928445816040039
+INFO:root:Validation loss for epoch 0: 0.4169313907623291
+INFO:root:Validation loss for epoch 0: 0.3821072280406952
+INFO:root:Validation loss for epoch 0: 0.3673287332057953
+INFO:root:Validation loss for epoch 0: 0.4261716902256012
+INFO:root:Validation loss for epoch 0: 0.3832029402256012
+INFO:root:Validation loss for epoch 0: 0.5543261766433716
+INFO:root:Epoch 1
+INFO:root:Loss: 1.0125714540481567
+INFO:root:Epoch 2
+INFO:root:Loss: 1.076687216758728
+INFO:root:Epoch 3
+INFO:root:Loss: 1.0302859544754028
+INFO:root:Epoch 4
+INFO:root:Loss: 1.163299560546875
+INFO:root:Epoch 5
+INFO:root:Loss: 0.94929039478302
+INFO:root:Epoch 6
+INFO:root:Loss: 0.9585751295089722
+INFO:root:Epoch 7
+INFO:root:Loss: 0.7589739561080933
+INFO:root:Epoch 8
+INFO:root:Loss: 0.7965331673622131
+INFO:root:Epoch 9
+INFO:root:Loss: 0.5908991694450378
+INFO:root:Epoch 10
+INFO:root:Loss: 0.4211912751197815
+INFO:root:Validation loss for epoch 10: 0.37714406847953796
+INFO:root:Validation loss for epoch 10: 0.33139148354530334
+INFO:root:Validation loss for epoch 10: 0.5592578649520874
+INFO:root:Validation loss for epoch 10: 0.7027736306190491
+INFO:root:Validation loss for epoch 10: 3.7926535606384277
+INFO:root:Validation loss for epoch 10: 2.6096134185791016
+INFO:root:Validation loss for epoch 10: 3.7018449306488037
+INFO:root:Validation loss for epoch 10: 3.9612631797790527
+INFO:root:Validation loss for epoch 10: 3.5265045166015625
+INFO:root:Validation loss for epoch 10: 2.490752696990967
+INFO:root:Validation loss for epoch 10: 2.407639503479004
+INFO:root:Validation loss for epoch 10: 3.099792003631592
+INFO:root:Validation loss for epoch 10: 0.5785534381866455
+INFO:root:Validation loss for epoch 10: 0.9253775477409363
+INFO:root:Validation loss for epoch 10: 0.4816100597381592
+INFO:root:Validation loss for epoch 10: 0.37297573685646057
+INFO:root:Validation loss for epoch 10: 0.40057089924812317
+INFO:root:Validation loss for epoch 10: 0.3333752751350403
+INFO:root:Validation loss for epoch 10: 0.3328721225261688
+INFO:root:Validation loss for epoch 10: 0.6606600284576416
+INFO:root:Validation loss for epoch 10: 0.4589022696018219
+INFO:root:Validation loss for epoch 10: 0.7473720908164978
+INFO:root:Validation loss for epoch 10: 0.47435444593429565
+INFO:root:Validation loss for epoch 10: 0.5637508034706116
+INFO:root:Validation loss for epoch 10: 0.3862130343914032
+INFO:root:Validation loss for epoch 10: 0.3061670958995819
+INFO:root:Validation loss for epoch 10: 0.4342479109764099
+INFO:root:Validation loss for epoch 10: 0.49092939496040344
+INFO:root:Validation loss for epoch 10: 0.434977263212204
+INFO:root:Validation loss for epoch 10: 0.40858200192451477
+INFO:root:Validation loss for epoch 10: 0.5061466693878174
+INFO:root:Validation loss for epoch 10: 0.6732912063598633
+INFO:root:Validation loss for epoch 10: 1.9444878101348877
+INFO:root:Validation loss for epoch 10: 2.5310089588165283
+INFO:root:Validation loss for epoch 10: 3.560460329055786
+INFO:root:Validation loss for epoch 10: 2.9038171768188477
+INFO:root:Validation loss for epoch 10: 1.0326982736587524
+INFO:root:Validation loss for epoch 10: 0.2566688656806946
+INFO:root:Validation loss for epoch 10: 0.36899590492248535
+INFO:root:Validation loss for epoch 10: 0.5493304133415222
+INFO:root:Validation loss for epoch 10: 2.6589608192443848
+INFO:root:Validation loss for epoch 10: 3.166578531265259
+INFO:root:Validation loss for epoch 10: 0.8100965619087219
+INFO:root:Validation loss for epoch 10: 0.7684785723686218
+INFO:root:Validation loss for epoch 10: 0.5381950736045837
+INFO:root:Validation loss for epoch 10: 0.335737019777298
+INFO:root:Validation loss for epoch 10: 0.5239062905311584
+INFO:root:Validation loss for epoch 10: 0.5951989889144897
+INFO:root:Validation loss for epoch 10: 0.3878333866596222
+INFO:root:Validation loss for epoch 10: 0.3803246319293976
+INFO:root:Validation loss for epoch 10: 0.42920345067977905
+INFO:root:Validation loss for epoch 10: 0.4962514340877533
+INFO:root:Validation loss for epoch 10: 1.548363447189331
+INFO:root:Validation loss for epoch 10: 2.459439516067505
+INFO:root:Validation loss for epoch 10: 3.2796249389648438
+INFO:root:Validation loss for epoch 10: 3.281531572341919
+INFO:root:Validation loss for epoch 10: 3.025315761566162
+INFO:root:Validation loss for epoch 10: 2.7148780822753906
+INFO:root:Validation loss for epoch 10: 2.9629316329956055
+INFO:root:Validation loss for epoch 10: 2.304541826248169
+INFO:root:Validation loss for epoch 10: 0.6532447934150696
+INFO:root:Validation loss for epoch 10: 0.3304692506790161
+INFO:root:Validation loss for epoch 10: 0.2432076334953308
+INFO:root:Validation loss for epoch 10: 0.4841422736644745
+INFO:root:Validation loss for epoch 10: 0.4759941101074219
+INFO:root:Validation loss for epoch 10: 0.29457640647888184
+INFO:root:Validation loss for epoch 10: 0.29703930020332336
+INFO:root:Validation loss for epoch 10: 0.42469415068626404
+INFO:root:Validation loss for epoch 10: 0.4983193278312683
+INFO:root:Validation loss for epoch 10: 0.46594300866127014
+INFO:root:Validation loss for epoch 10: 0.364153653383255
+INFO:root:Validation loss for epoch 10: 0.4441411793231964
+INFO:root:Validation loss for epoch 10: 0.44465428590774536
+INFO:root:Validation loss for epoch 10: 0.09982603788375854
+Early stopping
+Done

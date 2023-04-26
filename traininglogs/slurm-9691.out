@@ -1,0 +1,164 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: transformers in ./.local/lib/python3.10/site-packages (4.27.3)
+Requirement already satisfied: datasets in ./.local/lib/python3.10/site-packages (2.10.1)
+Requirement already satisfied: evaluate in ./.local/lib/python3.10/site-packages (0.4.0)
+Requirement already satisfied: librosa in ./.local/lib/python3.10/site-packages (0.10.0.post2)
+Requirement already satisfied: numpy>=1.17 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (1.22.4)
+Requirement already satisfied: packaging>=20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (21.3)
+Requirement already satisfied: requests in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (2.28.1)
+Requirement already satisfied: filelock in ./.local/lib/python3.10/site-packages (from transformers) (3.10.2)
+Requirement already satisfied: pyyaml>=5.1 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (6.0)
+Requirement already satisfied: huggingface-hub<1.0,>=0.11.0 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.3)
+Requirement already satisfied: tqdm>=4.27 in ./.local/lib/python3.10/site-packages (from transformers) (4.65.0)
+Requirement already satisfied: regex!=2019.12.17 in ./.local/lib/python3.10/site-packages (from transformers) (2023.3.23)
+Requirement already satisfied: tokenizers!=0.11.3,<0.14,>=0.11.1 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.2)
+Requirement already satisfied: pandas in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (1.4.3)
+Requirement already satisfied: multiprocess in ./.local/lib/python3.10/site-packages (from datasets) (0.70.14)
+Requirement already satisfied: dill<0.3.7,>=0.3.0 in ./.local/lib/python3.10/site-packages (from datasets) (0.3.6)
+Requirement already satisfied: xxhash in ./.local/lib/python3.10/site-packages (from datasets) (3.2.0)
+Requirement already satisfied: pyarrow>=6.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (8.0.0)
+Requirement already satisfied: responses<0.19 in ./.local/lib/python3.10/site-packages (from datasets) (0.18.0)
+Requirement already satisfied: fsspec[http]>=2021.11.1 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (2022.5.0)
+Requirement already satisfied: aiohttp in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (3.8.3)
+Requirement already satisfied: msgpack>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.0.4)
+Requirement already satisfied: joblib>=0.14 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.0)
+Requirement already satisfied: typing-extensions>=4.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (4.3.0)
+Requirement already satisfied: scipy>=1.2.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.8.1)
+Requirement already satisfied: scikit-learn>=0.20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.1)
+Requirement already satisfied: decorator>=4.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (5.1.1)
+Requirement already satisfied: numba>=0.51.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (0.55.2)
+Requirement already satisfied: pooch<1.7,>=1.0 in ./.local/lib/python3.10/site-packages (from librosa) (1.6.0)
+Requirement already satisfied: soxr>=0.3.2 in ./.local/lib/python3.10/site-packages (from librosa) (0.3.4)
+Requirement already satisfied: audioread>=2.1.9 in ./.local/lib/python3.10/site-packages (from librosa) (3.0.0)
+Requirement already satisfied: lazy-loader>=0.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.2)
+Requirement already satisfied: soundfile>=0.12.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.12.1)
+Requirement already satisfied: llvmlite<0.39,>=0.38.0rc1 in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (0.38.1)
+Requirement already satisfied: setuptools in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (58.1.0)
+Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in /app/python/3.10.5/lib/python3.10/site-packages (from packaging>=20.0->transformers) (3.0.9)
+Requirement already satisfied: appdirs>=1.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from pooch<1.7,>=1.0->librosa) (1.4.4)
+Requirement already satisfied: idna<4,>=2.5 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (3.3)
+Requirement already satisfied: certifi>=2017.4.17 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2022.6.15)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (1.26.9)
+Requirement already satisfied: charset-normalizer<3,>=2 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2.1.0)
+Requirement already satisfied: threadpoolctl>=2.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from scikit-learn>=0.20.0->librosa) (3.1.0)
+Requirement already satisfied: cffi>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from soundfile>=0.12.1->librosa) (1.15.1)
+Requirement already satisfied: aiosignal>=1.1.2 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.2.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (6.0.2)
+Requirement already satisfied: yarl<2.0,>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.8.1)
+Requirement already satisfied: attrs>=17.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (22.1.0)
+Requirement already satisfied: async-timeout<5.0,>=4.0.0a3 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (4.0.2)
+Requirement already satisfied: frozenlist>=1.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.3.1)
+Requirement already satisfied: pytz>=2020.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2022.1)
+Requirement already satisfied: python-dateutil>=2.8.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2.8.2)
+Requirement already satisfied: pycparser in /app/python/3.10.5/lib/python3.10/site-packages (from cffi>=1.0->soundfile>=0.12.1->librosa) (2.21)
+Requirement already satisfied: six>=1.5 in /app/python/3.10.5/lib/python3.10/site-packages (from python-dateutil>=2.8.1->pandas->datasets) (1.16.0)
+
+[notice] A new release of pip available: 22.3.1 -> 23.0.1
+[notice] To update, run: pip install --upgrade pip
+2023-03-30 00:16:01.303607: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+Some weights of ASTForAudioClassification were not initialized from the model checkpoint at MIT/ast-finetuned-audioset-10-10-0.4593 and are newly initialized because the shapes did not match:
+- classifier.dense.weight: found shape torch.Size([527, 768]) in the checkpoint and torch.Size([25, 768]) in the model instantiated
+- classifier.dense.bias: found shape torch.Size([527]) in the checkpoint and torch.Size([25]) in the model instantiated
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Could not find image processor class in the image processor config or the model config. Loading based on pattern matching with the model's feature extractor configuration.
+WARNING:datasets.builder:Found cached dataset dataloader (/ibm/gpfs/home/snag0027/speech-depression/cluster/cache_daic_woz/dataloader/daic_woz-data_dir=./0.0.1/d98e6a686b46c08621e920f410327dfd3ad9da11d4b185a1e2d76d40508ca078)
+  0%|          | 0/3 [00:00<?, ?it/s]100%|██████████| 3/3 [00:00<00:00, 1180.94it/s]
+Printing type
+Dataset({
+    features: ['file', 'audio', 'label'],
+    num_rows: 20
+})
+Dataset({
+    features: ['file', 'audio', 'label'],
+    num_rows: 19
+})
+{'file': Value(dtype='string', id=None), 'audio': Audio(sampling_rate=16000, mono=True, decode=True, id=None), 'label': Value(dtype='int32', id=None)}
+Map:   0%|          | 0/151 [00:00<?, ? examples/s]Map:   3%|▎         | 4/151 [00:27<17:03,  6.96s/ examples]Map:   5%|▌         | 8/151 [00:43<12:13,  5.13s/ examples]Map:   8%|▊         | 12/151 [01:07<12:59,  5.61s/ examples]Map:  11%|█         | 16/151 [01:25<11:29,  5.10s/ examples]Map:  13%|█▎        | 20/151 [01:55<13:01,  5.97s/ examples]Map:  16%|█▌        | 24/151 [02:13<11:37,  5.49s/ examples]Map:  19%|█▊        | 28/151 [02:29<10:19,  5.03s/ examples]Map:  21%|██        | 32/151 [02:49<09:57,  5.02s/ examples]Map:  24%|██▍       | 36/151 [03:12<10:03,  5.25s/ examples]Map:  26%|██▋       | 40/151 [03:28<09:00,  4.87s/ examples]Map:  29%|██▉       | 44/151 [03:52<09:12,  5.17s/ examples]Map:  32%|███▏      | 48/151 [04:13<08:55,  5.19s/ examples]Map:  34%|███▍      | 52/151 [04:35<08:47,  5.33s/ examples]Map:  37%|███▋      | 56/151 [04:48<07:26,  4.70s/ examples]Map:  40%|███▉      | 60/151 [05:05<06:49,  4.51s/ examples]Map:  42%|████▏     | 64/151 [05:28<07:07,  4.91s/ examples]Map:  45%|████▌     | 68/151 [05:41<06:05,  4.41s/ examples]Map:  48%|████▊     | 72/151 [05:56<05:33,  4.22s/ examples]Map:  50%|█████     | 76/151 [06:13<05:17,  4.24s/ examples]Map:  53%|█████▎    | 80/151 [06:40<05:52,  4.97s/ examples]Map:  56%|█████▌    | 84/151 [07:02<05:45,  5.15s/ examples]Map:  58%|█████▊    | 88/151 [07:29<05:52,  5.59s/ examples]Map:  61%|██████    | 92/151 [08:03<06:21,  6.46s/ examples]Map:  64%|██████▎   | 96/151 [08:27<05:48,  6.33s/ examples]Map:  66%|██████▌   | 100/151 [09:04<06:07,  7.21s/ examples]Map:  69%|██████▉   | 104/151 [09:21<04:59,  6.37s/ examples]Map:  72%|███████▏  | 108/151 [09:49<04:39,  6.51s/ examples]Map:  74%|███████▍  | 112/151 [10:07<03:52,  5.96s/ examples]Map:  77%|███████▋  | 116/151 [10:24<03:08,  5.39s/ examples]Map:  79%|███████▉  | 120/151 [10:50<02:58,  5.75s/ examples]Map:  82%|████████▏ | 124/151 [11:18<02:44,  6.09s/ examples]Map:  85%|████████▍ | 128/151 [11:41<02:17,  6.00s/ examples]Map:  87%|████████▋ | 132/151 [12:00<01:47,  5.67s/ examples]Map:  90%|█████████ | 136/151 [12:14<01:14,  4.97s/ examples]Map:  93%|█████████▎| 140/151 [12:30<00:51,  4.71s/ examples]Map:  95%|█████████▌| 144/151 [12:53<00:35,  5.00s/ examples]Map:  98%|█████████▊| 148/151 [13:19<00:16,  5.46s/ examples]Map: 100%|██████████| 151/151 [13:38<00:00,  5.67s/ examples]                                                             Map:   0%|          | 0/20 [00:00<?, ? examples/s]Map:  20%|██        | 4/20 [00:23<01:34,  5.89s/ examples]Map:  40%|████      | 8/20 [00:59<01:32,  7.68s/ examples]Map:  60%|██████    | 12/20 [01:17<00:49,  6.22s/ examples]Map:  80%|████████  | 16/20 [01:41<00:24,  6.12s/ examples]Map: 100%|██████████| 20/20 [02:21<00:00,  7.52s/ examples]                                                           Map:   0%|          | 0/19 [00:00<?, ? examples/s]Map:  21%|██        | 4/19 [00:31<01:57,  7.86s/ examples]Map:  42%|████▏     | 8/19 [00:44<00:56,  5.15s/ examples]Map:  63%|██████▎   | 12/19 [01:09<00:39,  5.66s/ examples]Map:  84%|████████▍ | 16/19 [01:32<00:17,  5.73s/ examples]Map: 100%|██████████| 19/19 [01:49<00:00,  5.70s/ examples]                                                           INFO:root:Starting training of pure AST model...
+/home/snag0027/.local/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+Train length:  151
+Validation length:  20
+Test length:  19
+Printing sample
+<class 'dict'>
+<class 'numpy.ndarray'>
+  0%|          | 0/76 [00:00<?, ?it/s]  1%|▏         | 1/76 [00:15<19:45, 15.81s/it]  3%|▎         | 2/76 [00:31<19:25, 15.76s/it]  4%|▍         | 3/76 [00:47<19:09, 15.75s/it]  5%|▌         | 4/76 [01:03<18:54, 15.75s/it]  7%|▋         | 5/76 [01:18<18:38, 15.75s/it]  8%|▊         | 6/76 [01:34<18:11, 15.59s/it]                                                8%|▊         | 6/76 [01:34<18:11, 15.59s/it]  9%|▉         | 7/76 [01:50<18:08, 15.77s/it] 11%|█         | 8/76 [02:05<17:47, 15.70s/it] 12%|█▏        | 9/76 [02:21<17:28, 15.65s/it] 13%|█▎        | 10/76 [02:36<17:07, 15.57s/it] 14%|█▍        | 11/76 [02:52<16:53, 15.59s/it] 16%|█▌        | 12/76 [03:07<16:35, 15.55s/it]                                                16%|█▌        | 12/76 [03:07<16:35, 15.55s/it] 17%|█▋        | 13/76 [03:23<16:32, 15.75s/it] 18%|█▊        | 14/76 [03:39<16:12, 15.69s/it] 20%|█▉        | 15/76 [03:54<15:52, 15.61s/it] 21%|██        | 16/76 [04:10<15:30, 15.52s/it] 22%|██▏       | 17/76 [04:25<15:14, 15.49s/it] 24%|██▎       | 18/76 [04:40<14:55, 15.44s/it]                                                24%|██▎       | 18/76 [04:40<14:55, 15.44s/it] 25%|██▌       | 19/76 [04:54<14:12, 14.96s/it]{'loss': 3.4476, 'learning_rate': 4.605263157894737e-05, 'epoch': 0.32}
+{'loss': 3.3422, 'learning_rate': 4.210526315789474e-05, 'epoch': 0.63}
+{'loss': 3.0457, 'learning_rate': 3.815789473684211e-05, 'epoch': 0.95}
+
+  0%|          | 0/10 [00:00<?, ?it/s][A
+ 20%|██        | 2/10 [00:01<00:04,  1.64it/s][A
+ 30%|███       | 3/10 [00:02<00:06,  1.15it/s][A
+ 40%|████      | 4/10 [00:03<00:06,  1.00s/it][A
+ 50%|█████     | 5/10 [00:04<00:05,  1.09s/it][A
+ 60%|██████    | 6/10 [00:06<00:04,  1.13s/it][A
+ 70%|███████   | 7/10 [00:07<00:03,  1.17s/it][A
+ 80%|████████  | 8/10 [00:08<00:02,  1.18s/it][A
+ 90%|█████████ | 9/10 [00:09<00:01,  1.19s/it][A
+100%|██████████| 10/10 [00:11<00:00,  1.20s/it][ATrainer is attempting to log a value of "{'accuracy': 0.2}" of type <class 'dict'> for key "eval/accuracy" as a scalar. This invocation of Tensorboard's writer.add_scalar() is incorrect so we dropped this attribute.
+Trainer is attempting to log a value of "{'f1': 0.10500000000000001}" of type <class 'dict'> for key "eval/f1" as a scalar. This invocation of Tensorboard's writer.add_scalar() is incorrect so we dropped this attribute.
+                                               
+                                               [A 25%|██▌       | 19/76 [05:07<14:12, 14.96s/it]
+100%|██████████| 10/10 [00:11<00:00,  1.20s/it][A
+                                               [A 26%|██▋       | 20/76 [05:22<17:32, 18.79s/it] 28%|██▊       | 21/76 [05:37<16:15, 17.74s/it] 29%|██▉       | 22/76 [05:53<15:20, 17.04s/it] 30%|███       | 23/76 [06:08<14:37, 16.55s/it] 32%|███▏      | 24/76 [06:24<14:03, 16.22s/it]                                                32%|███▏      | 24/76 [06:24<14:03, 16.22s/it] 33%|███▎      | 25/76 [06:40<13:44, 16.17s/it] 34%|███▍      | 26/76 [06:55<13:17, 15.94s/it] 36%|███▌      | 27/76 [07:10<12:51, 15.75s/it] 37%|███▋      | 28/76 [07:26<12:29, 15.61s/it] 38%|███▊      | 29/76 [07:40<12:02, 15.37s/it] 39%|███▉      | 30/76 [07:56<11:42, 15.27s/it]                                                39%|███▉      | 30/76 [07:56<11:42, 15.27s/it] 41%|████      | 31/76 [08:12<11:37, 15.50s/it] 42%|████▏     | 32/76 [08:27<11:17, 15.41s/it] 43%|████▎     | 33/76 [08:42<10:58, 15.31s/it] 45%|████▍     | 34/76 [08:57<10:44, 15.34s/it] 46%|████▌     | 35/76 [09:13<10:29, 15.35s/it] 47%|████▋     | 36/76 [09:28<10:13, 15.33s/it]                                                47%|████▋     | 36/76 [09:28<10:13, 15.33s/it] 49%|████▊     | 37/76 [09:44<10:05, 15.51s/it] 50%|█████     | 38/76 [09:57<09:23, 14.84s/it]{'eval_loss': 2.9877357482910156, 'eval_accuracy': {'accuracy': 0.2}, 'eval_f1': {'f1': 0.10500000000000001}, 'eval_runtime': 12.4033, 'eval_samples_per_second': 1.612, 'eval_steps_per_second': 0.806, 'epoch': 1.0}
+{'loss': 2.8422, 'learning_rate': 3.421052631578947e-05, 'epoch': 1.26}
+{'loss': 2.6702, 'learning_rate': 3.0263157894736844e-05, 'epoch': 1.58}
+{'loss': 2.5442, 'learning_rate': 2.6315789473684212e-05, 'epoch': 1.89}
+
+  0%|          | 0/10 [00:00<?, ?it/s][A
+ 20%|██        | 2/10 [00:01<00:04,  1.66it/s][A
+ 30%|███       | 3/10 [00:02<00:05,  1.17it/s][A
+ 40%|████      | 4/10 [00:03<00:05,  1.02it/s][A
+ 50%|█████     | 5/10 [00:04<00:05,  1.06s/it][A
+ 60%|██████    | 6/10 [00:06<00:04,  1.11s/it][A
+ 70%|███████   | 7/10 [00:07<00:03,  1.15s/it][A
+ 80%|████████  | 8/10 [00:08<00:02,  1.17s/it][A
+ 90%|█████████ | 9/10 [00:09<00:01,  1.18s/it][A
+100%|██████████| 10/10 [00:10<00:00,  1.19s/it][ATrainer is attempting to log a value of "{'accuracy': 0.2}" of type <class 'dict'> for key "eval/accuracy" as a scalar. This invocation of Tensorboard's writer.add_scalar() is incorrect so we dropped this attribute.
+Trainer is attempting to log a value of "{'f1': 0.125}" of type <class 'dict'> for key "eval/f1" as a scalar. This invocation of Tensorboard's writer.add_scalar() is incorrect so we dropped this attribute.
+                                               
+                                               [A 50%|█████     | 38/76 [10:09<09:23, 14.84s/it]
+100%|██████████| 10/10 [00:10<00:00,  1.19s/it][A
+                                               [A 51%|█████▏    | 39/76 [10:24<11:23, 18.47s/it] 53%|█████▎    | 40/76 [10:39<10:30, 17.52s/it] 54%|█████▍    | 41/76 [10:55<09:50, 16.88s/it] 55%|█████▌    | 42/76 [11:10<09:18, 16.43s/it]                                                55%|█████▌    | 42/76 [11:10<09:18, 16.43s/it] 57%|█████▋    | 43/76 [11:26<08:57, 16.29s/it] 58%|█████▊    | 44/76 [11:41<08:30, 15.97s/it] 59%|█████▉    | 45/76 [11:57<08:09, 15.80s/it] 61%|██████    | 46/76 [12:12<07:49, 15.65s/it] 62%|██████▏   | 47/76 [12:27<07:31, 15.57s/it] 63%|██████▎   | 48/76 [12:43<07:13, 15.48s/it]                                                63%|██████▎   | 48/76 [12:43<07:13, 15.48s/it] 64%|██████▍   | 49/76 [12:59<07:02, 15.65s/it] 66%|██████▌   | 50/76 [13:14<06:44, 15.55s/it] 67%|██████▋   | 51/76 [13:29<06:25, 15.43s/it] 68%|██████▊   | 52/76 [13:45<06:09, 15.41s/it] 70%|██████▉   | 53/76 [14:00<05:53, 15.38s/it] 71%|███████   | 54/76 [14:15<05:36, 15.31s/it]                                                71%|███████   | 54/76 [14:15<05:36, 15.31s/it] 72%|███████▏  | 55/76 [14:31<05:25, 15.51s/it] 74%|███████▎  | 56/76 [14:46<05:08, 15.43s/it] 75%|███████▌  | 57/76 [15:00<04:41, 14.83s/it]{'eval_loss': 3.3352787494659424, 'eval_accuracy': {'accuracy': 0.2}, 'eval_f1': {'f1': 0.125}, 'eval_runtime': 12.1092, 'eval_samples_per_second': 1.652, 'eval_steps_per_second': 0.826, 'epoch': 2.0}
+{'loss': 2.2799, 'learning_rate': 2.236842105263158e-05, 'epoch': 2.21}
+{'loss': 2.0742, 'learning_rate': 1.8421052631578947e-05, 'epoch': 2.53}
+{'loss': 2.1692, 'learning_rate': 1.4473684210526317e-05, 'epoch': 2.84}
+
+  0%|          | 0/10 [00:00<?, ?it/s][A
+ 20%|██        | 2/10 [00:01<00:04,  1.64it/s][A
+ 30%|███       | 3/10 [00:02<00:06,  1.16it/s][A
+ 40%|████      | 4/10 [00:03<00:05,  1.00it/s][A
+ 50%|█████     | 5/10 [00:04<00:05,  1.07s/it][A
+ 60%|██████    | 6/10 [00:06<00:04,  1.12s/it][A
+ 70%|███████   | 7/10 [00:07<00:03,  1.15s/it][A
+ 80%|████████  | 8/10 [00:08<00:02,  1.17s/it][A
+ 90%|█████████ | 9/10 [00:09<00:01,  1.19s/it][A
+100%|██████████| 10/10 [00:10<00:00,  1.20s/it][ATrainer is attempting to log a value of "{'accuracy': 0.15}" of type <class 'dict'> for key "eval/accuracy" as a scalar. This invocation of Tensorboard's writer.add_scalar() is incorrect so we dropped this attribute.
+Trainer is attempting to log a value of "{'f1': 0.1155844155844156}" of type <class 'dict'> for key "eval/f1" as a scalar. This invocation of Tensorboard's writer.add_scalar() is incorrect so we dropped this attribute.
+                                               
+                                               [A 75%|███████▌  | 57/76 [15:12<04:41, 14.83s/it]
+100%|██████████| 10/10 [00:10<00:00,  1.20s/it][A
+                                               [A 76%|███████▋  | 58/76 [15:27<05:34, 18.61s/it] 78%|███████▊  | 59/76 [15:42<04:58, 17.57s/it] 79%|███████▉  | 60/76 [15:58<04:30, 16.92s/it]                                                79%|███████▉  | 60/76 [15:58<04:30, 16.92s/it] 80%|████████  | 61/76 [16:14<04:09, 16.66s/it] 82%|████████▏ | 62/76 [16:29<03:47, 16.26s/it] 83%|████████▎ | 63/76 [16:44<03:27, 16.00s/it] 84%|████████▍ | 64/76 [17:00<03:09, 15.82s/it] 86%|████████▌ | 65/76 [17:15<02:52, 15.68s/it] 87%|████████▋ | 66/76 [17:30<02:35, 15.54s/it]                                                87%|████████▋ | 66/76 [17:30<02:35, 15.54s/it] 88%|████████▊ | 67/76 [17:46<02:21, 15.70s/it] 89%|████████▉ | 68/76 [18:02<02:04, 15.60s/it] 91%|█████████ | 69/76 [18:17<01:48, 15.51s/it] 92%|█████████▏| 70/76 [18:32<01:32, 15.46s/it] 93%|█████████▎| 71/76 [18:48<01:16, 15.40s/it] 95%|█████████▍| 72/76 [19:03<01:01, 15.33s/it]                                                95%|█████████▍| 72/76 [19:03<01:01, 15.33s/it] 96%|█████████▌| 73/76 [19:19<00:46, 15.54s/it] 97%|█████████▋| 74/76 [19:34<00:30, 15.48s/it] 99%|█████████▊| 75/76 [19:50<00:15, 15.42s/it]100%|██████████| 76/76 [20:03<00:00, 14.79s/it]{'eval_loss': 3.0694289207458496, 'eval_accuracy': {'accuracy': 0.15}, 'eval_f1': {'f1': 0.1155844155844156}, 'eval_runtime': 12.2062, 'eval_samples_per_second': 1.639, 'eval_steps_per_second': 0.819, 'epoch': 3.0}
+{'loss': 1.7011, 'learning_rate': 1.0526315789473684e-05, 'epoch': 3.16}
+{'loss': 1.4547, 'learning_rate': 6.578947368421053e-06, 'epoch': 3.47}
+{'loss': 1.4364, 'learning_rate': 2.631578947368421e-06, 'epoch': 3.79}
+
+  0%|          | 0/10 [00:00<?, ?it/s][A
+ 20%|██        | 2/10 [00:01<00:04,  1.64it/s][A
+ 30%|███       | 3/10 [00:02<00:06,  1.16it/s][A
+ 40%|████      | 4/10 [00:03<00:05,  1.00it/s][A
+ 50%|█████     | 5/10 [00:04<00:05,  1.07s/it][A
+ 60%|██████    | 6/10 [00:06<00:04,  1.12s/it][A
+ 70%|███████   | 7/10 [00:07<00:03,  1.15s/it][A
+ 80%|████████  | 8/10 [00:08<00:02,  1.17s/it][A
+ 90%|█████████ | 9/10 [00:09<00:01,  1.19s/it][A
+100%|██████████| 10/10 [00:10<00:00,  1.19s/it][ATrainer is attempting to log a value of "{'accuracy': 0.15}" of type <class 'dict'> for key "eval/accuracy" as a scalar. This invocation of Tensorboard's writer.add_scalar() is incorrect so we dropped this attribute.
+Trainer is attempting to log a value of "{'f1': 0.075}" of type <class 'dict'> for key "eval/f1" as a scalar. This invocation of Tensorboard's writer.add_scalar() is incorrect so we dropped this attribute.
+                                               
+                                               [A100%|██████████| 76/76 [20:15<00:00, 14.79s/it]
+100%|██████████| 10/10 [00:10<00:00,  1.19s/it][A
+                                               [A                                               100%|██████████| 76/76 [20:15<00:00, 14.79s/it]100%|██████████| 76/76 [20:15<00:00, 15.99s/it]
+INFO:root:Finished training of pure AST model.
+INFO:root:Saved in ./trained_models/ast
+{'eval_loss': 3.0907280445098877, 'eval_accuracy': {'accuracy': 0.15}, 'eval_f1': {'f1': 0.075}, 'eval_runtime': 12.1801, 'eval_samples_per_second': 1.642, 'eval_steps_per_second': 0.821, 'epoch': 4.0}
+{'train_runtime': 1215.5407, 'train_samples_per_second': 0.497, 'train_steps_per_second': 0.063, 'train_loss': 2.3669976937143424, 'epoch': 4.0}

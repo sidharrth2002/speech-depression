@@ -1,0 +1,282 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: transformers in ./.local/lib/python3.10/site-packages (4.27.3)
+Requirement already satisfied: datasets in ./.local/lib/python3.10/site-packages (2.10.1)
+Requirement already satisfied: evaluate in ./.local/lib/python3.10/site-packages (0.4.0)
+Requirement already satisfied: librosa in ./.local/lib/python3.10/site-packages (0.10.0.post2)
+Requirement already satisfied: requests in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (2.28.1)
+Requirement already satisfied: tokenizers!=0.11.3,<0.14,>=0.11.1 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.2)
+Requirement already satisfied: packaging>=20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (21.3)
+Requirement already satisfied: filelock in ./.local/lib/python3.10/site-packages (from transformers) (3.10.2)
+Requirement already satisfied: huggingface-hub<1.0,>=0.11.0 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.3)
+Requirement already satisfied: tqdm>=4.27 in ./.local/lib/python3.10/site-packages (from transformers) (4.65.0)
+Requirement already satisfied: regex!=2019.12.17 in ./.local/lib/python3.10/site-packages (from transformers) (2023.3.23)
+Requirement already satisfied: numpy>=1.17 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (1.22.4)
+Requirement already satisfied: pyyaml>=5.1 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (6.0)
+Requirement already satisfied: fsspec[http]>=2021.11.1 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (2022.5.0)
+Requirement already satisfied: responses<0.19 in ./.local/lib/python3.10/site-packages (from datasets) (0.18.0)
+Requirement already satisfied: dill<0.3.7,>=0.3.0 in ./.local/lib/python3.10/site-packages (from datasets) (0.3.6)
+Requirement already satisfied: multiprocess in ./.local/lib/python3.10/site-packages (from datasets) (0.70.14)
+Requirement already satisfied: aiohttp in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (3.8.3)
+Requirement already satisfied: pandas in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (1.4.3)
+Requirement already satisfied: pyarrow>=6.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (8.0.0)
+Requirement already satisfied: xxhash in ./.local/lib/python3.10/site-packages (from datasets) (3.2.0)
+Requirement already satisfied: msgpack>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.0.4)
+Requirement already satisfied: joblib>=0.14 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.0)
+Requirement already satisfied: numba>=0.51.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (0.55.2)
+Requirement already satisfied: audioread>=2.1.9 in ./.local/lib/python3.10/site-packages (from librosa) (3.0.0)
+Requirement already satisfied: decorator>=4.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (5.1.1)
+Requirement already satisfied: soundfile>=0.12.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.12.1)
+Requirement already satisfied: soxr>=0.3.2 in ./.local/lib/python3.10/site-packages (from librosa) (0.3.4)
+Requirement already satisfied: lazy-loader>=0.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.2)
+Requirement already satisfied: scikit-learn>=0.20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.1)
+Requirement already satisfied: pooch<1.7,>=1.0 in ./.local/lib/python3.10/site-packages (from librosa) (1.6.0)
+Requirement already satisfied: typing-extensions>=4.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (4.3.0)
+Requirement already satisfied: scipy>=1.2.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.8.1)
+Requirement already satisfied: setuptools in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (58.1.0)
+Requirement already satisfied: llvmlite<0.39,>=0.38.0rc1 in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (0.38.1)
+Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in /app/python/3.10.5/lib/python3.10/site-packages (from packaging>=20.0->transformers) (3.0.9)
+Requirement already satisfied: appdirs>=1.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from pooch<1.7,>=1.0->librosa) (1.4.4)
+Requirement already satisfied: charset-normalizer<3,>=2 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2.1.0)
+Requirement already satisfied: idna<4,>=2.5 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (3.3)
+Requirement already satisfied: certifi>=2017.4.17 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2022.6.15)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (1.26.9)
+Requirement already satisfied: threadpoolctl>=2.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from scikit-learn>=0.20.0->librosa) (3.1.0)
+Requirement already satisfied: cffi>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from soundfile>=0.12.1->librosa) (1.15.1)
+Requirement already satisfied: frozenlist>=1.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.3.1)
+Requirement already satisfied: yarl<2.0,>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.8.1)
+Requirement already satisfied: multidict<7.0,>=4.5 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (6.0.2)
+Requirement already satisfied: async-timeout<5.0,>=4.0.0a3 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (4.0.2)
+Requirement already satisfied: aiosignal>=1.1.2 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.2.0)
+Requirement already satisfied: attrs>=17.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (22.1.0)
+Requirement already satisfied: python-dateutil>=2.8.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2.8.2)
+Requirement already satisfied: pytz>=2020.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2022.1)
+Requirement already satisfied: pycparser in /app/python/3.10.5/lib/python3.10/site-packages (from cffi>=1.0->soundfile>=0.12.1->librosa) (2.21)
+Requirement already satisfied: six>=1.5 in /app/python/3.10.5/lib/python3.10/site-packages (from python-dateutil>=2.8.1->pandas->datasets) (1.16.0)
+
+[notice] A new release of pip available: 22.3.1 -> 23.0.1
+[notice] To update, run: pip install --upgrade pip
+2023-03-31 00:17:25.375720: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+Could not find image processor class in the image processor config or the model config. Loading based on pattern matching with the model's feature extractor configuration.
+Downloading and preparing dataset dataloader/daic_woz to /ibm/gpfs/home/snag0027/speech-depression/cluster/cache_daic_woz/dataloader/daic_woz-data_dir=./0.0.1/ea416c599cc72a5eae66e20dae897d7a73a499286de1c8288a5f65271bf3835e...
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 1 examples [04:10, 250.53s/ examples]Generating train split: 3411 examples [04:10, 19.43 examples/s]Generating train split: 8160 examples [04:10, 58.04 examples/s]Generating train split: 13000 examples [04:10, 114.14 examples/s]Generating train split: 17881 examples [04:10, 194.74 examples/s]Generating train split: 22611 examples [04:11, 305.86 examples/s]Generating train split: 29541 examples [04:11, 536.68 examples/s]Generating train split: 34298 examples [04:11, 760.89 examples/s]Generating train split: 39061 examples [04:11, 1077.91 examples/s]Generating train split: 43945 examples [04:11, 1535.01 examples/s]Generating train split: 51000 examples [04:11, 2449.20 examples/s]Generating train split: 55831 examples [04:11, 3310.38 examples/s]Generating train split: 63000 examples [04:11, 5028.96 examples/s]Generating train split: 67889 examples [04:12, 6586.76 examples/s]Generating train split: 75000 examples [04:12, 9467.42 examples/s]Generating train split: 79890 examples [04:12, 11954.19 examples/s]Generating train split: 87000 examples [04:12, 16168.29 examples/s]Generating train split: 91884 examples [04:12, 19494.11 examples/s]Generating train split: 99000 examples [04:12, 24464.45 examples/s]Generating train split: 103882 examples [04:12, 28008.03 examples/s]Generating train split: 110929 examples [04:12, 32516.41 examples/s]Generating train split: 117941 examples [04:13, 36122.91 examples/s]Generating train split: 123828 examples [04:13, 36951.91 examples/s]Generating train split: 130709 examples [04:13, 39405.06 examples/s]Generating train split: 135456 examples [04:13, 41078.58 examples/s]Generating train split: 140207 examples [04:13, 42548.12 examples/s]Generating train split: 145000 examples [04:13, 43732.90 examples/s]Generating train split: 149871 examples [04:13, 45022.86 examples/s]Generating train split: 154622 examples [04:13, 45693.25 examples/s]Generating train split: 159446 examples [04:13, 46256.33 examples/s]Generating train split: 164197 examples [04:14, 46610.67 examples/s]Generating train split: 169000 examples [04:14, 46832.70 examples/s]Generating train split: 173871 examples [04:14, 47377.86 examples/s]Generating train split: 181000 examples [04:14, 47296.81 examples/s]Generating train split: 185882 examples [04:14, 47701.61 examples/s]Generating train split: 192986 examples [04:14, 47573.11 examples/s]Generating train split: 198598 examples [04:14, 31906.89 examples/s]Generating train split: 203287 examples [04:15, 34644.19 examples/s]Generating train split: 208000 examples [04:15, 37145.19 examples/s]Generating train split: 215130 examples [04:15, 40396.01 examples/s]Generating train split: 219983 examples [04:15, 42262.35 examples/s]Generating train split: 224712 examples [04:15, 43503.61 examples/s]Generating train split: 229438 examples [04:15, 44477.79 examples/s]Generating train split: 234181 examples [04:15, 45277.77 examples/s]Generating train split: 239000 examples [04:15, 45835.33 examples/s]Generating train split: 243855 examples [04:15, 46604.94 examples/s]Generating train split: 251000 examples [04:16, 46777.57 examples/s]Generating train split: 255861 examples [04:16, 47259.34 examples/s]Generating train split: 263000 examples [04:16, 47133.86 examples/s]Generating train split: 267861 examples [04:16, 47508.52 examples/s]Generating train split: 275000 examples [04:16, 47324.53 examples/s]Generating train split: 279848 examples [04:16, 47612.32 examples/s]Generating train split: 287000 examples [04:16, 47413.05 examples/s]Generating train split: 291869 examples [04:16, 47727.85 examples/s]Generating train split: 299000 examples [04:17, 47469.11 examples/s]Generating train split: 303856 examples [04:17, 47737.28 examples/s]Generating train split: 310987 examples [04:17, 47666.53 examples/s]Generating train split: 318030 examples [04:17, 47426.04 examples/s]Generating train split: 322877 examples [04:17, 47673.86 examples/s]Generating train split: 330000 examples [04:17, 47411.55 examples/s]Generating train split: 334858 examples [04:17, 47693.24 examples/s]Generating train split: 342000 examples [04:18, 47441.34 examples/s]Generating train split: 346864 examples [04:18, 47733.09 examples/s]Generating train split: 353989 examples [04:18, 47649.64 examples/s]Generating train split: 361027 examples [04:18, 47404.22 examples/s]Generating train split: 365886 examples [04:18, 47684.53 examples/s]Generating train split: 373000 examples [04:18, 47427.37 examples/s]Generating train split: 377839 examples [04:18, 47658.32 examples/s]Generating train split: 385000 examples [04:18, 47436.62 examples/s]Generating train split: 389867 examples [04:19, 47736.70 examples/s]Generating train split: 397000 examples [04:19, 47505.56 examples/s]Generating train split: 401792 examples [04:19, 47604.40 examples/s]Generating train split: 408964 examples [04:19, 47674.88 examples/s]Generating train split: 416012 examples [04:19, 47445.26 examples/s]Generating train split: 420854 examples [04:19, 47675.74 examples/s]Generating train split: 426150 examples [04:19, 33891.74 examples/s]Generating train split: 431000 examples [04:20, 36664.80 examples/s]Generating train split: 435823 examples [04:20, 39233.87 examples/s]Generating train split: 440535 examples [04:20, 41132.78 examples/s]Generating train split: 445275 examples [04:20, 42735.06 examples/s]Generating train split: 450000 examples [04:20, 43906.83 examples/s]Generating train split: 454868 examples [04:20, 45225.70 examples/s]Generating train split: 459586 examples [04:20, 45775.56 examples/s]Generating train split: 464432 examples [04:20, 46265.01 examples/s]Generating train split: 469164 examples [04:20, 46567.64 examples/s]Generating train split: 473994 examples [04:20, 47074.23 examples/s]Generating train split: 481028 examples [04:21, 47002.16 examples/s]Generating train split: 485884 examples [04:21, 47418.35 examples/s]Generating train split: 493000 examples [04:21, 47227.00 examples/s]Generating train split: 497846 examples [04:21, 47541.51 examples/s]Generating train split: 505000 examples [04:21, 47343.30 examples/s]Generating train split: 509857 examples [04:21, 47649.10 examples/s]Generating train split: 517000 examples [04:21, 47377.32 examples/s]Generating train split: 521851 examples [04:21, 47656.49 examples/s]Generating train split: 529000 examples [04:22, 47455.84 examples/s]Generating train split: 533864 examples [04:22, 47747.82 examples/s]Generating train split: 541000 examples [04:22, 47444.20 examples/s]Generating train split: 545870 examples [04:22, 47752.15 examples/s]Generating train split: 553000 examples [04:22, 47474.56 examples/s]Generating train split: 557847 examples [04:22, 47718.79 examples/s]Generating train split: 564993 examples [04:22, 47687.55 examples/s]Generating train split: 572041 examples [04:23, 47451.82 examples/s]Generating train split: 576901 examples [04:23, 47725.57 examples/s]Generating train split: 584000 examples [04:23, 47482.71 examples/s]Generating train split: 590741 examples [04:23, 46651.44 examples/s]Generating train split: 595449 examples [04:23, 46752.55 examples/s]Generating train split: 600175 examples [04:23, 46878.73 examples/s]Generating train split: 605000 examples [04:23, 47040.72 examples/s]Generating train split: 609866 examples [04:23, 47481.14 examples/s]Generating train split: 617000 examples [04:23, 47258.46 examples/s]Generating train split: 621841 examples [04:24, 47553.57 examples/s]Generating train split: 628997 examples [04:24, 47607.19 examples/s]Generating train split: 636009 examples [04:24, 47314.07 examples/s]Generating train split: 640866 examples [04:24, 47617.17 examples/s]Generating train split: 648000 examples [04:24, 47352.57 examples/s]Generating train split: 654153 examples [04:24, 36103.68 examples/s]Generating train split: 658997 examples [04:24, 38559.52 examples/s]Generating train split: 663719 examples [04:25, 40475.89 examples/s]Generating train split: 668427 examples [04:25, 42061.28 examples/s]Generating train split: 673164 examples [04:25, 43416.00 examples/s]Generating train split: 678000 examples [04:25, 44513.94 examples/s]Generating train split: 682858 examples [04:25, 45630.58 examples/s]Generating train split: 687584 examples [04:25, 46088.51 examples/s]Generating train split: 692433 examples [04:25, 46492.11 examples/s]Generating train split: 697169 examples [04:25, 46740.79 examples/s]Generating train split: 702000 examples [04:25, 46953.05 examples/s]Generating train split: 706854 examples [04:25, 47417.33 examples/s]Generating train split: 714000 examples [04:26, 47274.81 examples/s]Generating train split: 718860 examples [04:26, 47627.50 examples/s]Generating train split: 726000 examples [04:26, 47401.53 examples/s]Generating train split: 730795 examples [04:26, 47539.78 examples/s]Generating train split: 737947 examples [04:26, 47585.99 examples/s]Generating train split: 745000 examples [04:26, 47350.87 examples/s]Generating train split: 749856 examples [04:26, 47641.26 examples/s]Generating train split: 757000 examples [04:27, 47385.87 examples/s]Generating train split: 761861 examples [04:27, 47683.12 examples/s]Generating train split: 768952 examples [04:27, 47539.66 examples/s]Generating train split: 776000 examples [04:27, 47281.48 examples/s]Generating train split: 780856 examples [04:27, 47584.86 examples/s]Generating train split: 788000 examples [04:27, 47377.99 examples/s]Generating train split: 792855 examples [04:27, 47661.66 examples/s]Generating train split: 800000 examples [04:27, 47409.90 examples/s]Generating train split: 804860 examples [04:28, 47699.30 examples/s]Generating train split: 812000 examples [04:28, 47454.24 examples/s]Generating train split: 816851 examples [04:28, 47713.66 examples/s]Generating train split: 823995 examples [04:28, 47682.07 examples/s]Generating train split: 831027 examples [04:28, 47413.93 examples/s]Generating train split: 835884 examples [04:28, 47689.11 examples/s]Generating train split: 843000 examples [04:28, 47455.55 examples/s]Generating train split: 847825 examples [04:28, 47646.67 examples/s]Generating train split: 854986 examples [04:29, 47675.79 examples/s]Generating train split: 862004 examples [04:29, 47380.63 examples/s]Generating train split: 866863 examples [04:29, 47666.70 examples/s]Generating train split: 874000 examples [04:29, 47390.24 examples/s]Generating train split: 878846 examples [04:29, 47648.60 examples/s]Generating train split: 884574 examples [04:29, 34838.70 examples/s]Generating train split: 889299 examples [04:29, 37363.12 examples/s]Generating train split: 894001 examples [04:30, 39534.55 examples/s]Generating train split: 898803 examples [04:30, 41598.57 examples/s]Generating train split: 903520 examples [04:30, 43034.48 examples/s]Generating train split: 908247 examples [04:30, 44174.05 examples/s]Generating train split: 913000 examples [04:30, 45054.43 examples/s]Generating train split: 917832 examples [04:30, 45978.18 examples/s]Generating train split: 922559 examples [04:30, 46348.57 examples/s]Generating train split: 927296 examples [04:30, 46643.85 examples/s]Generating train split: 932027 examples [04:30, 46839.42 examples/s]Generating train split: 936888 examples [04:30, 47359.42 examples/s]Generating train split: 944000 examples [04:31, 47120.33 examples/s]Generating train split: 948851 examples [04:31, 47490.88 examples/s]Generating train split: 956000 examples [04:31, 47293.05 examples/s]Generating train split: 960850 examples [04:31, 47602.59 examples/s]Generating train split: 967977 examples [04:31, 47568.83 examples/s]Generating train split: 975016 examples [04:31, 47349.27 examples/s]Generating train split: 979865 examples [04:31, 47622.96 examples/s]Generating train split: 987000 examples [04:32, 47342.11 examples/s]Generating train split: 991844 examples [04:32, 47609.07 examples/s]Generating train split: 998995 examples [04:32, 47629.40 examples/s]Generating train split: 1006022 examples [04:32, 47369.70 examples/s]Generating train split: 1010854 examples [04:32, 47595.75 examples/s]Generating train split: 1017997 examples [04:32, 47600.41 examples/s]Generating train split: 1025024 examples [04:32, 47351.86 examples/s]Generating train split: 1029881 examples [04:32, 47637.42 examples/s]Generating train split: 1037000 examples [04:33, 47342.46 examples/s]Generating train split: 1041795 examples [04:33, 47488.01 examples/s]Generating train split: 1048955 examples [04:33, 47569.94 examples/s]Generating train split: 1056000 examples [04:33, 47255.20 examples/s]Generating train split: 1060845 examples [04:33, 47536.65 examples/s]Generating train split: 1067973 examples [04:33, 47526.62 examples/s]Generating train split: 1075008 examples [04:33, 47319.90 examples/s]Generating train split: 1079815 examples [04:33, 47494.73 examples/s]Generating train split: 1086937 examples [04:34, 47485.56 examples/s]Generating train split: 1094000 examples [04:34, 47319.83 examples/s]Generating train split: 1098849 examples [04:34, 47593.24 examples/s]Generating train split: 1106000 examples [04:34, 47372.73 examples/s]Generating train split: 1112585 examples [04:34, 36085.05 examples/s]Generating train split: 1117441 examples [04:34, 38341.71 examples/s]Generating train split: 1122182 examples [04:35, 40297.80 examples/s]Generating train split: 1127000 examples [04:35, 41998.79 examples/s]Generating train split: 1131828 examples [04:35, 43574.72 examples/s]Generating train split: 1136566 examples [04:35, 44577.45 examples/s]Generating train split: 1141315 examples [04:35, 45373.14 examples/s]Generating train split: 1146058 examples [04:35, 45950.22 examples/s]Generating train split: 1150902 examples [04:35, 46660.24 examples/s]Generating train split: 1155644 examples [04:35, 46877.35 examples/s]Generating train split: 1160436 examples [04:35, 47047.41 examples/s]Generating train split: 1167614 examples [04:35, 47354.82 examples/s]Generating train split: 1172433 examples [04:36, 47388.28 examples/s]Generating train split: 1179588 examples [04:36, 47496.96 examples/s]Generating train split: 1184437 examples [04:36, 47519.52 examples/s]Generating train split: 1191611 examples [04:36, 47626.19 examples/s]Generating train split: 1196434 examples [04:36, 47588.02 examples/s]Generating train split: 1203599 examples [04:36, 47646.28 examples/s]Generating train split: 1208438 examples [04:36, 47626.36 examples/s]Generating train split: 1215603 examples [04:36, 47671.73 examples/s]Generating train split: 1220434 examples [04:37, 47629.57 examples/s]Generating train split: 1227587 examples [04:37, 47646.42 examples/s]Generating train split: 1232441 examples [04:37, 47636.14 examples/s]Generating train split: 1239617 examples [04:37, 47703.18 examples/s]Generating train split: 1244410 examples [04:37, 47581.42 examples/s]Generating train split: 1251593 examples [04:37, 47683.15 examples/s]Generating train split: 1256441 examples [04:37, 47660.98 examples/s]Generating train split: 1263621 examples [04:37, 47731.16 examples/s]Generating train split: 1270823 examples [04:38, 47669.54 examples/s]Generating train split: 1278000 examples [04:38, 47504.38 examples/s]Generating train split: 1282876 examples [04:38, 47785.08 examples/s]Generating train split: 1290000 examples [04:38, 47579.71 examples/s]Generating train split: 1294831 examples [04:38, 47754.41 examples/s]Generating train split: 1302000 examples [04:38, 47540.89 examples/s]Generating train split: 1306872 examples [04:38, 47826.86 examples/s]Generating train split: 1314000 examples [04:39, 47559.12 examples/s]Generating train split: 1318860 examples [04:39, 47812.45 examples/s]Generating train split: 1326000 examples [04:39, 47491.74 examples/s]Generating train split: 1330875 examples [04:39, 47797.40 examples/s]Generating train split: 1335876 examples [04:39, 34922.56 examples/s]Generating train split: 1340544 examples [04:39, 37407.87 examples/s]Generating train split: 1345262 examples [04:39, 39674.49 examples/s]Generating train split: 1350000 examples [04:39, 41557.80 examples/s]Generating train split: 1354844 examples [04:40, 43360.02 examples/s]Generating train split: 1359547 examples [04:40, 44358.67 examples/s]Generating train split: 1364203 examples [04:40, 44971.74 examples/s]Generating train split: 1369000 examples [04:40, 45644.26 examples/s]Generating train split: 1373836 examples [04:40, 46424.61 examples/s]Generating train split: 1378549 examples [04:40, 46627.41 examples/s]Generating train split: 1385663 examples [04:40, 46930.36 examples/s]Generating train split: 1390419 examples [04:40, 47006.67 examples/s]Generating train split: 1397533 examples [04:40, 47157.03 examples/s]Generating train split: 1404684 examples [04:41, 47331.73 examples/s]Generating train split: 1411822 examples [04:41, 47382.76 examples/s]Generating train split: 1418923 examples [04:41, 47365.90 examples/s]Generating train split: 1426000 examples [04:41, 47167.83 examples/s]Generating train split: 1430853 examples [04:41, 47478.54 examples/s]Generating train split: 1437984 examples [04:41, 47496.31 examples/s]Generating train split: 1445016 examples [04:41, 47296.62 examples/s]Generating train split: 1449860 examples [04:42, 47560.36 examples/s]Generating train split: 1456979 examples [04:42, 47525.32 examples/s]Generating train split: 1464000 examples [04:42, 47213.34 examples/s]Generating train split: 1468844 examples [04:42, 47498.84 examples/s]Generating train split: 1475983 examples [04:42, 47527.98 examples/s]Generating train split: 1483000 examples [04:42, 47150.74 examples/s]Generating train split: 1487845 examples [04:42, 47455.03 examples/s]Generating train split: 1495000 examples [04:43, 47289.41 examples/s]Generating train split: 1499827 examples [04:43, 47523.32 examples/s]Generating train split: 1506948 examples [04:43, 47503.72 examples/s]Generating train split: 1514000 examples [04:43, 47200.45 examples/s]Generating train split: 1518851 examples [04:43, 47509.28 examples/s]Generating train split: 1526000 examples [04:43, 47295.16 examples/s]Generating train split: 1530844 examples [04:43, 47570.51 examples/s]Generating train split: 1537958 examples [04:43, 47521.07 examples/s]Generating train split: 1545000 examples [04:44, 47201.75 examples/s]Generating train split: 1549814 examples [04:44, 47422.39 examples/s]Generating train split: 1556953 examples [04:44, 47478.39 examples/s]Generating train split: 1563876 examples [04:44, 36495.23 examples/s]Generating train split: 1568570 examples [04:44, 38516.49 examples/s]Generating train split: 1573274 examples [04:44, 40361.80 examples/s]Generating train split: 1578012 examples [04:44, 42018.20 examples/s]Generating train split: 1582883 examples [04:44, 43704.25 examples/s]Generating train split: 1587622 examples [04:45, 44678.92 examples/s]Generating train split: 1592402 examples [04:45, 45360.87 examples/s]Generating train split: 1599490 examples [04:45, 46057.11 examples/s]Generating train split: 1604222 examples [04:45, 46383.98 examples/s]Generating train split: 1609000 examples [04:45, 46671.35 examples/s]Generating train split: 1613856 examples [04:45, 47196.11 examples/s]Generating train split: 1620983 examples [04:45, 47309.94 examples/s]Generating train split: 1628024 examples [04:45, 47176.92 examples/s]Generating train split: 1632883 examples [04:46, 47525.41 examples/s]Generating train split: 1640000 examples [04:46, 47302.78 examples/s]Generating train split: 1644831 examples [04:46, 47549.63 examples/s]Generating train split: 1651967 examples [04:46, 47554.83 examples/s]Generating train split: 1659004 examples [04:46, 47337.97 examples/s]Generating train split: 1663868 examples [04:46, 47647.94 examples/s]Generating train split: 1670978 examples [04:46, 47560.43 examples/s]Generating train split: 1678016 examples [04:47, 47347.37 examples/s]Generating train split: 1682891 examples [04:47, 47678.52 examples/s]Generating train split: 1690000 examples [04:47, 47413.85 examples/s]Generating train split: 1694850 examples [04:47, 47676.16 examples/s]Generating train split: 1702000 examples [04:47, 47450.59 examples/s]Generating train split: 1706862 examples [04:47, 47734.24 examples/s]Generating train split: 1714000 examples [04:47, 47457.96 examples/s]Generating train split: 1718862 examples [04:47, 47742.63 examples/s]Generating train split: 1726000 examples [04:48, 47500.86 examples/s]Generating train split: 1730870 examples [04:48, 47794.06 examples/s]Generating train split: 1738000 examples [04:48, 47450.22 examples/s]Generating train split: 1742857 examples [04:48, 47723.39 examples/s]Generating train split: 1750000 examples [04:48, 47504.03 examples/s]Generating train split: 1754834 examples [04:48, 47707.10 examples/s]Generating train split: 1761974 examples [04:48, 47664.91 examples/s]Generating train split: 1769000 examples [04:48, 47198.35 examples/s]Generating train split: 1773865 examples [04:49, 47541.64 examples/s]Generating train split: 1781000 examples [04:49, 47361.85 examples/s]Generating train split: 1785838 examples [04:49, 47606.37 examples/s]Generating train split: 1791876 examples [04:49, 35456.76 examples/s]Generating train split: 1796545 examples [04:49, 37749.32 examples/s]Generating train split: 1801225 examples [04:49, 39790.63 examples/s]Generating train split: 1806000 examples [04:49, 41623.55 examples/s]Generating train split: 1810817 examples [04:49, 43309.42 examples/s]Generating train split: 1815532 examples [04:50, 44341.19 examples/s]Generating train split: 1820241 examples [04:50, 45101.81 examples/s]Generating train split: 1824934 examples [04:50, 45618.13 examples/s]Generating train split: 1829649 examples [04:50, 46058.32 examples/s]Generating train split: 1834418 examples [04:50, 46340.46 examples/s]Generating train split: 1839119 examples [04:50, 46534.64 examples/s]Generating train split: 1843959 examples [04:50, 47084.31 examples/s]Generating train split: 1851000 examples [04:50, 46906.01 examples/s]Generating train split: 1855824 examples [04:50, 47262.25 examples/s]Generating train split: 1862952 examples [04:51, 47352.87 examples/s]Generating train split: 1870000 examples [04:51, 47154.77 examples/s]Generating train split: 1874766 examples [04:51, 47277.94 examples/s]Generating train split: 1881889 examples [04:51, 47347.57 examples/s]Generating train split: 1889000 examples [04:51, 47143.51 examples/s]Generating train split: 1893844 examples [04:51, 47452.60 examples/s]Generating train split: 1900996 examples [04:51, 47527.41 examples/s]Generating train split: 1908000 examples [04:51, 47140.38 examples/s]Generating train split: 1912847 examples [04:52, 47452.54 examples/s]Generating train split: 1919986 examples [04:52, 47497.90 examples/s]Generating train split: 1927000 examples [04:52, 47224.37 examples/s]Generating train split: 1931839 examples [04:52, 47497.78 examples/s]Generating train split: 1938940 examples [04:52, 47441.07 examples/s]Generating train split: 1946000 examples [04:52, 47248.81 examples/s]Generating train split: 1950820 examples [04:52, 47470.73 examples/s]Generating train split: 1957916 examples [04:53, 47413.12 examples/s]Generating train split: 1965000 examples [04:53, 47218.75 examples/s]Generating train split: 1969839 examples [04:53, 47492.66 examples/s]Generating train split: 1976961 examples [04:53, 47485.40 examples/s]Generating train split: 1984000 examples [04:53, 47252.06 examples/s]Generating train split: 1988821 examples [04:53, 47475.78 examples/s]Generating train split: 1995946 examples [04:53, 47480.73 examples/s]Generating train split: 2003000 examples [04:53, 47276.16 examples/s]Generating train split: 2007846 examples [04:54, 47553.08 examples/s]Generating train split: 2014989 examples [04:54, 47571.43 examples/s]Generating train split: 2019876 examples [04:54, 35360.34 examples/s]Generating train split: 2024573 examples [04:54, 37721.26 examples/s]Generating train split: 2029301 examples [04:54, 39871.07 examples/s]Generating train split: 2034016 examples [04:54, 41640.59 examples/s]Generating train split: 2038877 examples [04:54, 43436.95 examples/s]Generating train split: 2043601 examples [04:54, 44459.74 examples/s]Generating train split: 2048435 examples [04:55, 45302.18 examples/s]Generating train split: 2055511 examples [04:55, 45993.79 examples/s]Generating train split: 2060251 examples [04:55, 46358.05 examples/s]Generating train split: 2065000 examples [04:55, 46591.69 examples/s]Generating train split: 2069865 examples [04:55, 47164.73 examples/s]Generating train split: 2077000 examples [04:55, 47109.66 examples/s]Generating train split: 2081859 examples [04:55, 47495.47 examples/s]Generating train split: 2089000 examples [04:55, 47302.15 examples/s]Generating train split: 2093852 examples [04:56, 47609.60 examples/s]Generating train split: 2101000 examples [04:56, 47418.01 examples/s]Generating train split: 2105819 examples [04:56, 47609.08 examples/s]Generating train split: 2112966 examples [04:56, 47618.92 examples/s]Generating train split: 2120005 examples [04:56, 47384.69 examples/s]Generating train split: 2124873 examples [04:56, 47694.64 examples/s]Generating train split: 2132000 examples [04:56, 47467.98 examples/s]Generating train split: 2136853 examples [04:56, 47725.67 examples/s]Generating train split: 2144000 examples [04:57, 47462.70 examples/s]Generating train split: 2148868 examples [04:57, 47758.79 examples/s]Generating train split: 2155926 examples [04:57, 47512.34 examples/s]Generating train split: 2163000 examples [04:57, 47344.82 examples/s]Generating train split: 2167853 examples [04:57, 47626.93 examples/s]Generating train split: 2175000 examples [04:57, 47421.54 examples/s]Generating train split: 2179867 examples [04:57, 47721.92 examples/s]Generating train split: 2187000 examples [04:58, 47491.39 examples/s]Generating train split: 2191860 examples [04:58, 47759.98 examples/s]Generating train split: 2199000 examples [04:58, 47531.95 examples/s]Generating train split: 2203868 examples [04:58, 47811.67 examples/s]Generating train split: 2211000 examples [04:58, 47545.49 examples/s]Generating train split: 2215861 examples [04:58, 47805.11 examples/s]Generating train split: 2223000 examples [04:58, 47564.97 examples/s]Generating train split: 2227868 examples [04:58, 47839.82 examples/s]Generating train split: 2235000 examples [04:59, 47571.67 examples/s]Generating train split: 2239868 examples [04:59, 47843.03 examples/s]Generating train split: 2247000 examples [04:59, 47573.74 examples/s]Generating train split: 2252760 examples [04:59, 35648.95 examples/s]Generating train split: 2257462 examples [04:59, 37933.80 examples/s]Generating train split: 2262190 examples [04:59, 40017.24 examples/s]Generating train split: 2267000 examples [04:59, 41816.04 examples/s]Generating train split: 2271859 examples [04:59, 43549.14 examples/s]Generating train split: 2276580 examples [05:00, 44526.78 examples/s]Generating train split: 2281431 examples [05:00, 45348.73 examples/s]Generating train split: 2286123 examples [05:00, 45791.55 examples/s]Generating train split: 2290974 examples [05:00, 46568.77 examples/s]Generating train split: 2295702 examples [05:00, 46773.44 examples/s]Generating train split: 2302829 examples [05:00, 47022.81 examples/s]Generating train split: 2309961 examples [05:00, 47205.22 examples/s]Generating train split: 2317000 examples [05:00, 47096.01 examples/s]Generating train split: 2321852 examples [05:00, 47438.26 examples/s]Generating train split: 2328938 examples [05:01, 47365.97 examples/s]Generating train split: 2336000 examples [05:01, 47167.24 examples/s]Generating train split: 2340853 examples [05:01, 47489.46 examples/s]Generating train split: 2347991 examples [05:01, 47518.65 examples/s]Generating train split: 2355001 examples [05:01, 47257.62 examples/s]Generating train split: 2359854 examples [05:01, 47556.79 examples/s]Generating train split: 2366967 examples [05:01, 47509.43 examples/s]Generating train split: 2374000 examples [05:02, 47283.09 examples/s]Generating train split: 2378855 examples [05:02, 47580.05 examples/s]Generating train split: 2385997 examples [05:02, 47588.65 examples/s]Generating train split: 2393031 examples [05:02, 47361.50 examples/s]Generating train split: 2397814 examples [05:02, 47470.68 examples/s]Generating train split: 2404968 examples [05:02, 47541.70 examples/s]Generating train split: 2412003 examples [05:02, 47331.16 examples/s]Generating train split: 2416822 examples [05:02, 47531.17 examples/s]Generating train split: 2423985 examples [05:03, 47602.70 examples/s]Generating train split: 2431047 examples [05:03, 47431.50 examples/s]Generating train split: 2438081 examples [05:03, 47258.10 examples/s]Generating train split: 2442931 examples [05:03, 47542.48 examples/s]Generating train split: 2450000 examples [05:03, 47297.77 examples/s]Generating train split: 2454832 examples [05:03, 47540.54 examples/s]Generating train split: 2462000 examples [05:03, 47419.34 examples/s]Generating train split: 2466850 examples [05:04, 47681.12 examples/s]Generating train split: 2474000 examples [05:04, 47510.92 examples/s]Generating train split: 2480772 examples [05:04, 36103.62 examples/s]Generating train split: 2485519 examples [05:04, 38312.17 examples/s]Generating train split: 2490244 examples [05:04, 40252.43 examples/s]Generating train split: 2495000 examples [05:04, 41979.71 examples/s]Generating train split: 2499872 examples [05:04, 43681.13 examples/s]Generating train split: 2504628 examples [05:04, 44708.99 examples/s]Generating train split: 2509448 examples [05:05, 45525.95 examples/s]Generating train split: 2516564 examples [05:05, 46229.11 examples/s]Generating train split: 2521289 examples [05:05, 46491.87 examples/s]Generating train split: 2526046 examples [05:05, 46781.80 examples/s]Generating train split: 2530926 examples [05:05, 47343.99 examples/s]Generating train split: 2538000 examples [05:05, 47251.12 examples/s]Generating train split: 2542876 examples [05:05, 47637.55 examples/s]Generating train split: 2550000 examples [05:05, 47490.05 examples/s]Generating train split: 2554849 examples [05:06, 47743.87 examples/s]Generating train split: 2562000 examples [05:06, 47458.60 examples/s]Generating train split: 2566888 examples [05:06, 47812.25 examples/s]Generating train split: 2574000 examples [05:06, 47605.58 examples/s]Generating train split: 2578885 examples [05:06, 47913.71 examples/s]Generating train split: 2586000 examples [05:06, 47602.08 examples/s]Generating train split: 2590883 examples [05:06, 47905.08 examples/s]Generating train split: 2598000 examples [05:06, 47596.94 examples/s]Generating train split: 2602875 examples [05:07, 47882.12 examples/s]Generating train split: 2610000 examples [05:07, 47509.46 examples/s]Generating train split: 2614874 examples [05:07, 47812.67 examples/s]Generating train split: 2622000 examples [05:07, 47597.65 examples/s]Generating train split: 2626877 examples [05:07, 47886.12 examples/s]Generating train split: 2634000 examples [05:07, 47572.82 examples/s]Generating train split: 2638839 examples [05:07, 47773.99 examples/s]Generating train split: 2646000 examples [05:07, 47581.66 examples/s]Generating train split: 2650885 examples [05:08, 47893.41 examples/s]Generating train split: 2658000 examples [05:08, 47512.68 examples/s]Generating train split: 2662881 examples [05:08, 47831.02 examples/s]Generating train split: 2670000 examples [05:08, 47634.60 examples/s]Generating train split: 2674880 examples [05:08, 47921.15 examples/s]Generating train split: 2682000 examples [05:08, 47596.38 examples/s]Generating train split: 2686876 examples [05:08, 47871.28 examples/s]Generating train split: 2694000 examples [05:08, 47577.00 examples/s]Generating train split: 2698882 examples [05:09, 47882.05 examples/s]Generating train split: 2706000 examples [05:09, 47572.60 examples/s]Generating train split: 2711000 examples [05:09, 35377.29 examples/s]Generating train split: 2715870 examples [05:09, 38123.28 examples/s]Generating train split: 2720607 examples [05:09, 40226.60 examples/s]Generating train split: 2725294 examples [05:09, 41852.85 examples/s]Generating train split: 2730042 examples [05:09, 43312.32 examples/s]Generating train split: 2734918 examples [05:09, 44784.86 examples/s]Generating train split: 2739667 examples [05:10, 45536.85 examples/s]Generating train split: 2744418 examples [05:10, 46035.58 examples/s]Generating train split: 2751541 examples [05:10, 46580.82 examples/s]Generating train split: 2756281 examples [05:10, 46796.35 examples/s]Generating train split: 2761022 examples [05:10, 46962.05 examples/s]Generating train split: 2765852 examples [05:10, 47336.42 examples/s]Generating train split: 2773000 examples [05:10, 47188.18 examples/s]Generating train split: 2777870 examples [05:10, 47583.82 examples/s]Generating train split: 2785000 examples [05:10, 47415.96 examples/s]Generating train split: 2789795 examples [05:11, 47551.04 examples/s]Generating train split: 2796954 examples [05:11, 47609.51 examples/s]Generating train split: 2804001 examples [05:11, 47168.51 examples/s]Generating train split: 2808774 examples [05:11, 47302.37 examples/s]Generating train split: 2815964 examples [05:11, 47514.45 examples/s]Generating train split: 2823015 examples [05:11, 47345.97 examples/s]Generating train split: 2827893 examples [05:11, 47684.83 examples/s]Generating train split: 2834863 examples [05:12, 47077.47 examples/s]Generating train split: 2839609 examples [05:12, 47167.11 examples/s]Generating train split: 2844428 examples [05:12, 47226.83 examples/s]Generating train split: 2849181 examples [05:12, 47306.03 examples/s]Generating train split: 2853976 examples [05:12, 47482.42 examples/s]Generating train split: 2861001 examples [05:12, 47237.62 examples/s]Generating train split: 2865876 examples [05:12, 47631.53 examples/s]Generating train split: 2873000 examples [05:12, 47385.12 examples/s]Generating train split: 2877843 examples [05:12, 47647.42 examples/s]Generating train split: 2885000 examples [05:13, 47457.64 examples/s]Generating train split: 2889864 examples [05:13, 47752.65 examples/s]Generating train split: 2897000 examples [05:13, 47483.33 examples/s]Generating train split: 2901837 examples [05:13, 47701.37 examples/s]Generating train split: 2909000 examples [05:13, 47506.42 examples/s]Generating train split: 2913865 examples [05:13, 47788.97 examples/s]Generating train split: 2921000 examples [05:13, 47554.39 examples/s]Generating train split: 2925827 examples [05:13, 47728.66 examples/s]Generating train split: 2933000 examples [05:14, 47511.51 examples/s]Generating train split: 2939000 examples [05:14, 34305.76 examples/s]Generating train split: 2943862 examples [05:14, 37070.98 examples/s]Generating train split: 2948571 examples [05:14, 39237.13 examples/s]Generating train split: 2953439 examples [05:14, 41242.48 examples/s]Generating train split: 2958189 examples [05:14, 42811.91 examples/s]Generating train split: 2963000 examples [05:14, 44090.76 examples/s]Generating train split: 2967871 examples [05:15, 45351.26 examples/s]Generating train split: 2972604 examples [05:15, 45904.88 examples/s]Generating train split: 2977381 examples [05:15, 46102.98 examples/s]Generating train split: 2982147 examples [05:15, 46549.51 examples/s]Generating train split: 2987000 examples [05:15, 46903.30 examples/s]Generating train split: 2991834 examples [05:15, 47243.71 examples/s]Generating train split: 2998977 examples [05:15, 47387.17 examples/s]Generating train split: 3006023 examples [05:15, 47236.75 examples/s]Generating train split: 3010883 examples [05:15, 47578.56 examples/s]Generating train split: 3018000 examples [05:16, 47385.83 examples/s]Generating train split: 3022873 examples [05:16, 47719.75 examples/s]Generating train split: 3030000 examples [05:16, 47516.31 examples/s]Generating train split: 3034875 examples [05:16, 47821.00 examples/s]Generating train split: 3042000 examples [05:16, 47550.28 examples/s]Generating train split: 3046863 examples [05:16, 47816.54 examples/s]Generating train split: 3054000 examples [05:16, 47577.10 examples/s]Generating train split: 3058876 examples [05:16, 47863.80 examples/s]Generating train split: 3066000 examples [05:17, 47569.34 examples/s]Generating train split: 3070876 examples [05:17, 47853.29 examples/s]Generating train split: 3078000 examples [05:17, 47622.35 examples/s]                                                                     367_P
+485_P
+414_P
+325_P
+320_P
+489_P
+492_P
+455_P
+418_P
+450_P
+361_P
+459_P
+336_P
+491_P
+454_P
+417_P
+331_P
+377_P
+458_P
+424_P
+372_P
+335_P
+490_P
+330_P
+428_P
+339_P
+423_P
+371_P
+469_P
+309_P
+464_P
+427_P
+341_P
+422_P
+468_P
+382_P
+345_P
+308_P
+463_P
+340_P
+386_P
+349_P
+470_P
+433_P
+381_P
+344_P
+479_P
+474_P
+385_P
+351_P
+314_P
+432_P
+478_P
+389_P
+392_P
+318_P
+473_P
+436_P
+402_P
+350_P
+313_P
+396_P
+359_P
+477_P
+480_P
+443_P
+406_P
+391_P
+354_P
+317_P
+401_P
+447_P
+395_P
+358_P
+324_P
+442_P
+405_P
+488_P
+399_P
+365_P
+328_P
+409_P
+360_P
+323_P
+369_P
+487_P
+453_P
+416_P
+364_P
+457_P
+368_P
+452_P
+415_P
+338_P
+419_P
+370_P
+333_P
+379_P
+374_P
+337_P
+421_P
+332_P
+467_P
+378_P
+462_P
+425_P
+373_P
+302_P
+420_P
+429_P
+343_P
+306_P
+461_P
+301_P
+384_P
+347_P
+305_P
+388_P
+472_P
+435_P
+383_P
+346_P
+312_P
+430_P
+476_P
+439_P
+387_P
+390_P
+353_P
+471_P
+400_P
+311_P
+357_P
+475_P
+441_P
+404_P
+352_P
+445_P
+408_P
+393_P
+356_P
+319_P
+322_P
+440_P
+486_P
+449_P
+397_P
+363_P
+326_P
+407_P
+410_P
+Generating validation split: 0 examples [00:00, ? examples/s]Generating validation split: 1 examples [00:03,  4.00s/ examples]                                                                 451_P
+362_P
+413_P
+376_P
+334_P
+303_P
+438_P
+307_P
+310_P
+348_P
+355_P
+446_P
+412_P
+327_P
+411_P
+456_P
+380_P
+434_P
+403_P
+444_P
+Generating test split: 0 examples [00:00, ? examples/s]Generating test split: 1 examples [00:03,  3.61s/ examples]                                                           448_P
+366_P
+329_P
+465_P
+300_P
+375_P
+304_P
+437_P
+484_P
+483_P
+426_P
+420_P
+466_P
+431_P
+316_P
+315_P
+482_P
+481_P
+321_P
+Dataset dataloader downloaded and prepared to /ibm/gpfs/home/snag0027/speech-depression/cluster/cache_daic_woz/dataloader/daic_woz-data_dir=./0.0.1/ea416c599cc72a5eae66e20dae897d7a73a499286de1c8288a5f65271bf3835e. Subsequent calls will reuse this data.
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:00<00:00,  2.14it/s]100%|██████████| 3/3 [00:00<00:00,  6.38it/s]
+Map:   0%|          | 0/3082278 [00:00<?, ? examples/s]                                                       Traceback (most recent call last):
+  File "/home/snag0027/speech-depression/cluster/train.py", line 58, in <module>
+    encoded_dataset = ds.map(prepare_dataset, batched=True, batch_size=4)
+  File "/home/snag0027/.local/lib/python3.10/site-packages/datasets/dataset_dict.py", line 852, in map
+    {
+  File "/home/snag0027/.local/lib/python3.10/site-packages/datasets/dataset_dict.py", line 853, in <dictcomp>
+    k: dataset.map(
+  File "/home/snag0027/.local/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 563, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/home/snag0027/.local/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 528, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/home/snag0027/.local/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 2953, in map
+    for rank, done, content in Dataset._map_single(**dataset_kwargs):
+  File "/home/snag0027/.local/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3329, in _map_single
+    batch = apply_function_on_filtered_inputs(
+  File "/home/snag0027/.local/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3210, in apply_function_on_filtered_inputs
+    processed_inputs = function(*fn_args, *additional_args, **fn_kwargs)
+  File "/home/snag0027/speech-depression/cluster/train.py", line 54, in prepare_dataset
+    inputs = feature_extractor(audio_arrays, sampling_rate=16000, return_tensors="pt", padding=True, truncation=True)
+  File "/home/snag0027/.local/lib/python3.10/site-packages/transformers/models/audio_spectrogram_transformer/feature_extraction_audio_spectrogram_transformer.py", line 180, in __call__
+    features = [self._extract_fbank_features(waveform, max_length=self.max_length) for waveform in raw_speech]
+  File "/home/snag0027/.local/lib/python3.10/site-packages/transformers/models/audio_spectrogram_transformer/feature_extraction_audio_spectrogram_transformer.py", line 180, in <listcomp>
+    features = [self._extract_fbank_features(waveform, max_length=self.max_length) for waveform in raw_speech]
+  File "/home/snag0027/.local/lib/python3.10/site-packages/transformers/models/audio_spectrogram_transformer/feature_extraction_audio_spectrogram_transformer.py", line 97, in _extract_fbank_features
+    fbank = ta_kaldi.fbank(
+  File "/app/python/3.10.5/lib/python3.10/site-packages/torchaudio/compliance/kaldi.py", line 593, in fbank
+    waveform, window_shift, window_size, padded_window_size = _get_waveform_and_window_properties(
+  File "/app/python/3.10.5/lib/python3.10/site-packages/torchaudio/compliance/kaldi.py", line 142, in _get_waveform_and_window_properties
+    assert 2 <= window_size <= len(waveform), "choose a window size {} that is [2, {}]".format(
+AssertionError: choose a window size 400 that is [2, 123]

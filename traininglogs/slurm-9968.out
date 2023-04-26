@@ -1,0 +1,264 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: transformers in ./.local/lib/python3.10/site-packages (4.27.3)
+Requirement already satisfied: datasets in ./.local/lib/python3.10/site-packages (2.10.1)
+Requirement already satisfied: evaluate in ./.local/lib/python3.10/site-packages (0.4.0)
+Requirement already satisfied: librosa in ./.local/lib/python3.10/site-packages (0.10.0.post2)
+Requirement already satisfied: tqdm>=4.27 in ./.local/lib/python3.10/site-packages (from transformers) (4.65.0)
+Requirement already satisfied: filelock in ./.local/lib/python3.10/site-packages (from transformers) (3.10.2)
+Requirement already satisfied: tokenizers!=0.11.3,<0.14,>=0.11.1 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.2)
+Requirement already satisfied: pyyaml>=5.1 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (6.0)
+Requirement already satisfied: numpy>=1.17 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (1.22.4)
+Requirement already satisfied: packaging>=20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (21.3)
+Requirement already satisfied: huggingface-hub<1.0,>=0.11.0 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.3)
+Requirement already satisfied: requests in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (2.28.1)
+Requirement already satisfied: regex!=2019.12.17 in ./.local/lib/python3.10/site-packages (from transformers) (2023.3.23)
+Requirement already satisfied: dill<0.3.7,>=0.3.0 in ./.local/lib/python3.10/site-packages (from datasets) (0.3.6)
+Requirement already satisfied: fsspec[http]>=2021.11.1 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (2022.5.0)
+Requirement already satisfied: xxhash in ./.local/lib/python3.10/site-packages (from datasets) (3.2.0)
+Requirement already satisfied: pandas in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (1.4.3)
+Requirement already satisfied: multiprocess in ./.local/lib/python3.10/site-packages (from datasets) (0.70.14)
+Requirement already satisfied: responses<0.19 in ./.local/lib/python3.10/site-packages (from datasets) (0.18.0)
+Requirement already satisfied: aiohttp in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (3.8.3)
+Requirement already satisfied: pyarrow>=6.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (8.0.0)
+Requirement already satisfied: msgpack>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.0.4)
+Requirement already satisfied: joblib>=0.14 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.0)
+Requirement already satisfied: audioread>=2.1.9 in ./.local/lib/python3.10/site-packages (from librosa) (3.0.0)
+Requirement already satisfied: lazy-loader>=0.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.2)
+Requirement already satisfied: decorator>=4.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (5.1.1)
+Requirement already satisfied: numba>=0.51.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (0.55.2)
+Requirement already satisfied: typing-extensions>=4.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (4.3.0)
+Requirement already satisfied: soundfile>=0.12.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.12.1)
+Requirement already satisfied: scikit-learn>=0.20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.1)
+Requirement already satisfied: pooch<1.7,>=1.0 in ./.local/lib/python3.10/site-packages (from librosa) (1.6.0)
+Requirement already satisfied: scipy>=1.2.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.8.1)
+Requirement already satisfied: soxr>=0.3.2 in ./.local/lib/python3.10/site-packages (from librosa) (0.3.4)
+Requirement already satisfied: llvmlite<0.39,>=0.38.0rc1 in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (0.38.1)
+Requirement already satisfied: setuptools in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (58.1.0)
+Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in /app/python/3.10.5/lib/python3.10/site-packages (from packaging>=20.0->transformers) (3.0.9)
+Requirement already satisfied: appdirs>=1.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from pooch<1.7,>=1.0->librosa) (1.4.4)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (1.26.9)
+Requirement already satisfied: charset-normalizer<3,>=2 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2.1.0)
+Requirement already satisfied: certifi>=2017.4.17 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2022.6.15)
+Requirement already satisfied: idna<4,>=2.5 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (3.3)
+Requirement already satisfied: threadpoolctl>=2.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from scikit-learn>=0.20.0->librosa) (3.1.0)
+Requirement already satisfied: cffi>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from soundfile>=0.12.1->librosa) (1.15.1)
+Requirement already satisfied: frozenlist>=1.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.3.1)
+Requirement already satisfied: async-timeout<5.0,>=4.0.0a3 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (4.0.2)
+Requirement already satisfied: yarl<2.0,>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.8.1)
+Requirement already satisfied: aiosignal>=1.1.2 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.2.0)
+Requirement already satisfied: attrs>=17.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (22.1.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (6.0.2)
+Requirement already satisfied: pytz>=2020.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2022.1)
+Requirement already satisfied: python-dateutil>=2.8.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2.8.2)
+Requirement already satisfied: pycparser in /app/python/3.10.5/lib/python3.10/site-packages (from cffi>=1.0->soundfile>=0.12.1->librosa) (2.21)
+Requirement already satisfied: six>=1.5 in /app/python/3.10.5/lib/python3.10/site-packages (from python-dateutil>=2.8.1->pandas->datasets) (1.16.0)
+
+[notice] A new release of pip available: 22.3.1 -> 23.0.1
+[notice] To update, run: pip install --upgrade pip
+2023-04-04 11:27:15.736892: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+Could not find image processor class in the image processor config or the model config. Loading based on pattern matching with the model's feature extractor configuration.
+Downloading and preparing dataset dataloader/daic_woz to /ibm/gpfs/home/snag0027/speech-depression/cluster/cache_daic_woz/dataloader/daic_woz-data_dir=./0.0.1/884bb5d614f0464d286576ac82f6367dbcc24b2073a797cb02ecefddf9cca459...
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 1 examples [00:18, 18.38s/ examples]                                                            367_P
+485_P
+414_P
+325_P
+320_P
+489_P
+492_P
+455_P
+418_P
+450_P
+361_P
+459_P
+336_P
+491_P
+454_P
+417_P
+331_P
+377_P
+458_P
+424_P
+372_P
+335_P
+490_P
+330_P
+428_P
+339_P
+423_P
+371_P
+469_P
+309_P
+464_P
+427_P
+341_P
+422_P
+468_P
+382_P
+345_P
+308_P
+463_P
+340_P
+386_P
+349_P
+470_P
+433_P
+381_P
+344_P
+479_P
+474_P
+385_P
+351_P
+314_P
+432_P
+478_P
+389_P
+392_P
+318_P
+473_P
+436_P
+402_P
+350_P
+313_P
+396_P
+359_P
+477_P
+480_P
+443_P
+406_P
+391_P
+354_P
+317_P
+401_P
+447_P
+395_P
+358_P
+324_P
+442_P
+405_P
+488_P
+399_P
+365_P
+328_P
+409_P
+360_P
+323_P
+369_P
+487_P
+453_P
+416_P
+364_P
+457_P
+368_P
+452_P
+415_P
+338_P
+419_P
+370_P
+333_P
+379_P
+374_P
+337_P
+421_P
+332_P
+467_P
+378_P
+462_P
+425_P
+373_P
+302_P
+420_P
+429_P
+343_P
+306_P
+461_P
+301_P
+384_P
+347_P
+305_P
+388_P
+472_P
+435_P
+383_P
+346_P
+312_P
+430_P
+476_P
+439_P
+387_P
+390_P
+353_P
+471_P
+400_P
+311_P
+357_P
+475_P
+441_P
+404_P
+352_P
+445_P
+408_P
+393_P
+356_P
+319_P
+322_P
+440_P
+486_P
+449_P
+397_P
+363_P
+326_P
+407_P
+410_P
+Number of examples: 151
+Generating validation split: 0 examples [00:00, ? examples/s]Generating validation split: 1 examples [00:01,  1.86s/ examples]                                                                 451_P
+362_P
+413_P
+376_P
+334_P
+303_P
+438_P
+307_P
+310_P
+348_P
+355_P
+446_P
+412_P
+327_P
+411_P
+456_P
+380_P
+434_P
+403_P
+444_P
+Number of examples: 20
+Generating test split: 0 examples [00:00, ? examples/s]Generating test split: 1 examples [00:01,  1.58s/ examples]                                                           448_P
+366_P
+329_P
+465_P
+300_P
+375_P
+304_P
+437_P
+484_P
+483_P
+426_P
+420_P
+466_P
+431_P
+316_P
+315_P
+482_P
+481_P
+321_P
+Number of examples: 19
+Dataset dataloader downloaded and prepared to /ibm/gpfs/home/snag0027/speech-depression/cluster/cache_daic_woz/dataloader/daic_woz-data_dir=./0.0.1/884bb5d614f0464d286576ac82f6367dbcc24b2073a797cb02ecefddf9cca459. Subsequent calls will reuse this data.
+  0%|          | 0/3 [00:00<?, ?it/s]100%|██████████| 3/3 [00:00<00:00, 961.26it/s]
+Map:   0%|          | 0/151 [00:00<?, ? examples/s]Map:   5%|▌         | 8/151 [00:00<00:10, 14.19 examples/s]Map:  11%|█         | 16/151 [00:01<00:09, 14.48 examples/s]Map:  16%|█▌        | 24/151 [00:01<00:08, 14.56 examples/s]Map:  21%|██        | 32/151 [00:02<00:08, 14.61 examples/s]Map:  26%|██▋       | 40/151 [00:02<00:07, 14.67 examples/s]Map:  32%|███▏      | 48/151 [00:03<00:07, 14.66 examples/s]Map:  37%|███▋      | 56/151 [00:03<00:06, 14.73 examples/s]Map:  42%|████▏     | 64/151 [00:04<00:05, 14.74 examples/s]Map:  48%|████▊     | 72/151 [00:04<00:05, 14.82 examples/s]Map:  53%|█████▎    | 80/151 [00:05<00:04, 14.82 examples/s]Map:  58%|█████▊    | 88/151 [00:05<00:04, 14.85 examples/s]Map:  64%|██████▎   | 96/151 [00:06<00:03, 14.85 examples/s]Map:  69%|██████▉   | 104/151 [00:06<00:03, 15.35 examples/s]Map:  74%|███████▍  | 112/151 [00:07<00:02, 15.16 examples/s]Map:  79%|███████▉  | 120/151 [00:08<00:02, 15.09 examples/s]Map:  85%|████████▍ | 128/151 [00:08<00:01, 15.55 examples/s]Map:  90%|█████████ | 136/151 [00:09<00:00, 15.38 examples/s]Map:  95%|█████████▌| 144/151 [00:09<00:00, 15.22 examples/s]Map: 100%|██████████| 151/151 [00:10<00:00, 15.18 examples/s]                                                             Map:   0%|          | 0/20 [00:00<?, ? examples/s]Map:  40%|████      | 8/20 [00:00<00:00, 14.75 examples/s]Map:  80%|████████  | 16/20 [00:01<00:00, 14.92 examples/s]Map: 100%|██████████| 20/20 [00:01<00:00, 14.90 examples/s]                                                           Map:   0%|          | 0/19 [00:00<?, ? examples/s]Map:  42%|████▏     | 8/19 [00:00<00:00, 15.14 examples/s]Map:  84%|████████▍ | 16/19 [00:01<00:00, 15.22 examples/s]Map: 100%|██████████| 19/19 [00:01<00:00, 15.14 examples/s]                                                           INFO:root:Using multi-class classification
+Some weights of ASTForAudioClassification were not initialized from the model checkpoint at MIT/ast-finetuned-audioset-10-10-0.4593 and are newly initialized because the shapes did not match:
+- classifier.dense.weight: found shape torch.Size([527, 768]) in the checkpoint and torch.Size([5, 768]) in the model instantiated
+- classifier.dense.bias: found shape torch.Size([527]) in the checkpoint and torch.Size([5]) in the model instantiated
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+INFO:root:Starting training of pure AST model...
+/home/snag0027/.local/lib/python3.10/site-packages/transformers/optimization.py:391: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+  0%|          | 0/95 [00:00<?, ?it/s]  1%|          | 1/95 [00:15<24:28, 15.63s/it]  2%|▏         | 2/95 [00:31<24:11, 15.61s/it]  3%|▎         | 3/95 [00:46<23:50, 15.55s/it]  4%|▍         | 4/95 [01:02<23:35, 15.55s/it]  5%|▌         | 5/95 [01:17<23:19, 15.55s/it]  6%|▋         | 6/95 [01:33<22:59, 15.50s/it]                                                6%|▋         | 6/95 [01:33<22:59, 15.50s/it]  7%|▋         | 7/95 [01:49<23:06, 15.76s/it]  8%|▊         | 8/95 [02:05<22:44, 15.68s/it]  9%|▉         | 9/95 [02:20<22:22, 15.61s/it] 11%|█         | 10/95 [02:35<22:04, 15.58s/it] 12%|█▏        | 11/95 [02:51<21:48, 15.58s/it] 13%|█▎        | 12/95 [03:06<21:25, 15.49s/it]                                                13%|█▎        | 12/95 [03:06<21:25, 15.49s/it]slurmstepd: error: *** JOB 9968 ON mum-hpc2-gpu1 CANCELLED AT 2023-04-04T11:31:30 ***

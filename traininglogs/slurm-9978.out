@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/home/snag0027/cluster/feature_extraction_script.py", line 11, in <module>
+    for file in os.listdir(os.path.join(folder_path, folder)):
+PermissionError: [Errno 13] Permission denied: '../ychi0006'

@@ -1,0 +1,73 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: transformers in ./.local/lib/python3.10/site-packages (4.27.3)
+Requirement already satisfied: datasets in ./.local/lib/python3.10/site-packages (2.10.1)
+Requirement already satisfied: evaluate in ./.local/lib/python3.10/site-packages (0.4.0)
+Requirement already satisfied: librosa in ./.local/lib/python3.10/site-packages (0.10.0.post2)
+Requirement already satisfied: regex!=2019.12.17 in ./.local/lib/python3.10/site-packages (from transformers) (2023.3.23)
+Requirement already satisfied: requests in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (2.28.1)
+Requirement already satisfied: packaging>=20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (21.3)
+Requirement already satisfied: tokenizers!=0.11.3,<0.14,>=0.11.1 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.2)
+Requirement already satisfied: tqdm>=4.27 in ./.local/lib/python3.10/site-packages (from transformers) (4.65.0)
+Requirement already satisfied: pyyaml>=5.1 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (6.0)
+Requirement already satisfied: filelock in ./.local/lib/python3.10/site-packages (from transformers) (3.10.2)
+Requirement already satisfied: numpy>=1.17 in /app/python/3.10.5/lib/python3.10/site-packages (from transformers) (1.22.4)
+Requirement already satisfied: huggingface-hub<1.0,>=0.11.0 in ./.local/lib/python3.10/site-packages (from transformers) (0.13.3)
+Requirement already satisfied: pandas in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (1.4.3)
+Requirement already satisfied: multiprocess in ./.local/lib/python3.10/site-packages (from datasets) (0.70.14)
+Requirement already satisfied: fsspec[http]>=2021.11.1 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (2022.5.0)
+Requirement already satisfied: xxhash in ./.local/lib/python3.10/site-packages (from datasets) (3.2.0)
+Requirement already satisfied: dill<0.3.7,>=0.3.0 in ./.local/lib/python3.10/site-packages (from datasets) (0.3.6)
+Requirement already satisfied: pyarrow>=6.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (8.0.0)
+Requirement already satisfied: aiohttp in /app/python/3.10.5/lib/python3.10/site-packages (from datasets) (3.8.3)
+Requirement already satisfied: responses<0.19 in ./.local/lib/python3.10/site-packages (from datasets) (0.18.0)
+Requirement already satisfied: joblib>=0.14 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.0)
+Requirement already satisfied: typing-extensions>=4.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (4.3.0)
+Requirement already satisfied: scikit-learn>=0.20.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.1.1)
+Requirement already satisfied: audioread>=2.1.9 in ./.local/lib/python3.10/site-packages (from librosa) (3.0.0)
+Requirement already satisfied: numba>=0.51.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (0.55.2)
+Requirement already satisfied: scipy>=1.2.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.8.1)
+Requirement already satisfied: lazy-loader>=0.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.2)
+Requirement already satisfied: msgpack>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (1.0.4)
+Requirement already satisfied: soxr>=0.3.2 in ./.local/lib/python3.10/site-packages (from librosa) (0.3.4)
+Requirement already satisfied: decorator>=4.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from librosa) (5.1.1)
+Requirement already satisfied: soundfile>=0.12.1 in ./.local/lib/python3.10/site-packages (from librosa) (0.12.1)
+Requirement already satisfied: pooch<1.7,>=1.0 in ./.local/lib/python3.10/site-packages (from librosa) (1.6.0)
+Requirement already satisfied: llvmlite<0.39,>=0.38.0rc1 in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (0.38.1)
+Requirement already satisfied: setuptools in /app/python/3.10.5/lib/python3.10/site-packages (from numba>=0.51.0->librosa) (58.1.0)
+Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in /app/python/3.10.5/lib/python3.10/site-packages (from packaging>=20.0->transformers) (3.0.9)
+Requirement already satisfied: appdirs>=1.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from pooch<1.7,>=1.0->librosa) (1.4.4)
+Requirement already satisfied: charset-normalizer<3,>=2 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2.1.0)
+Requirement already satisfied: certifi>=2017.4.17 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (2022.6.15)
+Requirement already satisfied: idna<4,>=2.5 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (3.3)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in /app/python/3.10.5/lib/python3.10/site-packages (from requests->transformers) (1.26.9)
+Requirement already satisfied: threadpoolctl>=2.0.0 in /app/python/3.10.5/lib/python3.10/site-packages (from scikit-learn>=0.20.0->librosa) (3.1.0)
+Requirement already satisfied: cffi>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from soundfile>=0.12.1->librosa) (1.15.1)
+Requirement already satisfied: async-timeout<5.0,>=4.0.0a3 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (4.0.2)
+Requirement already satisfied: aiosignal>=1.1.2 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.2.0)
+Requirement already satisfied: frozenlist>=1.1.1 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.3.1)
+Requirement already satisfied: yarl<2.0,>=1.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (1.8.1)
+Requirement already satisfied: attrs>=17.3.0 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (22.1.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in /app/python/3.10.5/lib/python3.10/site-packages (from aiohttp->datasets) (6.0.2)
+Requirement already satisfied: pytz>=2020.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2022.1)
+Requirement already satisfied: python-dateutil>=2.8.1 in /app/python/3.10.5/lib/python3.10/site-packages (from pandas->datasets) (2.8.2)
+Requirement already satisfied: pycparser in /app/python/3.10.5/lib/python3.10/site-packages (from cffi>=1.0->soundfile>=0.12.1->librosa) (2.21)
+Requirement already satisfied: six>=1.5 in /app/python/3.10.5/lib/python3.10/site-packages (from python-dateutil>=2.8.1->pandas->datasets) (1.16.0)
+
+[notice] A new release of pip available: 22.3.1 -> 23.0.1
+[notice] To update, run: pip install --upgrade pip
+2023-03-28 15:16:29.878894: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+Downloading (…)lve/main/config.json:   0%|          | 0.00/26.8k [00:00<?, ?B/s]Downloading (…)lve/main/config.json: 100%|██████████| 26.8k/26.8k [00:00<00:00, 107kB/s]Downloading (…)lve/main/config.json: 100%|██████████| 26.8k/26.8k [00:00<00:00, 107kB/s]
+Downloading pytorch_model.bin:   0%|          | 0.00/346M [00:00<?, ?B/s]Downloading pytorch_model.bin:   3%|▎         | 10.5M/346M [00:00<00:10, 32.5MB/s]Downloading pytorch_model.bin:   6%|▌         | 21.0M/346M [00:00<00:09, 34.7MB/s]Downloading pytorch_model.bin:   9%|▉         | 31.5M/346M [00:01<00:12, 24.9MB/s]Downloading pytorch_model.bin:  12%|█▏        | 41.9M/346M [00:01<00:13, 23.0MB/s]Downloading pytorch_model.bin:  15%|█▌        | 52.4M/346M [00:02<00:14, 20.0MB/s]Downloading pytorch_model.bin:  18%|█▊        | 62.9M/346M [00:03<00:16, 17.7MB/s]Downloading pytorch_model.bin:  21%|██        | 73.4M/346M [00:03<00:17, 16.0MB/s]Downloading pytorch_model.bin:  24%|██▍       | 83.9M/346M [00:04<00:18, 14.5MB/s]Downloading pytorch_model.bin:  27%|██▋       | 94.4M/346M [00:05<00:16, 15.3MB/s]Downloading pytorch_model.bin:  30%|███       | 105M/346M [00:06<00:16, 14.7MB/s] Downloading pytorch_model.bin:  33%|███▎      | 115M/346M [00:06<00:15, 15.1MB/s]Downloading pytorch_model.bin:  36%|███▋      | 126M/346M [00:07<00:16, 13.2MB/s]Downloading pytorch_model.bin:  39%|███▉      | 136M/346M [00:08<00:15, 13.2MB/s]Downloading pytorch_model.bin:  42%|████▏     | 147M/346M [00:09<00:13, 14.3MB/s]Downloading pytorch_model.bin:  45%|████▌     | 157M/346M [00:09<00:12, 15.7MB/s]Downloading pytorch_model.bin:  48%|████▊     | 168M/346M [00:10<00:12, 14.5MB/s]Downloading pytorch_model.bin:  51%|█████▏    | 178M/346M [00:11<00:12, 14.0MB/s]Downloading pytorch_model.bin:  54%|█████▍    | 189M/346M [00:11<00:10, 14.5MB/s]Downloading pytorch_model.bin:  58%|█████▊    | 199M/346M [00:12<00:10, 14.0MB/s]Downloading pytorch_model.bin:  61%|██████    | 210M/346M [00:14<00:13, 10.2MB/s]Downloading pytorch_model.bin:  64%|██████▎   | 220M/346M [00:16<00:14, 8.69MB/s]Downloading pytorch_model.bin:  67%|██████▋   | 231M/346M [00:17<00:13, 8.47MB/s]Downloading pytorch_model.bin:  70%|██████▉   | 241M/346M [00:18<00:11, 9.18MB/s]Downloading pytorch_model.bin:  73%|███████▎  | 252M/346M [00:19<00:11, 8.43MB/s]Downloading pytorch_model.bin:  76%|███████▌  | 262M/346M [00:21<00:11, 7.60MB/s]Downloading pytorch_model.bin:  79%|███████▊  | 273M/346M [00:22<00:08, 8.55MB/s]Downloading pytorch_model.bin:  82%|████████▏ | 283M/346M [00:23<00:07, 8.36MB/s]Downloading pytorch_model.bin:  85%|████████▍ | 294M/346M [00:24<00:05, 8.95MB/s]Downloading pytorch_model.bin:  88%|████████▊ | 304M/346M [00:25<00:04, 10.0MB/s]Downloading pytorch_model.bin:  91%|█████████ | 315M/346M [00:26<00:02, 11.5MB/s]Downloading pytorch_model.bin:  94%|█████████▍| 325M/346M [00:26<00:01, 12.6MB/s]Downloading pytorch_model.bin:  97%|█████████▋| 336M/346M [00:27<00:00, 12.1MB/s]Downloading pytorch_model.bin: 100%|█████████▉| 346M/346M [00:29<00:00, 9.37MB/s]Downloading pytorch_model.bin: 100%|██████████| 346M/346M [00:29<00:00, 11.8MB/s]
+Traceback (most recent call last):
+  File "/home/snag0027/speech-depression/cluster/train.py", line 14, in <module>
+    from models.pure_ast import model as PureModel
+  File "/ibm/gpfs/home/snag0027/speech-depression/cluster/models/pure_ast.py", line 8, in <module>
+    model = ASTForAudioClassification.from_pretrained("MIT/ast-finetuned-audioset-10-10-0.4593", num_labels=25, cache_dir="new_cache_dir/")
+  File "/home/snag0027/.local/lib/python3.10/site-packages/transformers/modeling_utils.py", line 2648, in from_pretrained
+    ) = cls._load_pretrained_model(
+  File "/home/snag0027/.local/lib/python3.10/site-packages/transformers/modeling_utils.py", line 3021, in _load_pretrained_model
+    raise RuntimeError(f"Error(s) in loading state_dict for {model.__class__.__name__}:\n\t{error_msg}")
+RuntimeError: Error(s) in loading state_dict for ASTForAudioClassification:
+	size mismatch for classifier.dense.weight: copying a param with shape torch.Size([527, 768]) from checkpoint, the shape in current model is torch.Size([25, 768]).
+	size mismatch for classifier.dense.bias: copying a param with shape torch.Size([527]) from checkpoint, the shape in current model is torch.Size([25]).
+	You may consider adding `ignore_mismatched_sizes=True` in the model `from_pretrained` method.
