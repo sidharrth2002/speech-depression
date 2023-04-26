@@ -184,14 +184,15 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                         if os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + ".csv"):
                             audio_features = process_features(os.path.join(audio_dir, folder, file[:-4]) + ".csv")
                         else:
-                            logging.warning(f"Could not extract eGeMAPSv02 features for {file}")
+                            logging.info(f"Could not extract eGeMAPSv02 features for {file}")
                             num_egemaps_features = get_num_features('egemaps')
                             # create a torch tensor of zeros
-                            audio_features = torch.zeros(num_egemaps_features)
-                    
+                            # audio_features = torch.tensor([0.1] * num_egemaps_features).float()
+                            audio_features = [0.11] * num_egemaps_features
+
                         # check if audio_features is a torch tensor
-                        if not isinstance(audio_features, torch.Tensor):
-                            audio_features = torch.tensor(audio_features)
+                        # if not isinstance(audio_features, torch.Tensor):
+                        #     audio_features = torch.tensor(audio_features).float()
                     
                         if training_config['break_audio_into_chunks']:
                             # only use chunk files
@@ -204,6 +205,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                                             "audio": os.path.join(audio_dir, folder, file),
                                             "audio_features": audio_features,
                                             # from 300P to 300
+                                            # "label": torch.tensor(int(label_file.loc[int(folder[:3])]["PHQ8_Binary"]))
                                             "label": int(label_file.loc[int(folder[:3])]["PHQ8_Binary"])
                                         }
                                     )
@@ -214,6 +216,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                                             "audio": os.path.join(audio_dir, folder, file),
                                             "audio_features": audio_features,
                                             # from 300P to 300
+                                            # "label": torch.tensor(place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True)),
                                             "label": place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True),
                                         }
                                     )
@@ -227,6 +230,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                                             "audio": os.path.join(audio_dir, folder, file),
                                             "audio_features": audio_features,
                                             # from 300P to 300
+                                            # "label": torch.tensor(int(label_file.loc[int(folder[:3])]["PHQ8_Binary"]))
                                             "label": int(label_file.loc[int(folder[:3])]["PHQ8_Binary"])
                                         }
                                     )
@@ -237,6 +241,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                                             "audio": os.path.join(audio_dir, folder, file),
                                             "audio_features": audio_features,
                                             # from 300P to 300
+                                            # "label": torch.tensor(place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True)),
                                             "label": place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True),
                                         }
                                     )

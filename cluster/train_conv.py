@@ -84,6 +84,9 @@ if os.path.exists(f"models/{args.model_type}.pt"):
     # load the model
     model.load_state_dict(torch.load(f"models/{args.model_type}.pt"))
     logging.info("Loaded model")
+    
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
 
 # fit the pytorch model to the training data
 opt = torch.optim.Adam(model.parameters(), lr=0.001)
@@ -103,6 +106,9 @@ for i in range(0, len(encoded_dataset["validation"]), 32):
 encoded_dataset["train"] = train_batches
 encoded_dataset["validation"] = validation_batches
 
+# send encoded_dataset to GPU
+encoded_dataset = encoded_dataset.to(device)
+
 if args.evaluate_only:
     logging.info("Only evaluating model on validation set")
     # evaluate the model on the test set
@@ -115,7 +121,7 @@ if args.evaluate_only:
             opt.zero_grad()
             
             images = batch["input_values"]
-            images = Variable(torch.tensor(images))
+            images = Variable(torch.tensor(images)).to(device)
             
             y_hat = model(images)
             loss = crit(y_hat, torch.tensor(batch["label"]))

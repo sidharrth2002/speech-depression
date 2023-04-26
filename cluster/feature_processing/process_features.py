@@ -13,7 +13,7 @@ def get_num_features(feature_set='egemaps'):
             for line in sample_features.splitlines():
                 if line.startswith('@attribute'):
                     num_features_egemaps += 1
-        return num_features_egemaps
+        return num_features_egemaps - 2
     
     elif feature_set == 'is09':
         num_features_is09 = 0
@@ -23,7 +23,7 @@ def get_num_features(feature_set='egemaps'):
             for line in sample_features.splitlines():
                 if line.startswith('@attribute'):
                     num_features_is09 += 1
-        return num_features_is09
+        return num_features_is09 - 2
 
 logging.info(f"Number of egemaps features: {get_num_features('egemaps')}")
 logging.info(f"Number of is09 features: {get_num_features('is09')}")
@@ -56,6 +56,7 @@ def get_feature_names(attr_string):
     is09 = [x.split(' ')[0] for x in is09]
     # remove any empty strings
     is09 = [x for x in is09 if x]
+    return is09
 
 if __name__ == '__main__':
     datafolder = './daic_woz'
