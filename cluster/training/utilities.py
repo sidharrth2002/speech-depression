@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 import evaluate
 from scipy.special import softmax
@@ -10,6 +11,8 @@ from sklearn.metrics import (
     matthews_corrcoef,
 )
 from transformers import EvalPrediction
+
+logging.basicConfig(level=logging.INFO)
 
 accuracy = evaluate.load("accuracy")
 f1 = evaluate.load("f1")
@@ -29,8 +32,10 @@ def calc_classification_metrics(p: EvalPrediction):
     '''
     Used for custom model
     '''
-    pred_labels = np.argmax(p.predictions, axis=1)
-    pred_scores = softmax(p.predictions, axis=1)[:, 1]
+    logging.debug("***** Running classification metrics *****")
+    logging.debug("Predictions: {}".format(p.predictions[0]))
+    pred_labels = np.argmax(p.predictions[0], axis=1)
+    pred_scores = softmax(p.predictions[0], axis=1)[:, 1]
     labels = p.label_ids
     if len(np.unique(labels)) == 2:  # binary classification
         roc_auc_pred_score = roc_auc_score(labels, pred_scores)
@@ -51,12 +56,13 @@ def calc_classification_metrics(p: EvalPrediction):
                 }
     else:
         acc = (pred_labels == labels).mean()
-        f1 = f1_score(y_true=labels, y_pred=pred_labels)
+        f1 = f1_score(y_true=labels, y_pred=pred_labels, average="weighted")
         result = {
             "acc": acc,
             "f1": f1,
             "acc_and_f1": (acc + f1) / 2,
-            "mcc": matthews_corrcoef(labels, pred_labels)
         }
 
+    logging.info("***** Classification metrics *****")
+    logging.info(result)
     return result

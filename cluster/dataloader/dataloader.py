@@ -10,7 +10,7 @@ import logging
 import os
 import random
 
-from utils import place_value_in_bin
+from dataloader.utils import place_value_in_bin
 import datasets
 import pandas as pd
 import librosa

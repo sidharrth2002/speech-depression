@@ -2,12 +2,16 @@ import logging
 import os
 from transformers.models.audio_spectrogram_transformer import ASTForAudioClassification, ASTConfig
 from transformers import AutoFeatureExtractor
-from models.custom import ConvModel, TabularAST
+from models.custom import ConvModel, HandcraftedModel, TabularAST
 
 logging.basicConfig(level=logging.INFO)
 
 feature_extractor = AutoFeatureExtractor.from_pretrained("MIT/ast-finetuned-audioset-10-10-0.4593")
 config = ASTConfig.from_pretrained("MIT/ast-finetuned-audioset-10-10-0.4593")
+
+def get_1d_conv_model(training_config):
+    model = HandcraftedModel(num_classes=training_config['num_labels'], output_dim_num=training_config['num_labels'], direct_classification=True)
+    return model
 
 def get_conv_model(training_config):
     model = ConvModel(

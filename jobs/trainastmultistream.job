@@ -7,10 +7,7 @@
 #SBATCH --gpus-per-node=2
 #SBATCH --partition=gpu.medium
 
-apt-get install ffmpeg
-module load apps/ffmpeg/4.1/gcc-4.9.4
-module load apps/ffmpeg/4.3.2/gcc-8.2-cmake-3.17.1
 module load python
-pip install transformers datasets evaluate librosa torchmetrics opensmile scikit-learn
+pip install transformers datasets evaluate librosa torchmetrics opensmile scikit-learn nlpaug
 
 python /home/snag0027/speech-depression/cluster/train_ast_multistream.py

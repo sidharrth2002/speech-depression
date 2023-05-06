@@ -46,14 +46,16 @@ class HandcraftedModel(nn.Module):
         self.conv1 = nn.Conv1d(1, 32, 3)
         self.conv2 = nn.Conv1d(32, 64, 3)
         self.conv3 = nn.Conv1d(64, 128, 3)
+        self.conv4 = nn.Conv1d(128, 256, 3)
 
         # add batchnorm layers
         self.bn1 = nn.BatchNorm1d(32)
         self.bn2 = nn.BatchNorm1d(64)
         self.bn3 = nn.BatchNorm1d(128)
+        self.bn4 = nn.BatchNorm1d(256)
 
         # compute fc1 input size - what is the output size of the last conv layer?
-        self.fc1 = nn.Linear(10496, 512)
+        self.fc1 = nn.Linear(20480, 512)
         if self.direct_classification:
             self.fc2 = nn.Linear(512, num_classes)
         else:
@@ -79,6 +81,10 @@ class HandcraftedModel(nn.Module):
 
         x = self.conv3(x)
         x = self.bn3(x)
+        x = self.relu(x)
+
+        x = self.conv4(x)
+        x = self.bn4(x)
         x = self.relu(x)
 
         # flatten

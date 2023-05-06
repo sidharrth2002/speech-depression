@@ -40,7 +40,7 @@ args = parser.parse_args()
 model = multistream_ast_model(training_config=training_config)
 
 logging.info("Printing model to check")
-logging.info(model)
+logging.info(model.audio_features_model)
 
 train_dataset = DaicWozDatasetWithFeatures(split='train')
 validation_dataset = DaicWozDatasetWithFeatures(split='validation')
@@ -95,8 +95,10 @@ def data_collator(features: List[torch.Tensor]) -> Dict[str, torch.Tensor]:
 
 # load model from "./trained_models/ast"
 if args.model_type == 'ast':
-    logging.info("Starting training of pure AST model...")
-    training_args = TrainingArguments(output_dir="./trained_models/ast_multistream_5class", evaluation_strategy="epoch", num_train_epochs=4, per_device_train_batch_size=16, per_device_eval_batch_size=16, gradient_accumulation_steps=16, eval_accumulation_steps=16, logging_steps=6, save_steps=6)
+    logging.info("Starting training of multistream AST model...")
+    
+    # first train the entire model for 5 epochs
+    training_args = TrainingArguments(output_dir="./trained_models/ast_multistream_5class", evaluation_strategy="epoch", num_train_epochs=5, per_device_train_batch_size=16, per_device_eval_batch_size=16, gradient_accumulation_steps=16, eval_accumulation_steps=16, logging_steps=6, save_steps=6)
     trainer = Trainer(
         model=model,
         args=training_args,
@@ -106,6 +108,39 @@ if args.model_type == 'ast':
         tokenizer=feature_extractor,
         data_collator=data_collator,
     )
+    
+    # TODO: remove this, for debugging only
+    # checks if all the layer sizes are correct
+    trainer.evaluate()
+    
     trainer.train()
+
+    logging.info("Training of multistream AST model complete! Proceeding to only train the tabular classifier...")
+    logging.info("Freezing all layers except audio features model... Number of trainable parameters before freezing: {}".format(sum(p.numel() for p in model.parameters() if p.requires_grad)))
+
+    # freeze everything except the audio features model (model.audio_features_model)
+    for param in model.parameters():
+        param.requires_grad = False
+    for param in model.audio_features_model.parameters():
+        param.requires_grad = True
+
+    logging.info("Freezing Complete! Number of trainable parameters after freezing: {}".format(sum(p.numel() for p in model.parameters() if p.requires_grad)))
+
+    training_args = TrainingArguments(output_dir="./trained_models/ast_multistream_5class", evaluation_strategy="epoch", num_train_epochs=30, per_device_train_batch_size=16, per_device_eval_batch_size=16, gradient_accumulation_steps=16, eval_accumulation_steps=16, logging_steps=6, save_steps=6)
+    trainer = Trainer(
+        model=model,
+        args=training_args,
+        train_dataset=encoded_dataset["train"],
+        eval_dataset=encoded_dataset["validation"],
+        compute_metrics=calc_classification_metrics,
+        tokenizer=feature_extractor,
+        data_collator=data_collator,
+    )
+
+    # TODO: remove this, for debugging only
+    trainer.evaluate()
+
+    trainer.train()
+
     logging.info("Finished training of multistream AST model.")
     logging.info("Saved in ./trained_models/ast")
