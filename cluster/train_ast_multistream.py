@@ -15,6 +15,7 @@ from transformers import AutoFeatureExtractor, TrainingArguments, Trainer, AutoP
 from dataloader.dataloadermultimodal import DaicWozDatasetWithFeatures
 from training.utilities import calc_classification_metrics, compute_metrics
 from models.pure_ast import multistream_ast_model
+from tooling.latest_model import load_latest_checkpoint
 import logging
 from datasets import load_dataset, DatasetDict
 from dataclasses import dataclass
@@ -93,40 +94,45 @@ def data_collator(features: List[torch.Tensor]) -> Dict[str, torch.Tensor]:
     batch["input_values"] = torch.stack([torch.tensor(x["input_values"]) for x in features])
     return batch
 
+model_path = "./trained_models/ast_multistream_5class_2"
+
 # load model from "./trained_models/ast"
-if args.model_type == 'ast':
-    logging.info("Starting training of multistream AST model...")
+if args.model_type == 'ast':    
+    if os.path.exists(model_path):
+        model = load_latest_checkpoint(model_path, training_config, multistream_ast_model)
+        logging.info("Loaded model from " + model_path)
+
+    else:
+        logging.info("Starting training of multistream AST model...")
+
+        # first train the entire model for 5 epochs
+        training_args = TrainingArguments(output_dir=model_path, evaluation_strategy="epoch", save_strategy="epoch", num_train_epochs=5, per_device_train_batch_size=16, per_device_eval_batch_size=16, gradient_accumulation_steps=4, eval_accumulation_steps=4, logging_steps=100, save_total_limit=3, load_best_model_at_end=True)
+        trainer = Trainer(
+            model=model,
+            args=training_args,
+            train_dataset=encoded_dataset["train"],
+            eval_dataset=encoded_dataset["validation"],
+            compute_metrics=calc_classification_metrics,
+            tokenizer=feature_extractor,
+            data_collator=data_collator,
+        )
     
-    # first train the entire model for 5 epochs
-    training_args = TrainingArguments(output_dir="./trained_models/ast_multistream_5class", evaluation_strategy="epoch", num_train_epochs=5, per_device_train_batch_size=16, per_device_eval_batch_size=16, gradient_accumulation_steps=16, eval_accumulation_steps=16, logging_steps=6, save_steps=6)
-    trainer = Trainer(
-        model=model,
-        args=training_args,
-        train_dataset=encoded_dataset["train"],
-        eval_dataset=encoded_dataset["validation"],
-        compute_metrics=calc_classification_metrics,
-        tokenizer=feature_extractor,
-        data_collator=data_collator,
-    )
-    
-    # TODO: remove this, for debugging only
-    # checks if all the layer sizes are correct
-    trainer.evaluate()
-    
-    trainer.train()
+        # TODO: remove this, for debugging only
+        # checks if all the layer sizes are correct
+        trainer.evaluate()
+        
+        trainer.train()
 
     logging.info("Training of multistream AST model complete! Proceeding to only train the tabular classifier...")
     logging.info("Freezing all layers except audio features model... Number of trainable parameters before freezing: {}".format(sum(p.numel() for p in model.parameters() if p.requires_grad)))
 
-    # freeze everything except the audio features model (model.audio_features_model)
-    for param in model.parameters():
+    # freeze only the AST
+    for param in model.audio_spectrogram_transformer.parameters():
         param.requires_grad = False
-    for param in model.audio_features_model.parameters():
-        param.requires_grad = True
 
     logging.info("Freezing Complete! Number of trainable parameters after freezing: {}".format(sum(p.numel() for p in model.parameters() if p.requires_grad)))
 
-    training_args = TrainingArguments(output_dir="./trained_models/ast_multistream_5class", evaluation_strategy="epoch", num_train_epochs=30, per_device_train_batch_size=16, per_device_eval_batch_size=16, gradient_accumulation_steps=16, eval_accumulation_steps=16, logging_steps=6, save_steps=6)
+    training_args = TrainingArguments(output_dir=model_path, evaluation_strategy="epoch", save_strategy="epoch", num_train_epochs=20, per_device_train_batch_size=16, per_device_eval_batch_size=16, gradient_accumulation_steps=4, eval_accumulation_steps=4, logging_steps=100, save_total_limit=3, load_best_model_at_end=True)
     trainer = Trainer(
         model=model,
         args=training_args,
@@ -137,10 +143,13 @@ if args.model_type == 'ast':
         data_collator=data_collator,
     )
 
-    # TODO: remove this, for debugging only
-    trainer.evaluate()
-
     trainer.train()
 
     logging.info("Finished training of multistream AST model.")
-    logging.info("Saved in ./trained_models/ast")
+
+    logging.info("Evaluating model on test set...")
+
+    results = trainer.evaluate(encoded_dataset["test"])
+
+    logging.info("Test Set Results")
+    logging.info(results)

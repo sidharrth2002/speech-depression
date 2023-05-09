@@ -23,10 +23,23 @@ def compute_metrics(eval_pred):
     '''
     logits, labels = eval_pred
     predictions = np.argmax(logits, axis=-1)
-    return {
-        "accuracy": accuracy.compute(predictions=predictions, references=labels),
-        "f1": f1.compute(predictions=predictions, references=labels, average="weighted"),
-    }
+    if len(np.unique(labels)) == 2:  # binary classification
+        tn, fp, fn, tp = confusion_matrix(labels, predictions, labels=[0, 1]).ravel()
+        return {
+            "accuracy": accuracy.compute(predictions=predictions, references=labels),
+            "f1": f1.compute(predictions=predictions, references=labels, average="macro"),
+            "precision": tp / (tp + fp),
+            "recall": tp / (tp + fn),
+            "tn": tn.item(),
+            "fp": fp.item(),
+            "fn": fn.item(),
+            "tp": tp.item(),
+        }
+    else:
+        return {
+            "accuracy": accuracy.compute(predictions=predictions, references=labels),
+            "f1": f1.compute(predictions=predictions, references=labels, average="macro"),
+        }
 
 def calc_classification_metrics(p: EvalPrediction):
     '''
@@ -52,11 +65,12 @@ def calc_classification_metrics(p: EvalPrediction):
                 'pr_auc': pr_auc,
                 'recall': recalls[ix].item(),
                 'precision': precisions[ix].item(), 'f1': fscore[ix].item(),
-                'tn': tn.item(), 'fp': fp.item(), 'fn': fn.item(), 'tp': tp.item()
+                'tn': tn.item(), 'fp': fp.item(), 'fn': fn.item(), 'tp': tp.item(),
+                'acc': (tp.item() + tn.item()) / (tp.item() + tn.item() + fp.item() + fn.item()),
                 }
     else:
         acc = (pred_labels == labels).mean()
-        f1 = f1_score(y_true=labels, y_pred=pred_labels, average="weighted")
+        f1 = f1_score(y_true=labels, y_pred=pred_labels, average="macro")
         result = {
             "acc": acc,
             "f1": f1,

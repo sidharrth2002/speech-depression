@@ -9,4 +9,4 @@
 
 module load python
 
-python /home/snag0027/speech-depression/preprocessing/split_data.py
+python /home/snag0027/speech-depression/preprocessing/remove_files.py

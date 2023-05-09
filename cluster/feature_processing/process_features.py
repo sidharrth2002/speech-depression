@@ -8,7 +8,7 @@ def get_num_features(feature_set='egemaps'):
     if feature_set == 'egemaps':
         num_features_egemaps = 0
         # random file
-        with open('/home/snag0027/daic_woz/splits/train/454_P/454_PARTICIPANT_merged_chunk_80000.csv', 'r') as f:
+        with open('/home/snag0027/daic_woz/old_splits/train/454_P/454_PARTICIPANT_merged_chunk_80000.csv', 'r') as f:
             sample_features = f.read()
             for line in sample_features.splitlines():
                 if line.startswith('@attribute'):
@@ -18,7 +18,7 @@ def get_num_features(feature_set='egemaps'):
     elif feature_set == 'is09':
         num_features_is09 = 0
         # random file
-        with open('/home/snag0027/daic_woz/splits/val/362_P/362_IS09.txt', 'r') as f:
+        with open('/home/snag0027/daic_woz/old_splits/val/362_P/362_IS09.txt', 'r') as f:
             sample_features = f.read()
             for line in sample_features.splitlines():
                 if line.startswith('@attribute'):

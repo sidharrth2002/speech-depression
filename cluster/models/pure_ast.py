@@ -36,7 +36,7 @@ def get_model(training_config):
         model = ASTForAudioClassification.from_pretrained("MIT/ast-finetuned-audioset-10-10-0.4593", num_labels=num_labels, cache_dir="new_cache_dir/", problem_type="single_label_classification", ignore_mismatched_sizes=True)
         return model
 
-def multistream_ast_model(training_config):
+def multistream_ast_model(training_config, model_path=None):
     # model_class.from_pretrained(pretrained_model_name_or_path, *model_args, config=config, **kwargs)
     if training_config['binary_classification']:
         logging.info("Using binary classification")
@@ -45,9 +45,9 @@ def multistream_ast_model(training_config):
         logging.info("Using multi-class classification")
         num_labels = training_config['num_labels']
     
-    if 'model_path' in training_config and os.path.exists(training_config['model_path']):
-        logging.info("Loading model from " + training_config['model_path'])
-        model = TabularAST.from_pretrained(training_config['model_path'], num_labels=num_labels, cache_dir="new_cache_dir/", problem_type="single_label_classification", ignore_mismatched_sizes=True)
+    if model_path is not None and os.path.exists(model_path):
+        logging.info("Loading model from " + model_path)
+        model = TabularAST.from_pretrained(model_path, num_labels=num_labels, cache_dir="new_cache_dir/", problem_type="single_label_classification", ignore_mismatched_sizes=True)
         return model
 
     else:

@@ -137,21 +137,22 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                     # add the augmented audio to the data
                     data.append(
                         {
-                            "file": example['file'],
-                            "audio": augmented_audio,
+                            "file": os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"),
+                            "audio": os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"),
                             "audio_features": self._extract_audio_features(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"),
                             "label": example['label']
                         }
                     )
             else:
                 # if there are not enough examples, then augment the examples until there are enough
-                while len(examples) < needed_per_class[label]:
-                    # augment each example
+                # find the number of times each example needs to be augmented
+                num_augmentations = needed_per_class[label]
+                while num_augmentations > 0:
                     for example in examples:
+                        # check if the audio is not empty
                         if len(example['audio']) == 0:
                             logging.info(f"Audio for {example['file']} is empty, so skipping")
                             continue
-
                         # augment the audio
                         augmented_audio = augment_audio(example['file'])
                         # save the augmented audio
@@ -162,21 +163,25 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
 
                         # number of times this file has already been augmented
                         num_augmented = len([x for x in os.listdir(os.path.join(self.data_dir, folder)) if x.startswith(file_name[:-4]) and x.endswith(".wav")])
-
-                        a = example["audio"]
-                        logging.debug(f"Before augmentation: {a}")
-                        logging.debug(f"After augmentation: {augmented_audio}")
+                        logging.info(f"Number of times {file_name} has already been augmented: {num_augmented}")
 
                         soundfile.write(os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"), augmented_audio[0], 16000)
                         # add the augmented audio to the data
                         data.append(
                             {
-                                "file": example['file'],
-                                "audio": augmented_audio,
+                                "file": os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"),
+                                "audio": os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"),
                                 "audio_features": self._extract_audio_features(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"),
                                 "label": example['label']
                             }
                         )
+                        num_augmentations -= 1
+
+                        if num_augmentations == 0:
+                            break
+                    if num_augmentations == 0:
+                        break
+
         # shuffle the data
         random.shuffle(data)
         
@@ -257,12 +262,14 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                             # break audio into chunks of chunk_size seconds each, with no silence
                             # then save each chunk as a separate file
                             chunks = {}
+                            counter = 0
                             for i in range(0, len(audio), chunk_size * sr):
                                 chunk = audio[i:i + chunk_size * sr]
                                 # save chunk
                                 # check if chunk is not empty and file does not already exist
-                                if chunk.size > 0 and not os.path.exists(os.path.join(audio_dir, folder, f"{file[:-4]}_chunk_{i}.wav")):
-                                    chunks[f"{file[:-4]}_chunk_{i}.wav"] = chunk
+                                if chunk.size > 0 and not os.path.exists(os.path.join(audio_dir, folder, f"{file[:-4]}_chunk_{counter}.wav")):
+                                    chunks[f"{file[:-4]}_chunk_{counter}.wav"] = chunk
+                                    counter += 1
 
                             # # randomly select num_chunks from chunks
                             # if len(chunks) > num_chunks:
