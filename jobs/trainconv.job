@@ -10,4 +10,4 @@
 module load python
 pip install transformers datasets evaluate librosa torchmetrics
 
-python /home/snag0027/speech-depression/cluster/train_conv.py --evaluate-only
+python /home/snag0027/speech-depression/cluster/train_1d_conv.py

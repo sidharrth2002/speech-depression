@@ -2,7 +2,7 @@ import logging
 import os
 from transformers.models.audio_spectrogram_transformer import ASTForAudioClassification, ASTConfig
 from transformers import AutoFeatureExtractor
-from models.custom import ConvModel, HandcraftedModel, TabularAST
+from models.custom import HandcraftedModelWithAudioFeatures, HandcraftedModel, TabularAST
 
 logging.basicConfig(level=logging.INFO)
 
@@ -14,7 +14,7 @@ def get_1d_conv_model(training_config):
     return model
 
 def get_conv_model(training_config):
-    model = ConvModel(
+    model = HandcraftedModelWithAudioFeatures(
         num_classes=training_config['num_labels'],
     )
     return model

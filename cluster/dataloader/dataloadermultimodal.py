@@ -171,7 +171,10 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                             {
                                 "file": os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"),
                                 "audio": os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"),
-                                "audio_features": self._extract_audio_features(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"),
+                                "audio_features": self._extract_audio_features(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav", family=training_config["feature_family"]),
+                                "egemaps": self._extract_audio_features(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav", family='egemaps'),
+                                "is09": self._extract_audio_features(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav", family='is09'),
+                                "mfcc": self._extract_audio_features(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav", family='mfcc'),
                                 "label": example['label']
                             }
                         )
@@ -196,27 +199,56 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
 
         return data
 
-    def _extract_audio_features(self, audio_dir, folder, file):
-        if (file.endswith(".wav")) and (not file.startswith('._')):
-            if os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + ".csv"):
-                logging.info(f"eGeMAPSv02 features for {file} already extracted, so skipping")
-            else:
-                # if features have not already been extracted, extract them
-                logging.info(f"Extracting eGeMAPSv02 features for {file}...")
-                extraction_command = f"SMILExtract -C /home/snag0027/speech-depression/cluster/config/egemaps/v02/eGeMAPSv02.conf -I {os.path.join(audio_dir, folder, file)} -O {os.path.join(audio_dir, folder, file[:-4])}.csv"
-                subprocess.call(extraction_command, shell=True, cwd='/home/snag0027/speech-depression/cluster/opensmile/bin')
-            
-            # sometimes, smilextract fails to extract
-            # in this case, we will just use zeros as the features (not a good idea)
-            if os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + ".csv"):
-                audio_features = process_features(os.path.join(audio_dir, folder, file[:-4]) + ".csv")
-            else:
-                logging.info(f"Could not extract eGeMAPSv02 features for {file}")
-                num_egemaps_features = get_num_features('egemaps')
-                # create a torch tensor of zeros
-                # audio_features = torch.tensor([0.1] * num_egemaps_features).float()
-                audio_features = [0.111] * num_egemaps_features
-        return audio_features
+    def _extract_audio_features(self, audio_dir, folder, file, family='egemaps'):
+        if family == 'egemaps':
+            if (file.endswith(".wav")) and (not file.startswith('._')):
+                if os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + ".csv"):
+                    logging.info(f"eGeMAPSv02 features for {file} already extracted, so skipping")
+                else:
+                    # if features have not already been extracted, extract them
+                    logging.info(f"Extracting eGeMAPSv02 features for {file}...")
+                    extraction_command = f"SMILExtract -C /home/snag0027/speech-depression/cluster/config/egemaps/v02/eGeMAPSv02.conf -I {os.path.join(audio_dir, folder, file)} -O {os.path.join(audio_dir, folder, file[:-4])}.csv"
+                    subprocess.call(extraction_command, shell=True, cwd='/home/snag0027/speech-depression/cluster/opensmile/bin')
+                
+                # sometimes, smilextract fails to extract
+                # in this case, we will just use zeros as the features (not a good idea)
+                if os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + ".csv"):
+                    audio_features = process_features(os.path.join(audio_dir, folder, file[:-4]) + ".csv", feature_family='egemaps')
+                else:
+                    logging.info(f"Could not extract eGeMAPSv02 features for {file}")
+                    num_egemaps_features = get_num_features('egemaps')
+                    # create a torch tensor of zeros
+                    # audio_features = torch.tensor([0.1] * num_egemaps_features).float()
+                    audio_features = [0.111] * num_egemaps_features
+            return audio_features
+        elif family == 'is09':
+            if (file.endswith(".wav")) and (not file.startswith('._')):
+                if os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + "_is09.csv"):
+                    logging.info(f"IS09 features for {file} already extracted, so skipping")
+                else:
+                    # if features have not already been extracted, extract them
+                    logging.info(f"Extracting IS09 features for {file}...")
+                    extraction_command = f"SMILExtract -C /home/snag0027/speech-depression/cluster/config/is09-13/IS09_emotion.conf -I {os.path.join(audio_dir, folder, file)} -O {os.path.join(audio_dir, folder, file[:-4])}_is09.csv"
+                    subprocess.call(extraction_command, shell=True, cwd='/home/snag0027/speech-depression/cluster/opensmile/bin')
+                
+                # sometimes, smilextract fails to extract
+                # in this case, we will just use zeros as the features (not a good idea)
+                if os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + "_is09.csv"):
+                    audio_features = process_features(os.path.join(audio_dir, folder, file[:-4]) + "_is09.csv", feature_family='is09')
+                else:
+                    logging.info(f"Could not extract IS09 features for {file}")
+                    num_is09_features = get_num_features('is09')
+                    # create a torch tensor of zeros
+                    # audio_features = torch.tensor([0.1] * num_is09_features).float()
+                    audio_features = [0.111] * num_is09_features
+            return audio_features
+        elif family == 'mfcc':
+            audio_file = librosa.load(os.path.join(audio_dir, folder, file), sr=16000)[0]
+            audio_features = librosa.feature.mfcc(y=audio_file, sr=16000, n_mfcc=13)
+            return audio_features
+        else:
+            logging.info(f"Feature family {family} not supported")            
+
 
     def _generate_examples(self, name):
         key = 0
@@ -292,7 +324,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                 for file in os.listdir(os.path.join(audio_dir, folder)):                    
                     
                     if (file.endswith(".wav")) and (not file.startswith('._')) and (not 'augmented' in file):
-                        audio_features = self._extract_audio_features(audio_dir, folder, file)
+                        audio_features = self._extract_audio_features(audio_dir, folder, file, family=training_config['feature_family'])
 
                         # check if audio_features is a torch tensor
                         # if not isinstance(audio_features, torch.Tensor):
@@ -308,6 +340,9 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                                             "file": os.path.join(audio_dir, folder, file),
                                             "audio": os.path.join(audio_dir, folder, file),
                                             "audio_features": audio_features,
+                                            "egemaps": self._extract_audio_features(audio_dir, folder, file, family='egemaps'),
+                                            "is09": self._extract_audio_features(audio_dir, folder, file, family='is09'),
+                                            "mfcc": self._extract_audio_features(audio_dir, folder, file, family='mfcc'),
                                             # from 300P to 300
                                             # "label": torch.tensor(int(label_file.loc[int(folder[:3])]["PHQ8_Binary"]))
                                             "label": int(label_file.loc[int(folder[:3])]["PHQ8_Binary"])
@@ -319,6 +354,9 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                                             "file": os.path.join(audio_dir, folder, file),
                                             "audio": os.path.join(audio_dir, folder, file),
                                             "audio_features": audio_features,
+                                            "egemaps": self._extract_audio_features(audio_dir, folder, file, family='egemaps'),
+                                            "is09": self._extract_audio_features(audio_dir, folder, file, family='is09'),
+                                            "mfcc": self._extract_audio_features(audio_dir, folder, file, family='mfcc'),
                                             # from 300P to 300
                                             # "label": torch.tensor(place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True)),
                                             "label": place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True),
@@ -333,6 +371,9 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                                             "file": os.path.join(audio_dir, folder, file),
                                             "audio": os.path.join(audio_dir, folder, file),
                                             "audio_features": audio_features,
+                                            "egemaps": self._extract_audio_features(audio_dir, folder, file, family='egemaps'),
+                                            "is09": self._extract_audio_features(audio_dir, folder, file, family='is09'),
+                                            "mfcc": self._extract_audio_features(audio_dir, folder, file, family='mfcc'),
                                             # from 300P to 300
                                             # "label": torch.tensor(int(label_file.loc[int(folder[:3])]["PHQ8_Binary"]))
                                             "label": int(label_file.loc[int(folder[:3])]["PHQ8_Binary"])
@@ -344,6 +385,9 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                                             "file": os.path.join(audio_dir, folder, file),
                                             "audio": os.path.join(audio_dir, folder, file),
                                             "audio_features": audio_features,
+                                            "egemaps": self._extract_audio_features(audio_dir, folder, file, family='egemaps'),
+                                            "is09": self._extract_audio_features(audio_dir, folder, file, family='is09'),
+                                            "mfcc": self._extract_audio_features(audio_dir, folder, file, family='mfcc'),
                                             # from 300P to 300
                                             # "label": torch.tensor(place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True)),
                                             "label": place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True),

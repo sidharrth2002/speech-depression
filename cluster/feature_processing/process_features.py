@@ -18,7 +18,7 @@ def get_num_features(feature_set='egemaps'):
     elif feature_set == 'is09':
         num_features_is09 = 0
         # random file
-        with open('/home/snag0027/daic_woz/old_splits/val/362_P/362_IS09.txt', 'r') as f:
+        with open('/home/snag0027/speech-depression/cluster/sample_features_is09.txt', 'r') as f:
             sample_features = f.read()
             for line in sample_features.splitlines():
                 if line.startswith('@attribute'):
@@ -29,7 +29,7 @@ logging.info(f"Number of egemaps features: {get_num_features('egemaps')}")
 logging.info(f"Number of is09 features: {get_num_features('is09')}")
 logging.info(f"Total number of features: {get_num_features('is09') + get_num_features('egemaps')}")
 
-def process_features(txt_file):
+def process_features(txt_file, feature_family='egemaps'):
     with open(txt_file, 'r') as f:
         # find line that starts with @data
         # store data in the next line
@@ -40,7 +40,7 @@ def process_features(txt_file):
                 break
         if data == '':
             logging.info(f"Could not find data in {txt_file}")
-            return [0] * (get_num_features('egemaps'))
+            return [0] * (get_num_features(feature_family))
         # split data by comma
         data = data.split(',')
         # remove first and last element

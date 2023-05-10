@@ -29,6 +29,95 @@ model = ASTModel.from_pretrained(
 Build a convolutional model that takes the above features as input and outputs the PHQ-8 score
 '''
 
+
+class HandcraftedModelWithAudioFeatures(nn.Module):
+    '''
+    2D convolutions, input is MFCC features
+    '''
+    def __init__(self, num_classes, feature_set='mfcc', output_dim_num=100, direct_classification=False):
+        super(HandcraftedModelWithAudioFeatures, self).__init__()
+
+        self.direct_classification = direct_classification
+
+        # 4 2D convolutional layers
+        # mfcc is 2d of shape (time x features)
+        # egemaps is 1d of shape (1 x features)
+
+        if feature_set == 'mfcc':
+            self.conv1 = nn.Conv2d(2, 32, 3)
+        elif feature_set == 'egemaps':        
+            self.conv1 = nn.Conv2d(1, 32, 3)
+
+        self.conv2 = nn.Conv2d(32, 64, 3)
+        self.conv3 = nn.Conv2d(64, 128, 3)
+        self.conv4 = nn.Conv2d(128, 256, 3)
+
+        # add batchnorm layers
+        self.bn1 = nn.BatchNorm2d(32)
+        self.bn2 = nn.BatchNorm2d(64)
+        self.bn3 = nn.BatchNorm2d(128)
+        self.bn4 = nn.BatchNorm2d(256)
+
+        # add maxpool layers
+        self.pool1 = nn.MaxPool2d(2)
+        self.pool2 = nn.MaxPool2d(2)
+        self.pool3 = nn.MaxPool2d(2)
+
+        # add dense layers
+        self.fc1 = nn.Linear(256 * 10 * 10, 512)
+        if self.direct_classification:
+            self.fc2 = nn.Linear(512, num_classes)
+        else:
+            self.fc2 = nn.Linear(512, output_dim_num)
+            self.relu = nn.ReLU()
+            self.dropout = nn.Dropout(0.5)
+            self.softmax = nn.Softmax(dim=1)
+
+    def forward(self, x):
+        # torch convolution
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+
+        # maxpool
+        x = self.pool1(x)
+
+        x = self.conv2(x)
+        x = self.bn2(x)
+        x = self.relu(x)
+
+        # maxpool
+        x = self.pool2(x)
+
+        x = self.conv3(x)
+        x = self.bn3(x)
+        x = self.relu(x)
+
+        # maxpool
+        x = self.pool3(x)
+
+        x = self.conv4(x)
+        x = self.bn4(x)
+        x = self.relu(x)
+
+        # flatten
+        x = x.view(x.size(0), -1)
+
+        # fc layers
+        x = self.fc1(x)
+        x = self.relu(x)
+        x = self.dropout(x)
+
+        if self.direct_classification:
+            x = self.fc2(x)
+            x = self.softmax(x)
+
+            return x
+        else:
+            return x    
+
+
+
 class HandcraftedModel(nn.Module):
     '''
     Classification using only handcrafted features
@@ -128,6 +217,7 @@ class ConvModel(nn.Module):
         x = self.fc2(x)
         output = F.log_softmax(x, dim=1)
         return output
+
 
 if __name__ == "__main__":
     # generate random vector of shape (320 x 450)
