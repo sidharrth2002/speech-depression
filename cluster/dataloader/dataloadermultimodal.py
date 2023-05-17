@@ -54,6 +54,10 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                     "file": datasets.Value("string"),
                     "audio": datasets.features.Audio(sampling_rate=16_000),
                     "audio_features": datasets.features.Sequence(datasets.Value("float32")),
+                    "egemaps": datasets.features.Sequence(datasets.Value("float32")),
+                    "is09": datasets.features.Sequence(datasets.Value("float32")),
+                    # mfcc is a 2d array
+                    "mfcc": datasets.features.Sequence(datasets.features.Sequence(datasets.Value("float32"))),
                     "label": datasets.Value("int32"),
                 }
             ),
@@ -123,7 +127,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                         logging.info(f"Audio for {example['file']} is empty, so skipping")
                         continue
                     # augment the audio
-                    augmented_audio = augment_audio(example['file'])
+                    augmented_audio = augment_audio(example['file'], method='noise_pitch')
                     # save the augmented audio
 
                     file_path = example["file"]
@@ -154,7 +158,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                             logging.info(f"Audio for {example['file']} is empty, so skipping")
                             continue
                         # augment the audio
-                        augmented_audio = augment_audio(example['file'])
+                        augmented_audio = augment_audio(example['file'], method='noise_pitch')
                         # save the augmented audio
 
                         file_path = example["file"]
@@ -283,7 +287,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
             if os.path.isdir(os.path.join(audio_dir, folder)) and folder[:3].isnumeric():
                 if training_config['break_audio_into_chunks']:
                     for file in os.listdir(os.path.join(audio_dir, folder)):
-                        if file.endswith("PARTICIPANT_merged.wav") and not file.startswith('._'):
+                        if file.endswith("PARTICIPANT_merged.wav") and not file.startswith('._') and not 'chunk' in file and not 'augmented' in file:
                             # break audio into chunks of 8 seconds each
                             # then save each chunk as a separate file
                             audio, sr = librosa.load(os.path.join(audio_dir, folder, file), sr=16000)

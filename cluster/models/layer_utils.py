@@ -32,7 +32,7 @@ class MLP(nn.Module):
                                    for i in range(len(self.layer_channels) - 2)])))
         final_layer = nn.Linear(
             self.layer_channels[-2], self.layer_channels[-1])
-        self.weight_init(final_layer,   activation='linear')
+        self.weight_init(final_layer, activation='linear')
         self.layers.append(final_layer)
 
         self.bn = bn

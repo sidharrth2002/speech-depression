@@ -21,6 +21,7 @@ from datasets import load_dataset, DatasetDict
 from dataclasses import dataclass
 from typing import Any, Dict, List, Union
 import torch
+import numpy as np
 from config import training_config
 
 logging.basicConfig(level=logging.INFO)
@@ -53,7 +54,7 @@ dataset_config = {
     "LOADING_SCRIPT_FILES": "/home/snag0027/speech-depression/cluster/dataloader/dataloadermultimodal.py",
     "CONFIG_NAME": "daic_woz",
     "DATA_DIR": ".",
-    "CACHE_DIR": "cache_daic_woz",
+    "CACHE_DIR": "cache_daic_woz_conv_models_aug_noise_pitch",
 }
 
 ds = load_dataset(
@@ -63,10 +64,62 @@ ds = load_dataset(
     cache_dir=dataset_config["CACHE_DIR"],
 )
 
+# def prepare_dataset(batch):
+#     audio_arrays = [x["array"] for x in batch["audio"]]
+#     inputs = feature_extractor(audio_arrays, sampling_rate=16000, return_tensors="pt", padding=True, truncation=True)
+#     return inputs
+
 def prepare_dataset(batch):
+    if training_config['feature_family'] == 'mfcc':
+        # read each audio file and generate the grayscale spectrogram using librosa
+        audio_features = []
+        # feature_family specifies the feature set to use
+
+        # pad second dimension to same length
+        # pad the first and second dimension of each 2d array to the same length
+        # find maximum length of first dimension
+        # find the maximum length of the second dimension
+        # make sure the maximum lengths do not cross 157 (OOM errors on SLURM)
+        # feat is a list of lists (2d)
+        # find maximum length of first dimension
+        
+        max_dim_1 = 0
+        max_dim_2 = 0
+        for feat in batch[training_config["feature_family"]]:
+            if len(feat) > max_dim_1:
+                max_dim_1 = len(feat)
+            for x in feat:
+                if len(x) > max_dim_2:
+                    max_dim_2 = len(x)
+
+        if max_dim_2 != 215:
+            max_dim_2 = 215
+
+        for feat in batch[training_config["feature_family"]]:
+            if training_config['feature_family'] == 'mfcc':            
+                # pad the first and second dimension of each 2d array to the same length
+                # pad the first dimension
+                if len(feat) < max_dim_1:
+                    feat = np.pad(feat, ((0, max_dim_1 - len(feat)), (0, 0)), 'constant')
+                # pad the second dimension
+                if len(feat[0]) < max_dim_2:
+                    feat = np.pad(feat, ((0, 0), (0, max_dim_2 - len(feat[0]))), 'constant')
+
+            # append to audio_features
+            audio_features.append(feat)
+        # create tensor and reshape to (batch_size, 1, 64, 64)
+        if training_config['feature_family'] == 'mfcc':
+            audio_features = torch.tensor(audio_features).float()
+            logging.info(f"Shape of audio_features: {audio_features.shape}")
+        else:
+            audio_features = torch.tensor(audio_features).unsqueeze(1).float()
+        batch["input_values"] = audio_features
+
     audio_arrays = [x["array"] for x in batch["audio"]]
     inputs = feature_extractor(audio_arrays, sampling_rate=16000, return_tensors="pt", padding=True, truncation=True)
-    return inputs
+    batch["input_values"] = inputs["input_values"]
+
+    return batch
 
 # encoded_train = ds["train"].map(prepare_dataset, batched=True, batch_size=4)
 encoded_dataset = ds.map(prepare_dataset, batched=True, batch_size=8)
@@ -94,7 +147,7 @@ def data_collator(features: List[torch.Tensor]) -> Dict[str, torch.Tensor]:
     batch["input_values"] = torch.stack([torch.tensor(x["input_values"]) for x in features])
     return batch
 
-model_path = "./trained_models/ast_multistream_5class_2"
+model_path = "./trained_models/ast_mfcc_multistream_5class_noise_pitch_augmentation"
 
 # load model from "./trained_models/ast"
 if args.model_type == 'ast':    

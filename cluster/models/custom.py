@@ -34,7 +34,7 @@ class HandcraftedModelWithAudioFeatures(nn.Module):
     '''
     2D convolutions, input is MFCC features
     '''
-    def __init__(self, num_classes, feature_set='mfcc', output_dim_num=100, direct_classification=False):
+    def __init__(self, num_classes, feature_set='mfcc', output_dim_num=100, direct_classification=True):
         super(HandcraftedModelWithAudioFeatures, self).__init__()
 
         self.direct_classification = direct_classification
@@ -44,13 +44,13 @@ class HandcraftedModelWithAudioFeatures(nn.Module):
         # egemaps is 1d of shape (1 x features)
 
         if feature_set == 'mfcc':
-            self.conv1 = nn.Conv2d(2, 32, 3)
+            self.conv1 = nn.Conv2d(1, 32, kernel_size=(3, 1))
         elif feature_set == 'egemaps':        
-            self.conv1 = nn.Conv2d(1, 32, 3)
+            self.conv1 = nn.Conv2d(1, 32, kernel_size=(3, 1))
 
-        self.conv2 = nn.Conv2d(32, 64, 3)
-        self.conv3 = nn.Conv2d(64, 128, 3)
-        self.conv4 = nn.Conv2d(128, 256, 3)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=(3, 1))
+        self.conv3 = nn.Conv2d(64, 128, kernel_size=(3, 1))
+        self.conv4 = nn.Conv2d(128, 256, kernel_size=(3, 1))
 
         # add batchnorm layers
         self.bn1 = nn.BatchNorm2d(32)
@@ -63,18 +63,29 @@ class HandcraftedModelWithAudioFeatures(nn.Module):
         self.pool2 = nn.MaxPool2d(2)
         self.pool3 = nn.MaxPool2d(2)
 
+        self.relu = nn.ReLU()
+        self.dropout = nn.Dropout(0.5)
+
         # add dense layers
-        self.fc1 = nn.Linear(256 * 10 * 10, 512)
+
+        if feature_set == 'mfcc':
+            self.fc1 = nn.Linear(5888, 512)
+        else:
+            self.fc1 = nn.Linear(256 * 2 * 9, 512)
+    
         if self.direct_classification:
             self.fc2 = nn.Linear(512, num_classes)
         else:
             self.fc2 = nn.Linear(512, output_dim_num)
-            self.relu = nn.ReLU()
-            self.dropout = nn.Dropout(0.5)
-            self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
         # torch convolution
+        # swap first and second axes
+        x = x.transpose(1, 2)
+        # add channel dimension
+        x = x.unsqueeze(1)
+        logging.info("x shape: " + str(x.shape))
+
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
@@ -110,8 +121,6 @@ class HandcraftedModelWithAudioFeatures(nn.Module):
 
         if self.direct_classification:
             x = self.fc2(x)
-            x = self.softmax(x)
-
             return x
         else:
             return x    
@@ -123,7 +132,7 @@ class HandcraftedModel(nn.Module):
     Classification using only handcrafted features
     '''
 
-    def __init__(self, num_classes, num_features=450, output_dim_num=100, direct_classification=False):
+    def __init__(self, num_classes, num_features=450, output_dim_num=100, direct_classification=False, feature_set='egemaps'):
         super(HandcraftedModel, self).__init__()
 
         self.direct_classification = direct_classification
@@ -144,14 +153,22 @@ class HandcraftedModel(nn.Module):
         self.bn4 = nn.BatchNorm1d(256)
 
         # compute fc1 input size - what is the output size of the last conv layer?
-        self.fc1 = nn.Linear(20480, 512)
+        # if is09, input is 96256 
+        # if egemaps, input is 20480
+
+        if feature_set == 'is09':
+            self.fc1 = nn.Linear(96256, 512)
+        elif feature_set == 'egemaps':
+            self.fc1 = nn.Linear(20480, 512)
+        elif feature_set == 'mfcc':
+            self.fc1 = nn.Linear(713472, 512)
+            
         if self.direct_classification:
             self.fc2 = nn.Linear(512, num_classes)
         else:
             self.fc2 = nn.Linear(512, output_dim_num)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(0.5)
-        self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
         # torch convolution
@@ -186,8 +203,6 @@ class HandcraftedModel(nn.Module):
 
         if self.direct_classification:
             x = self.fc2(x)
-            x = self.softmax(x)
-
             return x
         else:
             return x

@@ -14,10 +14,15 @@ def get_1d_conv_model(training_config):
     return model
 
 def get_conv_model(training_config):
-    model = HandcraftedModelWithAudioFeatures(
-        num_classes=training_config['num_labels'],
-    )
-    return model
+    if training_config['feature_family'] in ['egemaps', 'is09']:
+        model = HandcraftedModel(num_classes=training_config['num_labels'], output_dim_num=training_config['num_labels'], direct_classification=True, feature_set=training_config['feature_family'])
+        return model
+    else:
+        model = HandcraftedModelWithAudioFeatures(
+            num_classes=training_config['num_labels'],
+            feature_set=training_config['feature_family'],
+        )
+        return model
 
 def get_model(training_config):
     if training_config['binary_classification']:

@@ -10,7 +10,7 @@ os.chdir('/home/snag0027/speech-depression/cluster')
 import argparse
 from transformers import AutoFeatureExtractor, AutoProcessor
 from dataloader.dataloader import DaicWozDataset
-from models.pure_ast import get_conv_model, get_conv_model
+from models.pure_ast import get_conv_model
 import logging
 from datasets import load_dataset, DatasetDict
 from dataclasses import dataclass
@@ -26,7 +26,7 @@ logging.basicConfig(level=logging.INFO)
 
 # parameters are model_type, epochs and logging file
 parser = argparse.ArgumentParser()
-parser.add_argument('--model_type', type=str, default=training_config['feature_family'])
+parser.add_argument('--model_type', type=str, default=training_config['feature_family'] + '_2d_conv')
 parser.add_argument('--epochs', type=int, default=100)
 parser.add_argument('--log_file', type=str, default='log.csv')
 parser.add_argument('--evaluate-only', action='store_true', help='Only evaluate the model on the test set', default=False)
@@ -56,11 +56,45 @@ def prepare_dataset(batch):
     # read each audio file and generate the grayscale spectrogram using librosa
     audio_features = []
     # feature_family specifies the feature set to use
+
+    # pad second dimension to same length
+    # pad the first and second dimension of each 2d array to the same length
+    # find maximum length of first dimension
+    # find the maximum length of the second dimension
+    # make sure the maximum lengths do not cross 157 (OOM errors on SLURM)
+    # feat is a list of lists (2d)
+    # find maximum length of first dimension
+    
+    max_dim_1 = 0
+    max_dim_2 = 0
     for feat in batch[training_config["feature_family"]]:
-        # pad all audio files to 5 seconds
+        if len(feat) > max_dim_1:
+            max_dim_1 = len(feat)
+        for x in feat:
+            if len(x) > max_dim_2:
+                max_dim_2 = len(x)
+
+    if max_dim_2 != 215:
+        max_dim_2 = 215
+
+    for feat in batch[training_config["feature_family"]]:
+        if training_config['feature_family'] == 'mfcc':            
+            # pad the first and second dimension of each 2d array to the same length
+            # pad the first dimension
+            if len(feat) < max_dim_1:
+                feat = np.pad(feat, ((0, max_dim_1 - len(feat)), (0, 0)), 'constant')
+            # pad the second dimension
+            if len(feat[0]) < max_dim_2:
+                feat = np.pad(feat, ((0, 0), (0, max_dim_2 - len(feat[0]))), 'constant')
+
+        # append to audio_features
         audio_features.append(feat)
     # create tensor and reshape to (batch_size, 1, 64, 64)
-    audio_features = torch.tensor(audio_features).unsqueeze(1).float()
+    if training_config['feature_family'] == 'mfcc':
+        audio_features = torch.tensor(audio_features).float()
+        logging.info(f"Shape of audio_features: {audio_features.shape}")
+    else:
+        audio_features = torch.tensor(audio_features).unsqueeze(1).float()
     batch["input_values"] = audio_features
     return batch
     
@@ -80,12 +114,15 @@ if os.path.exists(f"models/{args.model_type}.pt"):
     logging.info("Loaded model")
     
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# send model to GPU
 model.to(device)
 
 # fit the pytorch model to the training data
 opt = torch.optim.Adam(model.parameters(), lr=0.001)
 # use categorical cross entropy loss
-crit = torch.nn.CrossEntropyLoss()
+
+crit = torch.nn.CrossEntropyLoss(label_smoothing=0.1)
 
 def get_task():
     if training_config['num_labels'] == 2:
@@ -93,29 +130,51 @@ def get_task():
     else:
         return 'multiclass'
 
-# reshape the data to batches of 8
+# reshape the dataset into batches and shuffle
 train_batches = []
-for i in range(0, len(encoded_dataset["train"]), 32):
-    train_batches.append(encoded_dataset["train"][i:i+32])
+
+train_data = encoded_dataset["train"]
+train_data = train_data.shuffle()
+
+for i in range(0, len(train_data), 32):
+    d = train_data[i:i+32]
+    train_batches.append(d)
 
 validation_batches = []
-for i in range(0, len(encoded_dataset["validation"]), 32):
-    validation_batches.append(encoded_dataset["validation"][i:i+32])
+
+validation_data = encoded_dataset["validation"]
+validation_data = validation_data.shuffle()
+
+for i in range(0, len(validation_data), 32):
+    d = validation_data[i:i+32]
+    validation_batches.append(d)
+
+test_batches = []
+
+test_data = encoded_dataset["test"]
+test_data = test_data.shuffle()
+
+for i in range(0, len(test_data), 16):
+    d = test_data[i:i+16]
+    test_batches.append(d)
 
 encoded_dataset["train"] = train_batches
+
 encoded_dataset["validation"] = validation_batches
 
+encoded_dataset["test"] = test_batches
+
 # send encoded_dataset to GPU
-encoded_dataset = encoded_dataset.to(device)
+# encoded_dataset = encoded_dataset.to(device)
 
-acc = Accuracy(num_classes=training_config['num_labels'], average='macro', task = get_task())
-f1 = F1Score(num_classes=training_config['num_labels'], average='macro', task = get_task())
-precision = Precision(num_classes=training_config['num_labels'], average='macro', task = get_task())
-recall = Recall(num_classes=training_config['num_labels'], average='macro', task = get_task())
-confusion_matrix = ConfusionMatrix(num_classes=training_config['num_labels'], task = get_task())
+acc = Accuracy(num_classes=training_config['num_labels'], average='macro', task = get_task()).to(device)
+f1 = F1Score(num_classes=training_config['num_labels'], average='macro', task = get_task()).to(device)
+precision = Precision(num_classes=training_config['num_labels'], average='macro', task = get_task()).to(device)
+recall = Recall(num_classes=training_config['num_labels'], average='macro', task = get_task()).to(device)
+confusion_matrix = ConfusionMatrix(num_classes=training_config['num_labels'], task = get_task()).to(device)
 
 
-def compute_metrics(all_test_data):
+def compute_metrics(model, all_test_data):
     # all_test_data is the validation dataset
     acc.reset()
     f1.reset()
@@ -126,36 +185,58 @@ def compute_metrics(all_test_data):
     for batch in all_test_data:
         images = batch["input_values"]
         images = Variable(torch.tensor(images))
-        
+        labels = torch.tensor(batch["label"])
+
+        images = images.to(device)
+        labels = labels.to(device)
+
         y_hat = model(images)
-        loss = crit(y_hat, torch.tensor(batch["label"]))
-        
-        acc.update(y_hat, torch.tensor(batch["label"]))
-        f1.update(y_hat, torch.tensor(batch["label"]))
-        precision.update(y_hat, torch.tensor(batch["label"]))
-        recall.update(y_hat, torch.tensor(batch["label"]))
-        confusion_matrix.update(y_hat, torch.tensor(batch["label"]))
+        loss = crit(y_hat, labels)
+
+        y_hat = torch.argmax(y_hat, dim=1)
+        logging.debug(y_hat)
+        logging.debug(labels)
+
+        # count number of 0s and 1s in labels
+        logging.debug(f"Number of 0s in labels: {torch.sum(labels == 0)}")
+        logging.debug(f"Number of 1s in labels: {torch.sum(labels == 1)}")
+
+        acc.update(y_hat, labels)
+        f1.update(y_hat, labels)
+        precision.update(y_hat, labels)
+        recall.update(y_hat, labels)
+        confusion_matrix.update(y_hat, labels)
 
     return {
-        "accuracy": acc.compute(),
-        "f1": f1.compute(),
-        "precision": precision.compute(),
-        "recall": recall.compute(),
-        "confusion_matrix": confusion_matrix.compute().tolist()
+        "loss": loss.item(),
+        "accuracy": acc.compute().item(),
+        "f1": f1.compute().item(),
+        "precision": precision.compute().item(),
+        "recall": recall.compute().item(),
+        "confusion_matrix": confusion_matrix.compute().tolist(),
     }
 
 all_f1 = []
 
 for epoch in range(50):
     logging.info(f"Epoch {epoch}")
+    model.train()
+
     for batch in encoded_dataset["train"]:
         opt.zero_grad()
         
         images = batch["input_values"]
         images = Variable(torch.tensor(images))
-        
+        labels = torch.tensor(batch["label"])
+
+        images = images.to(device)
+        labels = labels.to(device)
+
         y_hat = model(images)
-        loss = crit(y_hat, torch.tensor(batch["label"]))
+        # print shapes of y_hat and batch["label"]
+        logging.debug(f"y_hat shape: {y_hat.shape}")
+        logging.debug(f"batch['label'] shape: {labels}")
+        loss = crit(y_hat, labels)
                 
         loss.backward()
         opt.step()
@@ -166,29 +247,35 @@ for epoch in range(50):
     model.eval()
 
     with torch.no_grad():
-        for batch in encoded_dataset["validation"]:
-            opt.zero_grad()
+        # for batch in encoded_dataset["validation"]:
+        #     opt.zero_grad()
             
-            images = batch["input_values"]
-            images = Variable(torch.tensor(images))
+        #     images = batch["input_values"]
+        #     images = Variable(torch.tensor(images))
+        #     images = images.to(device)
             
-            y_hat = model(images)
-            loss = crit(y_hat, torch.tensor(batch["label"]))
-        logging.info(f"Validation loss for epoch {epoch}: {loss.item()}")
+        #     y_hat = model(images)
+        #     loss = crit(y_hat, torch.tensor(batch["label"]))
+        # logging.info(f"Validation loss for epoch {epoch}: {loss.item()}")
 
         # compute metrics        
-        metrics = compute_metrics(encoded_dataset["validation"])
+        metrics = compute_metrics(model, encoded_dataset["validation"])
         logging.info(f"Validation metrics for epoch {epoch}: {metrics}")
         all_f1.append(metrics['f1'])
     
     # save the model if the f1 score is better than the previous best or if it is the first epoch
-    if epoch == 0 or metrics['f1'] > max(all_f1):
-        logging.info(f"Saving model to trained_models/{args.model_type}.pt because f1 score of {metrics['f1']} is better than previous best of {max(all_f1)}")
+    if epoch % 2:
+        logging.info(f"Saving model to trained_models/{args.model_type}.pt")
         torch.save(model.state_dict(), f"trained_models/{args.model_type}.pt")
 
-    # # early stopping
-    # if loss.item() < 0.1:
-    #     print("Early stopping")
-    #     break
-            
+# finally evaluate on the test set
+logging.info("Evaluating on test set")
+model.eval()
+logging.info("Loading best model from " + f"trained_models/{args.model_type}.pt")
+model.load_state_dict(torch.load(f"trained_models/{args.model_type}.pt"))
+logging.info("Loaded model")
+with torch.no_grad():
+    metrics = compute_metrics(model, encoded_dataset["test"])
+    logging.info(f"Test metrics: {metrics}")
+
 print("Done")
