@@ -11,6 +11,7 @@ import os
 os.chdir('/home/snag0027/speech-depression/cluster')
 
 import argparse
+import transformers
 from transformers import AutoFeatureExtractor, TrainingArguments, Trainer, AutoProcessor
 from dataloader.dataloadermultimodal import DaicWozDatasetWithFeatures
 from training.utilities import calc_classification_metrics, compute_metrics
@@ -23,6 +24,9 @@ from typing import Any, Dict, List, Union
 import torch
 import numpy as np
 from config import training_config
+
+# transformers.logging.set_verbosity_info()
+# transformers.logging.disable_progress_bar()
 
 logging.basicConfig(level=logging.INFO)
 
@@ -54,7 +58,7 @@ dataset_config = {
     "LOADING_SCRIPT_FILES": "/home/snag0027/speech-depression/cluster/dataloader/dataloadermultimodal.py",
     "CONFIG_NAME": "daic_woz",
     "DATA_DIR": ".",
-    "CACHE_DIR": "cache_daic_woz_conv_models_aug_noise_pitch",
+    "CACHE_DIR": "daic_woz_regression",
 }
 
 ds = load_dataset(
@@ -92,8 +96,8 @@ def prepare_dataset(batch):
                 if len(x) > max_dim_2:
                     max_dim_2 = len(x)
 
-        if max_dim_2 != 215:
-            max_dim_2 = 215
+        if max_dim_2 != 216:
+            max_dim_2 = 216
 
         for feat in batch[training_config["feature_family"]]:
             if training_config['feature_family'] == 'mfcc':            
@@ -101,9 +105,14 @@ def prepare_dataset(batch):
                 # pad the first dimension
                 if len(feat) < max_dim_1:
                     feat = np.pad(feat, ((0, max_dim_1 - len(feat)), (0, 0)), 'constant')
+                elif len(feat) > max_dim_1:
+                    feat = feat[:max_dim_1]
+
                 # pad the second dimension
                 if len(feat[0]) < max_dim_2:
                     feat = np.pad(feat, ((0, 0), (0, max_dim_2 - len(feat[0]))), 'constant')
+                elif len(feat[0]) > max_dim_2:
+                    feat = feat[:, :max_dim_2]
 
             # append to audio_features
             audio_features.append(feat)
@@ -113,11 +122,14 @@ def prepare_dataset(batch):
             logging.info(f"Shape of audio_features: {audio_features.shape}")
         else:
             audio_features = torch.tensor(audio_features).unsqueeze(1).float()
-        batch["input_values"] = audio_features
+        batch["audio_features"] = audio_features
 
+    # THINK: Is this necessary: change arr of shape (2,) to (2, 1)
     audio_arrays = [x["array"] for x in batch["audio"]]
+    logging.info("Shape of audio_arrays: {}".format(np.array(audio_arrays).shape))
     inputs = feature_extractor(audio_arrays, sampling_rate=16000, return_tensors="pt", padding=True, truncation=True)
     batch["input_values"] = inputs["input_values"]
+
 
     return batch
 
@@ -136,10 +148,12 @@ def data_collator(features: List[torch.Tensor]) -> Dict[str, torch.Tensor]:
     # TODO: x["audio_features"] is already a torch.Tensor, fix this
     logging.debug("Features: {}".format(features[0].keys()))
     for x in features:
-        if len(x["audio_features"]) != 88:
-            logging.info("Something's wrong")
-            logging.info("Length of audio features: {}".format(len(x["audio_features"])))
-            logging.info(x)
+        if training_config['feature_family'] == 'is09':
+            if len(x["audio_features"]) != 88:
+                logging.info("Something's wrong")
+                logging.info("Length of audio features: {}".format(len(x["audio_features"])))
+                logging.info(x)
+
     batch["audio_features"] = torch.stack([torch.tensor(x["audio_features"]) for x in features])
     # batch["file"] = [x["file"] for x in features]
     batch["labels"] = torch.stack([torch.tensor(x["label"]) for x in features])
@@ -147,7 +161,7 @@ def data_collator(features: List[torch.Tensor]) -> Dict[str, torch.Tensor]:
     batch["input_values"] = torch.stack([torch.tensor(x["input_values"]) for x in features])
     return batch
 
-model_path = "./trained_models/ast_mfcc_multistream_5class_noise_pitch_augmentation"
+model_path = "./trained_models/ast_mfcc_multistream_regression"
 
 # load model from "./trained_models/ast"
 if args.model_type == 'ast':    
@@ -159,7 +173,7 @@ if args.model_type == 'ast':
         logging.info("Starting training of multistream AST model...")
 
         # first train the entire model for 5 epochs
-        training_args = TrainingArguments(output_dir=model_path, evaluation_strategy="epoch", save_strategy="epoch", num_train_epochs=5, per_device_train_batch_size=16, per_device_eval_batch_size=16, gradient_accumulation_steps=4, eval_accumulation_steps=4, logging_steps=100, save_total_limit=3, load_best_model_at_end=True)
+        training_args = TrainingArguments(output_dir=model_path, evaluation_strategy="epoch", save_strategy="epoch", num_train_epochs=5, per_device_train_batch_size=4, per_device_eval_batch_size=4, gradient_accumulation_steps=8, eval_accumulation_steps=8, save_total_limit=3, load_best_model_at_end=True, learning_rate=3e-5, weight_decay=0.01, warmup_steps=100, logging_strategy="epoch")
         trainer = Trainer(
             model=model,
             args=training_args,
@@ -185,7 +199,7 @@ if args.model_type == 'ast':
 
     logging.info("Freezing Complete! Number of trainable parameters after freezing: {}".format(sum(p.numel() for p in model.parameters() if p.requires_grad)))
 
-    training_args = TrainingArguments(output_dir=model_path, evaluation_strategy="epoch", save_strategy="epoch", num_train_epochs=20, per_device_train_batch_size=16, per_device_eval_batch_size=16, gradient_accumulation_steps=4, eval_accumulation_steps=4, logging_steps=100, save_total_limit=3, load_best_model_at_end=True)
+    training_args = TrainingArguments(output_dir=model_path, evaluation_strategy="epoch", save_strategy="epoch", num_train_epochs=20, per_device_train_batch_size=4, per_device_eval_batch_size=4, gradient_accumulation_steps=8, eval_accumulation_steps=8, save_total_limit=3, load_best_model_at_end=True, learning_rate=3e-3, logging_strategy="epoch")
     trainer = Trainer(
         model=model,
         args=training_args,

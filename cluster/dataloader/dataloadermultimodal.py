@@ -53,13 +53,13 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                 {
                     "file": datasets.Value("string"),
                     "audio": datasets.features.Audio(sampling_rate=16_000),
-                    "audio_features": datasets.features.Sequence(datasets.Value("float32")),
+                    "audio_features": datasets.features.Sequence(datasets.features.Sequence(datasets.Value("float32"))),
                     "egemaps": datasets.features.Sequence(datasets.Value("float32")),
                     "is09": datasets.features.Sequence(datasets.Value("float32")),
                     # mfcc is a 2d array
                     "mfcc": datasets.features.Sequence(datasets.features.Sequence(datasets.Value("float32"))),
                     "label": datasets.Value("int32"),
-                }
+                },
             ),
             supervised_keys=("file", "label"),
         )
@@ -95,6 +95,9 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
         unique_labels = set([x['label'] for x in data])
         # find the number of examples for each label
         num_examples = {}
+
+        logging.info(f"Number of unique labels: {len(unique_labels)}")
+
         for label in unique_labels:
             num_examples[label] = len([x for x in data if x['label'] == label])
         
@@ -137,13 +140,29 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                     # number of times this file has already been augmented
                     num_augmented = len([x for x in os.listdir(os.path.join(self.data_dir, folder)) if x.startswith(file_name[:-4]) and x.endswith(".wav")])
 
-                    soundfile.write(os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"), augmented_audio[0], 16000)
+                    if len(augmented_audio) > 0:
+                        logging.info(f"Indexing into one element one in audio clip {file_name}")
+                        logging.info(f"Shape of augmented audio: {np.array(augmented_audio).shape}")
+                        soundfile.write(os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"), augmented_audio[0], 16000)
+                    else:
+                        logging.info(f"Not indexing into one element one in audio clip {file_name}")
+                        logging.info(f"Shape of augmented audio: {np.array(augmented_audio).shape}")
+                        soundfile.write(os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"), augmented_audio, 16000)
+                        
+                    # check if the augmented audio is at least training_config['chunk_size'] seconds long
+                    # if len(augmented_audio) / 16000 < training_config['chunk_size']:
+                    #     logging.info(f"Augmented audio for {file_name} is less than {training_config['chunk_size']} seconds long, so skipping")
+                    #     continue 
+
                     # add the augmented audio to the data
                     data.append(
                         {
                             "file": os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"),
                             "audio": os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"),
-                            "audio_features": self._extract_audio_features(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"),
+                            "audio_features": self._extract_audio_features(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav", family=training_config["feature_family"]),
+                            "egemaps": self._extract_audio_features(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav", family='egemaps'),
+                            "is09": self._extract_audio_features(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav", family='is09'),
+                            "mfcc": self._extract_audio_features(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav", family='mfcc'),
                             "label": example['label']
                         }
                     )
@@ -169,7 +188,19 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                         num_augmented = len([x for x in os.listdir(os.path.join(self.data_dir, folder)) if x.startswith(file_name[:-4]) and x.endswith(".wav")])
                         logging.info(f"Number of times {file_name} has already been augmented: {num_augmented}")
 
-                        soundfile.write(os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"), augmented_audio[0], 16000)
+                        if len(augmented_audio) > 0:
+                            logging.info(f"Indexing into one element one in audio clip {file_name}")
+                            logging.info(f"Shape of augmented audio: {np.array(augmented_audio).shape}")
+                            soundfile.write(os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"), augmented_audio[0], 16000)
+                        else:
+                            logging.info(f"Not indexing into one element one in audio clip {file_name}")
+                            logging.info(f"Shape of augmented audio: {np.array(augmented_audio).shape}")
+                            soundfile.write(os.path.join(self.data_dir, folder, f"{file_name[:-4]}_augmented_{num_augmented + 1}.wav"), augmented_audio, 16000)
+
+                        # if len(augmented_audio) / 16000 < training_config['chunk_size']:
+                        #     logging.info(f"Augmented audio for {file_name} is less than {training_config['chunk_size']} seconds long, so skipping")
+                        #     continue
+
                         # add the augmented audio to the data
                         data.append(
                             {
@@ -203,10 +234,10 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
 
         return data
 
-    def _extract_audio_features(self, audio_dir, folder, file, family='egemaps'):
+    def _extract_audio_features(self, audio_dir, folder, file, family='egemaps', overwrite=True):
         if family == 'egemaps':
             if (file.endswith(".wav")) and (not file.startswith('._')):
-                if os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + ".csv"):
+                if ((not overwrite) and os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + ".csv")):
                     logging.info(f"eGeMAPSv02 features for {file} already extracted, so skipping")
                 else:
                     # if features have not already been extracted, extract them
@@ -227,7 +258,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
             return audio_features
         elif family == 'is09':
             if (file.endswith(".wav")) and (not file.startswith('._')):
-                if os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + "_is09.csv"):
+                if ((not overwrite) and os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + "_is09.csv")):
                     logging.info(f"IS09 features for {file} already extracted, so skipping")
                 else:
                     # if features have not already been extracted, extract them
@@ -237,7 +268,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                 
                 # sometimes, smilextract fails to extract
                 # in this case, we will just use zeros as the features (not a good idea)
-                if os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + "_is09.csv"):
+                if ((not overwrite) and os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + "_is09.csv")):
                     audio_features = process_features(os.path.join(audio_dir, folder, file[:-4]) + "_is09.csv", feature_family='is09')
                 else:
                     logging.info(f"Could not extract IS09 features for {file}")
@@ -349,7 +380,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                                             "mfcc": self._extract_audio_features(audio_dir, folder, file, family='mfcc'),
                                             # from 300P to 300
                                             # "label": torch.tensor(int(label_file.loc[int(folder[:3])]["PHQ8_Binary"]))
-                                            "label": int(label_file.loc[int(folder[:3])]["PHQ8_Binary"])
+                                            "label": int(label_file.loc[int(folder[:3])]["PHQ8_Binary"]) if training_config['method'] == 'classification' else float(label_file.loc[int(folder[:3])]["PHQ8_Score"])
                                         }
                                     )
                                 else:
@@ -363,7 +394,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                                             "mfcc": self._extract_audio_features(audio_dir, folder, file, family='mfcc'),
                                             # from 300P to 300
                                             # "label": torch.tensor(place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True)),
-                                            "label": place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True),
+                                            "label": place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True) if training_config['method'] == 'classification' else float(label_file.loc[int(folder[:3])]["PHQ8_Score"]),
                                         }
                                     )
                         else:
@@ -380,7 +411,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                                             "mfcc": self._extract_audio_features(audio_dir, folder, file, family='mfcc'),
                                             # from 300P to 300
                                             # "label": torch.tensor(int(label_file.loc[int(folder[:3])]["PHQ8_Binary"]))
-                                            "label": int(label_file.loc[int(folder[:3])]["PHQ8_Binary"])
+                                            "label": int(label_file.loc[int(folder[:3])]["PHQ8_Binary"]) if training_config['method'] == 'classification' else float(label_file.loc[int(folder[:3])]["PHQ8_Score"])
                                         }
                                     )
                                 else:
@@ -394,10 +425,11 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                                             "mfcc": self._extract_audio_features(audio_dir, folder, file, family='mfcc'),
                                             # from 300P to 300
                                             # "label": torch.tensor(place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True)),
-                                            "label": place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True),
+                                            "label": place_value_in_bin(int(label_file.loc[int(folder[:3])]["PHQ8_Score"]), put_in_bin=True) if training_config['method'] == 'classification' else float(label_file.loc[int(folder[:3])]["PHQ8_Score"]),
                                         }
                                     )
-        
+                        logging.info(f"Float label: {examples[-1]['label']}")
+
         # balance the data only if train
         if name == "train":
             examples = self._balance_data(examples)

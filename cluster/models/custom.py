@@ -1,3 +1,4 @@
+import math
 from typing import Optional
 from transformers import ASTFeatureExtractor, ASTModel, ASTForAudioClassification, AutoConfig
 from torch import nn
@@ -132,7 +133,7 @@ class HandcraftedModel(nn.Module):
     Classification using only handcrafted features
     '''
 
-    def __init__(self, num_classes, num_features=450, output_dim_num=100, direct_classification=False, feature_set='egemaps'):
+    def __init__(self, num_classes, num_features=450, output_dim_num=100, direct_classification=False, feature_set=training_config['feature_family']):
         super(HandcraftedModel, self).__init__()
 
         self.direct_classification = direct_classification
@@ -161,7 +162,7 @@ class HandcraftedModel(nn.Module):
         elif feature_set == 'egemaps':
             self.fc1 = nn.Linear(20480, 512)
         elif feature_set == 'mfcc':
-            self.fc1 = nn.Linear(713472, 512)
+            self.fc1 = nn.Linear(716800, 512)
             
         if self.direct_classification:
             self.fc2 = nn.Linear(512, num_classes)
@@ -252,7 +253,14 @@ class TabularAST(ASTForAudioClassification):
 
     def __init__(self, hf_model_config):
         super().__init__(hf_model_config)
-        num_labels = training_config["num_labels"]
+
+        if training_config['method'] == 'regression':
+            num_labels = 1
+        else:
+            num_labels = training_config["num_labels"]
+
+        self.num_labels = num_labels
+
         dropout_prob = 0.5
 
         # TODO: make this a parameter
@@ -316,6 +324,7 @@ class TabularAST(ASTForAudioClassification):
         self.bias = nn.Parameter(torch.zeros(output_dim))
         self.negative_slope = 0.2
         self.final_out_dim = output_dim
+
         self.__reset_parameters()
 
     def __reset_parameters(self):
@@ -402,6 +411,92 @@ class TabularAST(ASTForAudioClassification):
             combined_feats, self.tabular_classifier, labels, self.num_labels, class_weights)
 
         return loss, logits, classifier_layer_outputs
+
+
+class GraphConvolution(nn.Module):
+    """
+    Simple GCN layer, similar to https://arxiv.org/abs/1609.02907
+    """
+
+    def __init__(self, in_features, out_features, bias=True):
+        super(GraphConvolution, self).__init__()
+        self.in_features = in_features
+        self.out_features = out_features
+        self.weight = nn.Parameter(torch.FloatTensor(in_features, out_features))
+        if bias:
+            self.bias = nn.Parameter(torch.FloatTensor(out_features))
+        else:
+            self.register_parameter('bias', None)
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        stdv = 1. / math.sqrt(self.weight.size(1))
+        self.weight.data.uniform_(-stdv, stdv)
+        if self.bias is not None:
+            self.bias.data.uniform_(-stdv, stdv)
+
+    def forward(self, input, adj):
+        support = torch.mm(input, self.weight)
+        output = torch.spmm(adj, support)
+        if self.bias is not None:
+            return output + self.bias
+        else:
+            return output
+
+    def __repr__(self):
+        return self.__class__.__name__ + ' (' \
+               + str(self.in_features) + ' -> ' \
+               + str(self.out_features) + ')'
+
+class GraphCNN(nn.Module):
+    '''
+    A New Regression Model for Depression Severity Prediction
+    Based on Correlation among Audio Features Using a Graph
+    Convolutional Neural Network
+    Momoko Ishimaru 1
+    , Yoshifumi Okada 2,*, Ryunosuke Uchiyama 1
+    , Ryo Horiguchi 1 and Itsuki Toyoshima 1
+
+
+    Architecture made of:
+    - 4 graph convolution layers
+    - 3 dense layers
+    - 1 output layer
+    '''
+    def __init__(self, num_features):
+        self.num_features = num_features
+        self.num_classes = training_config['num_labels']
+
+        self.gc1 = GraphConvolution(num_features, 16)
+        self.gc2 = GraphConvolution(16, 16)
+        self.gc3 = GraphConvolution(16, 16)
+        self.gc4 = GraphConvolution(16, 16)
+
+        self.fc1 = nn.Linear(16, 16)
+        self.fc2 = nn.Linear(16, 16)
+        self.fc3 = nn.Linear(16, 16)
+
+        self.out = nn.Linear(16, self.num_classes)
+    
+    def forward(self, x, adj):
+        x = F.relu(self.gc1(x, adj))
+        x = F.relu(self.gc2(x, adj))
+        x = F.relu(self.gc3(x, adj))
+        x = F.relu(self.gc4(x, adj))
+
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = F.relu(self.fc3(x))
+
+        output = self.out(x)
+        return output
+        
+    def __repr__(self):
+        return self.__class__.__name__ + ' (' \
+               + str(self.num_features) + ' -> ' \
+               + str(self.num_classes) + ')'
+
+
 
 
 # model_args = ModelArguments(

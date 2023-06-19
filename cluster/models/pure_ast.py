@@ -1,8 +1,10 @@
 import logging
 import os
+
+from feature_processing.process_features import get_num_features
 from transformers.models.audio_spectrogram_transformer import ASTForAudioClassification, ASTConfig
 from transformers import AutoFeatureExtractor
-from models.custom import HandcraftedModelWithAudioFeatures, HandcraftedModel, TabularAST
+from models.custom import HandcraftedModelWithAudioFeatures, HandcraftedModel, TabularAST, GraphCNN
 
 logging.basicConfig(level=logging.INFO)
 
@@ -23,6 +25,9 @@ def get_conv_model(training_config):
             feature_set=training_config['feature_family'],
         )
         return model
+    
+def get_graph_conv_model(training_config):
+    return GraphCNN(num_features=get_num_features(training_config['feature_family']))
 
 def get_model(training_config):
     if training_config['binary_classification']:

@@ -122,6 +122,7 @@ def hf_loss_func(inputs, classifier, labels, num_labels, class_weights):
     if labels is not None:
         if num_labels == 1:
             #  We are doing regression
+            logging.debug("Doing regression")
             loss_fct = MSELoss()
             labels = labels.float()
             loss = loss_fct(logits.view(-1), labels.view(-1))
