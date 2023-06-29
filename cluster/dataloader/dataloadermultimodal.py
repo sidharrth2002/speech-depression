@@ -53,7 +53,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
                 {
                     "file": datasets.Value("string"),
                     "audio": datasets.features.Audio(sampling_rate=16_000),
-                    "audio_features": datasets.features.Sequence(datasets.features.Sequence(datasets.Value("float32"))),
+                    "audio_features": datasets.features.Sequence(datasets.Value("float32")),
                     "egemaps": datasets.features.Sequence(datasets.Value("float32")),
                     "is09": datasets.features.Sequence(datasets.Value("float32")),
                     # mfcc is a 2d array
@@ -234,7 +234,7 @@ class DaicWozDatasetWithFeatures(datasets.GeneratorBasedBuilder):
 
         return data
 
-    def _extract_audio_features(self, audio_dir, folder, file, family='egemaps', overwrite=True):
+    def _extract_audio_features(self, audio_dir, folder, file, family='egemaps', overwrite=False):
         if family == 'egemaps':
             if (file.endswith(".wav")) and (not file.startswith('._')):
                 if ((not overwrite) and os.path.exists(os.path.join(audio_dir, folder, file[:-4]) + ".csv")):

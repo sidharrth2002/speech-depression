@@ -1,8 +1,10 @@
 import logging
-from math import sqrt
+
+logging.basicConfig(level=logging.INFO)
+
 import math
 import numpy as np
-import evaluate
+import torch
 from scipy.special import softmax
 from sklearn.metrics import (
     auc,
@@ -14,18 +16,28 @@ from sklearn.metrics import (
     mean_squared_error,
     mean_absolute_error,
 )
-from transformers import EvalPrediction
+# from transformers import EvalPrediction
 from config import training_config
+from torchmetrics import MeanSquaredError, MeanAbsoluteError, R2Score
+from torchmetrics.classification import Accuracy, F1Score, Precision, Recall, ConfusionMatrix
 
-logging.basicConfig(level=logging.INFO)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-accuracy = evaluate.load("accuracy")
-f1 = evaluate.load("f1")
+def get_task():
+    if training_config['num_labels'] == 2:
+        return 'binary'
+    else:
+        return 'multiclass'
 
 def compute_metrics(eval_pred):
     '''
     General metric computation
     '''
+    import evaluate
+
+    accuracy = evaluate.load("accuracy")
+    f1 = evaluate.load("f1")
+
     logits, labels = eval_pred
     predictions = np.argmax(logits, axis=-1)
     if len(np.unique(labels)) == 2:  # binary classification
@@ -58,7 +70,7 @@ def calc_regression_metrics(preds, labels):
         "mae": mae,
     }
 
-def calc_classification_metrics(p: EvalPrediction):
+def calc_classification_metrics(p):
     '''
     Used for custom model
     '''
@@ -117,4 +129,94 @@ def calc_classification_metrics(p: EvalPrediction):
         predictions = p.predictions[0]
         preds = np.squeeze(predictions)
         return calc_regression_metrics(preds, p.label_ids)
+        
+def compute_metrics_manual_loop(model, all_test_data):
+    ''' 
+    Compute metrics from manual torch training loop
+    '''
+
+    if training_config['method'] == 'classification':
+        crit = torch.nn.CrossEntropyLoss(label_smoothing=0.1)
+
+        acc = Accuracy(num_classes=training_config['num_labels'], average='macro', task = get_task()).to(device)
+        f1 = F1Score(num_classes=training_config['num_labels'], average='macro', task = get_task()).to(device)
+        precision = Precision(num_classes=training_config['num_labels'], average='macro', task = get_task()).to(device)
+        recall = Recall(num_classes=training_config['num_labels'], average='macro', task = get_task()).to(device)
+        confusion_matrix = ConfusionMatrix(num_classes=training_config['num_labels'], task = get_task()).to(device)
+
+        acc.reset()
+        f1.reset()
+        precision.reset()
+        recall.reset()
+        confusion_matrix.reset()
+
+        for batch in all_test_data:
+            images = batch["input_values"]
+            images = torch.autograd.Variable(torch.tensor(images))
+            labels = torch.tensor(batch["label"])
+
+            images = images.to(device)
+            labels = labels.to(device)
+
+            y_hat = model(images)
+            loss = crit(y_hat, labels)
+
+            y_hat = torch.argmax(y_hat, dim=1)
+            logging.debug(y_hat)
+            logging.debug(labels)
+
+            # count number of 0s and 1s in labels
+            logging.debug(f"Number of 0s in labels: {torch.sum(labels == 0)}")
+            logging.debug(f"Number of 1s in labels: {torch.sum(labels == 1)}")
+
+            acc.update(y_hat, labels)
+            f1.update(y_hat, labels)
+            precision.update(y_hat, labels)
+            recall.update(y_hat, labels)
+            confusion_matrix.update(y_hat, labels)
+
+        return {
+            "loss": loss.item(),
+            "accuracy": acc.compute().item(),
+            "f1": f1.compute().item(),
+            "precision": precision.compute().item(),
+            "recall": recall.compute().item(),
+            "confusion_matrix": confusion_matrix.compute().tolist(),
+        }
+
+
+    else:
+        crit = torch.nn.MSELoss()
+        # all_test_data is the validation dataset
+        mae = MeanAbsoluteError().to(device)
+        mse = MeanSquaredError().to(device)
+        r2 = R2Score().to(device)
+
+        mae.reset()
+        mse.reset()
+        r2.reset()
+
+        for batch in all_test_data:
+            images = batch["input_values"]
+            images = torch.autograd.Variable(torch.tensor(images))
+            labels = torch.tensor(batch["label"])
+
+            images = images.to(device)
+            labels = labels.to(device)
+
+            y_hat = model(images)
+            loss = crit(y_hat, labels)
+            
+            mae.update(y_hat, labels)
+            mse.update(y_hat, labels)
+            r2.update(y_hat, labels)
+        
+        return {
+            "loss": loss.item(),
+            "mae": mae.compute().item(),
+            "mse": mse.compute().item(),
+            # rmse is the square root of mse
+            "rmse": torch.sqrt(mse.compute()).item(),
+            "r2": r2.compute().item(),
+        }
         

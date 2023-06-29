@@ -14,10 +14,10 @@ logging.basicConfig(level=logging.INFO)
 
 from models.layer_utils import MLP, calc_mlp_dims, glorot, hf_loss_func, zeros
 
-processor = ASTFeatureExtractor.from_pretrained(
-    "MIT/ast-finetuned-audioset-10-10-0.4593")
-model = ASTModel.from_pretrained(
-    "MIT/ast-finetuned-audioset-10-10-0.4593")
+# processor = ASTFeatureExtractor.from_pretrained(
+#     "MIT/ast-finetuned-audioset-10-10-0.4593")
+# model = ASTModel.from_pretrained(
+#     "MIT/ast-finetuned-audioset-10-10-0.4593")
 
 '''
 1. Prosodic features
@@ -37,6 +37,8 @@ class HandcraftedModelWithAudioFeatures(nn.Module):
     '''
     def __init__(self, num_classes, feature_set='mfcc', output_dim_num=100, direct_classification=True):
         super(HandcraftedModelWithAudioFeatures, self).__init__()
+
+        logging.info("Using HandcraftedModelWithAudioFeatures")
 
         self.direct_classification = direct_classification
 
@@ -135,6 +137,8 @@ class HandcraftedModel(nn.Module):
 
     def __init__(self, num_classes, num_features=450, output_dim_num=100, direct_classification=False, feature_set=training_config['feature_family']):
         super(HandcraftedModel, self).__init__()
+
+        logging.info("Using HandcraftedModel")
 
         self.direct_classification = direct_classification
 
@@ -464,6 +468,7 @@ class GraphCNN(nn.Module):
     - 1 output layer
     '''
     def __init__(self, num_features):
+        super(GraphCNN, self).__init__()
         self.num_features = num_features
         self.num_classes = training_config['num_labels']
 
@@ -496,8 +501,64 @@ class GraphCNN(nn.Module):
                + str(self.num_features) + ' -> ' \
                + str(self.num_classes) + ')'
 
+class MFCCLSTM(nn.Module):
+    '''
+    LSTM model using MFCC features
+    
+    Model consists of:
+    - LSTM layer (60 hidden units)
+    - Batch Normalisation
+    - Dropout
+    - LSTM layer (40 hidden units)
+    - Batch Normalization
+    - Dropout
+    - LSTM layer (20 hidden units)
+    - Batch Normalization
+    - Dropout
+    - Flatten
+    - Dropout
+    - Dense layer
+    - Dense Layer
+    - Dense Layer (output)
 
+    dropout fraction value is 0.02%
+    '''
+    def __init__(self, num_classes):
+        super(MFCCLSTM, self).__init__()
+        self.num_classes = num_classes
+        self.lstm1 = nn.LSTM(215, 60, batch_first=True)
+        self.bn1 = nn.BatchNorm1d(13)
+        self.dropout1 = nn.Dropout(0.02)
+        self.lstm2 = nn.LSTM(60, 40, batch_first=True)
+        self.bn2 = nn.BatchNorm1d(13)
+        self.dropout2 = nn.Dropout(0.02)
+        self.lstm3 = nn.LSTM(40, 20, batch_first=True)
+        self.bn3 = nn.BatchNorm1d(13)
+        self.dropout3 = nn.Dropout(0.02)
+        self.flatten = nn.Flatten()
+        self.fc1 = nn.Linear(260, 128)
+        self.fc2 = nn.Linear(128, 64)
+        self.fc3 = nn.Linear(64, self.num_classes)
 
+    def forward(self, x):
+        x, _ = self.lstm1(x)
+        x = self.bn1(x)
+        x = self.dropout1(x)
+        x, _ = self.lstm2(x)
+        x = self.bn2(x)
+        x = self.dropout2(x)
+        x, _ = self.lstm3(x)
+        x = self.bn3(x)
+        x = self.dropout3(x)
+        x = self.flatten(x)
+        x = self.fc1(x)
+        x = self.fc2(x)
+        x = self.fc3(x)
+        return x
+
+    def __repr__(self):
+        return self.__class__.__name__ + ' (' \
+               + str(self.num_classes) + ')'
 
 # model_args = ModelArguments(
 #     model_name_or_path='MIT/ast-finetuned-audioset-10-10-0.4593',

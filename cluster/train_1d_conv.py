@@ -5,14 +5,20 @@ It is the only script that is called.
 
 # set current working directory to '/home/snag0027/speech-depression/cluster'
 import os
+
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+
 os.chdir('/home/snag0027/speech-depression/cluster')
+
+import logging
+logging.basicConfig(level=logging.INFO)
 
 import argparse
 from transformers import AutoFeatureExtractor, AutoProcessor
 from dataloader.dataloader import DaicWozDataset
-from models.pure_ast import get_conv_model
-import logging
+from models.pure_ast import get_conv_model, get_conv_lstm_model
 from datasets import load_dataset, DatasetDict
+
 from dataclasses import dataclass
 from typing import Any, Dict, List, Union
 import torch
@@ -21,12 +27,11 @@ import numpy as np
 from config import training_config
 from torch.autograd import Variable
 from torchmetrics.classification import Accuracy, F1Score, Precision, Recall, ConfusionMatrix
-
-logging.basicConfig(level=logging.INFO)
+from training.utilities import compute_metrics_manual_loop 
 
 # parameters are model_type, epochs and logging file
 parser = argparse.ArgumentParser()
-parser.add_argument('--model_type', type=str, default=training_config['feature_family'] + '_2d_conv')
+parser.add_argument('--model_type', type=str, default=training_config['feature_family'] + '_2d_conv' + training_config['method'])
 parser.add_argument('--epochs', type=int, default=100)
 parser.add_argument('--log_file', type=str, default='log.csv')
 parser.add_argument('--evaluate-only', action='store_true', help='Only evaluate the model on the test set', default=False)
@@ -42,7 +47,7 @@ dataset_config = {
     "LOADING_SCRIPT_FILES": "/home/snag0027/speech-depression/cluster/dataloader/dataloadermultimodal.py",
     "CONFIG_NAME": "daic_woz",
     "DATA_DIR": ".",
-    "CACHE_DIR": "cache_daic_woz_conv_models",
+    "CACHE_DIR": "daic_woz_regression",
 }
 
 ds = load_dataset(
@@ -54,6 +59,7 @@ ds = load_dataset(
 
 def prepare_dataset(batch):
     # read each audio file and generate the grayscale spectrogram using librosa
+    logging.info('Preparing dataset')
     audio_features = []
     # feature_family specifies the feature set to use
 
@@ -67,7 +73,12 @@ def prepare_dataset(batch):
     
     max_dim_1 = 0
     max_dim_2 = 0
-    for feat in batch[training_config["feature_family"]]:
+
+    feat_family = training_config["feature_family"]
+    # manual override: dangerous
+    feat_family = 'mfcc'
+
+    for feat in batch[feat_family]:
         if len(feat) > max_dim_1:
             max_dim_1 = len(feat)
         for x in feat:
@@ -77,8 +88,8 @@ def prepare_dataset(batch):
     if max_dim_2 != 215:
         max_dim_2 = 215
 
-    for feat in batch[training_config["feature_family"]]:
-        if training_config['feature_family'] == 'mfcc':            
+    for feat in batch[feat_family]:
+        if feat_family == 'mfcc':
             # pad the first and second dimension of each 2d array to the same length
             # pad the first dimension
             if len(feat) < max_dim_1:
@@ -90,7 +101,7 @@ def prepare_dataset(batch):
         # append to audio_features
         audio_features.append(feat)
     # create tensor and reshape to (batch_size, 1, 64, 64)
-    if training_config['feature_family'] == 'mfcc':
+    if feat_family == 'mfcc':
         audio_features = torch.tensor(audio_features).float()
         logging.info(f"Shape of audio_features: {audio_features.shape}")
     else:
@@ -108,10 +119,10 @@ logging.info(f"Test length: {len(ds['test'])}")
 
 model = get_conv_model(training_config=training_config)
 # check if "/home/snag0027/speech-depression/cluster/models/conv.pt" exists
-if os.path.exists(f"models/{args.model_type}.pt"):
-    # load the model
-    model.load_state_dict(torch.load(f"models/{args.model_type}.pt"))
-    logging.info("Loaded model")
+# if os.path.exists(f"models/{args.model_type}.pt"):
+#     # load the model
+#     model.load_state_dict(torch.load(f"models/{args.model_type}.pt"))
+#     logging.info("Loaded model")
     
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -174,51 +185,9 @@ recall = Recall(num_classes=training_config['num_labels'], average='macro', task
 confusion_matrix = ConfusionMatrix(num_classes=training_config['num_labels'], task = get_task()).to(device)
 
 
-def compute_metrics(model, all_test_data):
-    # all_test_data is the validation dataset
-    acc.reset()
-    f1.reset()
-    precision.reset()
-    recall.reset()
-    confusion_matrix.reset()
-
-    for batch in all_test_data:
-        images = batch["input_values"]
-        images = Variable(torch.tensor(images))
-        labels = torch.tensor(batch["label"])
-
-        images = images.to(device)
-        labels = labels.to(device)
-
-        y_hat = model(images)
-        loss = crit(y_hat, labels)
-
-        y_hat = torch.argmax(y_hat, dim=1)
-        logging.debug(y_hat)
-        logging.debug(labels)
-
-        # count number of 0s and 1s in labels
-        logging.debug(f"Number of 0s in labels: {torch.sum(labels == 0)}")
-        logging.debug(f"Number of 1s in labels: {torch.sum(labels == 1)}")
-
-        acc.update(y_hat, labels)
-        f1.update(y_hat, labels)
-        precision.update(y_hat, labels)
-        recall.update(y_hat, labels)
-        confusion_matrix.update(y_hat, labels)
-
-    return {
-        "loss": loss.item(),
-        "accuracy": acc.compute().item(),
-        "f1": f1.compute().item(),
-        "precision": precision.compute().item(),
-        "recall": recall.compute().item(),
-        "confusion_matrix": confusion_matrix.compute().tolist(),
-    }
-
 all_f1 = []
 
-for epoch in range(50):
+for epoch in range(100):
     logging.info(f"Epoch {epoch}")
     model.train()
 
@@ -259,7 +228,7 @@ for epoch in range(50):
         # logging.info(f"Validation loss for epoch {epoch}: {loss.item()}")
 
         # compute metrics        
-        metrics = compute_metrics(model, encoded_dataset["validation"])
+        metrics = compute_metrics_manual_loop(model, encoded_dataset["validation"])
         logging.info(f"Validation metrics for epoch {epoch}: {metrics}")
         all_f1.append(metrics['f1'])
     
@@ -275,7 +244,7 @@ logging.info("Loading best model from " + f"trained_models/{args.model_type}.pt"
 model.load_state_dict(torch.load(f"trained_models/{args.model_type}.pt"))
 logging.info("Loaded model")
 with torch.no_grad():
-    metrics = compute_metrics(model, encoded_dataset["test"])
+    metrics = compute_metrics_manual_loop(model, encoded_dataset["test"])
     logging.info(f"Test metrics: {metrics}")
 
 print("Done")

@@ -58,7 +58,7 @@ dataset_config = {
     "LOADING_SCRIPT_FILES": "/home/snag0027/speech-depression/cluster/dataloader/dataloadermultimodal.py",
     "CONFIG_NAME": "daic_woz",
     "DATA_DIR": ".",
-    "CACHE_DIR": "daic_woz_regression",
+    "CACHE_DIR": "cache_daic_woz_conv_models_aug_noise_pitch_shift_speed",
 }
 
 ds = load_dataset(

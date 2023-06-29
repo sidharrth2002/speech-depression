@@ -30,8 +30,11 @@ logging.info(f"Number of egemaps features: {get_num_features('egemaps')}")
 logging.info(f"Number of is09 features: {get_num_features('is09')}")
 logging.info(f"Total number of features: {get_num_features('is09') + get_num_features('egemaps')}")
 
+logging.info("finished printing")
+
 def process_features(txt_file, feature_family='egemaps'):
     with open(txt_file, 'r') as f:
+        logging.info(f"Processing {txt_file}")
         # find line that starts with @data
         # store data in the next line
         data = ''
@@ -59,26 +62,26 @@ def get_feature_names(attr_string):
     is09 = [x for x in is09 if x]
     return is09
 
-if __name__ == '__main__':
-    datafolder = './daic_woz'
+# if __name__ == '__main__':
+#     datafolder = './daic_woz'
 
-    is09 = {}
-    egemaps = {}
+#     is09 = {}
+#     egemaps = {}
 
-    is09_feature_names = get_feature_names(is09_features)
-    egemaps_feature_names = get_feature_names(egemaps_features)
+#     is09_feature_names = get_feature_names(is09_features)
+#     egemaps_feature_names = get_feature_names(egemaps_features)
 
-    for folder in os.listdir(datafolder):
-        if os.path.isdir(os.path.join(datafolder, folder)) and folder[:3].isnumeric():
-            audio_name = folder[:3]
-            for file in os.listdir(os.path.join(datafolder, folder)):
-                if file.endswith("IS09.txt"):
-                    is09[audio_name] = process_features(os.path.join(datafolder, folder, file))
-                if file.endswith("eGeMAPSv01b.txt"):
-                    egemaps[audio_name] = process_features(os.path.join(datafolder, folder, file))
+#     for folder in os.listdir(datafolder):
+#         if os.path.isdir(os.path.join(datafolder, folder)) and folder[:3].isnumeric():
+#             audio_name = folder[:3]
+#             for file in os.listdir(os.path.join(datafolder, folder)):
+#                 if file.endswith("IS09.txt"):
+#                     is09[audio_name] = process_features(os.path.join(datafolder, folder, file))
+#                 if file.endswith("eGeMAPSv01b.txt"):
+#                     egemaps[audio_name] = process_features(os.path.join(datafolder, folder, file))
 
-    # create a dataframe from the dictionary
-    import pandas as pd
+#     # create a dataframe from the dictionary
+#     import pandas as pd
 
-    df = pd.DataFrame.from_dict(is09, orient='index', columns=is09_feature_names)
-    print(df.head())
+#     df = pd.DataFrame.from_dict(is09, orient='index', columns=is09_feature_names)
+#     print(df.head())
