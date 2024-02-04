@@ -11,7 +11,7 @@ import argparse
 from transformers import AutoFeatureExtractor, AutoProcessor
 from dataloader.dataloader import DaicWozDataset
 from training.utilities import compute_metrics
-from models.pure_ast import get_conv_model, get_conv_model
+from cluster.models.get_models import get_conv_model, get_conv_model
 import logging
 from datasets import load_dataset, DatasetDict
 from dataclasses import dataclass

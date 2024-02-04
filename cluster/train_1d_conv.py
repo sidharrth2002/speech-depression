@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 import argparse
 from transformers import AutoFeatureExtractor, AutoProcessor
 from dataloader.dataloader import DaicWozDataset
-from models.pure_ast import get_conv_model, get_conv_lstm_model
+from cluster.models.get_models import get_conv_model, get_conv_lstm_model
 from datasets import load_dataset, DatasetDict
 
 from dataclasses import dataclass

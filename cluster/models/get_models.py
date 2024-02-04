@@ -36,6 +36,18 @@ def get_graph_conv_model(training_config):
     return GraphCNN(num_features=get_num_features(training_config['feature_family']))
 
 def get_model(training_config):
+    """
+    Retrieves the model for audio classification based on the provided training configuration.
+
+    Args:
+        training_config (dict): A dictionary containing the training configuration parameters.
+
+    Returns:
+        ASTForAudioClassification: The audio classification model.
+
+    Raises:
+        None
+    """
     if training_config['binary_classification']:
         logging.info("Using binary classification")
         num_labels = 2
@@ -53,6 +65,19 @@ def get_model(training_config):
         return model
 
 def multistream_ast_model(training_config, model_path=None):
+    """
+    Create a multistream AST model for classification.
+
+    Args:
+        training_config (dict): Configuration for training the model.
+        model_path (str, optional): Path to a pre-trained model. Defaults to None.
+
+    Returns:
+        TabularAST: The multistream AST model.
+
+    Raises:
+        None
+    """
     # model_class.from_pretrained(pretrained_model_name_or_path, *model_args, config=config, **kwargs)
     if training_config['binary_classification']:
         logging.info("Using binary classification")

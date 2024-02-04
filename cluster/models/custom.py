@@ -14,23 +14,6 @@ logging.basicConfig(level=logging.INFO)
 
 from models.layer_utils import MLP, calc_mlp_dims, glorot, hf_loss_func, zeros
 
-# processor = ASTFeatureExtractor.from_pretrained(
-#     "MIT/ast-finetuned-audioset-10-10-0.4593")
-# model = ASTModel.from_pretrained(
-#     "MIT/ast-finetuned-audioset-10-10-0.4593")
-
-'''
-1. Prosodic features
-2. Spectral features
-3. Mel frequency cepstral coefficients (MFCC)
-4. Linear prediction cepstral coefficients (LPCC)
-5. Gammatone frequency cepstral coefficients (GFCC)
-6. Voice quality features
-7. Teager energy operator (TEO)
-Build a convolutional model that takes the above features as input and outputs the PHQ-8 score
-'''
-
-
 class HandcraftedModelWithAudioFeatures(nn.Module):
     '''
     2D convolutions, input is MFCC features
@@ -127,8 +110,6 @@ class HandcraftedModelWithAudioFeatures(nn.Module):
             return x
         else:
             return x    
-
-
 
 class HandcraftedModel(nn.Module):
     '''
@@ -238,22 +219,44 @@ class ConvModel(nn.Module):
         output = F.log_softmax(x, dim=1)
         return output
 
-
-if __name__ == "__main__":
-    # generate random vector of shape (320 x 450)
-    x = torch.rand(64, 450)
-    # reshape to (100 x 1 x 450)
-    x = x.view(64, 1, 450)
-    # pass through model with batch size 64
-    model = HandcraftedModel(num_classes=8)
-    output = model(x)
-    # find argmax
-    print(output.argmax(dim=1))
-
 class TabularAST(ASTForAudioClassification):
-    '''
-    Transformer speech features are keys that attend to tabular features
-    '''
+    """
+    The Tabular AST is by far the most unique model in this arsenal. It is a combination
+    of an audio spectrogram transformer with tabular features that come from a standard 
+    convolutional model that is designed to represent the low-level features that deep learning cannot.
+
+    By default, the tabular model employs a 4-layer 1-dimensional Convolutional Neural Network.
+    However, you can replace this with just about any neural network that outputs a logits vector.
+    The tabular combiner will then take the output of the transformer and the output of the tabular model
+    and run it through an attention-weighted sum before passing it onto the classifier.
+
+    The paper proves the empirical improvement of model performance, when trained with tabular features.
+
+    Args:
+        hf_model_config (dict): The configuration for the Hugging Face model.
+
+    Attributes:
+        num_labels (int): The number of labels for classification.
+        speech_out_dim (int): The dimension of the speech features.
+        numerical_feat_dim (int): The dimension of the numerical features.
+        audio_features_model (HandcraftedModel): The model for audio features.
+        weight_num (nn.Parameter): The weight parameter for numerical features.
+        bias_num (nn.Parameter): The bias parameter for numerical features.
+        tabular_classifier (MLP): The classifier for tabular features.
+        dropout (nn.Dropout): The dropout layer.
+        weight_transformer (nn.Parameter): The weight parameter for the transformer.
+        weight_a (nn.Parameter): The weight parameter for attention calculation.
+        bias_transformer (nn.Parameter): The bias parameter for the transformer.
+        bias (nn.Parameter): The bias parameter.
+        negative_slope (float): The negative slope for leaky ReLU activation.
+        final_out_dim (int): The final output dimension.
+
+    Methods:
+        __reset_parameters(): Resets the parameters of the model.
+        tabular_combiner(speech_feats, numerical_feats): Combines speech and numerical features using attention weighted sum.
+        forward(input_values, head_mask, labels, output_attentions, output_hidden_states, return_dict, audio_features, class_weights): Performs forward pass of the model.
+
+    """
 
     def __init__(self, hf_model_config):
         super().__init__(hf_model_config)
@@ -399,6 +402,25 @@ class TabularAST(ASTForAudioClassification):
         audio_features: Optional[torch.Tensor] = None,
         class_weights: Optional[torch.Tensor] = None,
     ):
+        """
+        Performs the forward pass of the TabularAST model.
+
+        Args:
+            input_values (torch.Tensor, optional): The input values for the transformer.
+            head_mask (torch.Tensor, optional): The head mask for the transformer.
+            labels (torch.Tensor, optional): The labels for classification.
+            output_attentions (bool, optional): Whether to output attentions.
+            output_hidden_states (bool, optional): Whether to output hidden states.
+            return_dict (bool, optional): Whether to return a dictionary.
+            audio_features (torch.Tensor, optional): The audio features.
+            class_weights (torch.Tensor, optional): The class weights.
+
+        Returns:
+            loss (torch.Tensor): The loss value.
+            logits (torch.Tensor): The logits.
+            classifier_layer_outputs (List[torch.Tensor]): The outputs of the classifier layers.
+
+        """
         outputs = self.audio_spectrogram_transformer(
             input_values,
             head_mask=head_mask,
@@ -415,91 +437,6 @@ class TabularAST(ASTForAudioClassification):
             combined_feats, self.tabular_classifier, labels, self.num_labels, class_weights)
 
         return loss, logits, classifier_layer_outputs
-
-
-class GraphConvolution(nn.Module):
-    """
-    Simple GCN layer, similar to https://arxiv.org/abs/1609.02907
-    """
-
-    def __init__(self, in_features, out_features, bias=True):
-        super(GraphConvolution, self).__init__()
-        self.in_features = in_features
-        self.out_features = out_features
-        self.weight = nn.Parameter(torch.FloatTensor(in_features, out_features))
-        if bias:
-            self.bias = nn.Parameter(torch.FloatTensor(out_features))
-        else:
-            self.register_parameter('bias', None)
-        self.reset_parameters()
-
-    def reset_parameters(self):
-        stdv = 1. / math.sqrt(self.weight.size(1))
-        self.weight.data.uniform_(-stdv, stdv)
-        if self.bias is not None:
-            self.bias.data.uniform_(-stdv, stdv)
-
-    def forward(self, input, adj):
-        support = torch.mm(input, self.weight)
-        output = torch.spmm(adj, support)
-        if self.bias is not None:
-            return output + self.bias
-        else:
-            return output
-
-    def __repr__(self):
-        return self.__class__.__name__ + ' (' \
-               + str(self.in_features) + ' -> ' \
-               + str(self.out_features) + ')'
-
-class GraphCNN(nn.Module):
-    '''
-    A New Regression Model for Depression Severity Prediction
-    Based on Correlation among Audio Features Using a Graph
-    Convolutional Neural Network
-    Momoko Ishimaru 1
-    , Yoshifumi Okada 2,*, Ryunosuke Uchiyama 1
-    , Ryo Horiguchi 1 and Itsuki Toyoshima 1
-
-
-    Architecture made of:
-    - 4 graph convolution layers
-    - 3 dense layers
-    - 1 output layer
-    '''
-    def __init__(self, num_features):
-        super(GraphCNN, self).__init__()
-        self.num_features = num_features
-        self.num_classes = training_config['num_labels']
-
-        self.gc1 = GraphConvolution(num_features, 16)
-        self.gc2 = GraphConvolution(16, 16)
-        self.gc3 = GraphConvolution(16, 16)
-        self.gc4 = GraphConvolution(16, 16)
-
-        self.fc1 = nn.Linear(16, 16)
-        self.fc2 = nn.Linear(16, 16)
-        self.fc3 = nn.Linear(16, 16)
-
-        self.out = nn.Linear(16, self.num_classes)
-    
-    def forward(self, x, adj):
-        x = F.relu(self.gc1(x, adj))
-        x = F.relu(self.gc2(x, adj))
-        x = F.relu(self.gc3(x, adj))
-        x = F.relu(self.gc4(x, adj))
-
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = F.relu(self.fc3(x))
-
-        output = self.out(x)
-        return output
-        
-    def __repr__(self):
-        return self.__class__.__name__ + ' (' \
-               + str(self.num_features) + ' -> ' \
-               + str(self.num_classes) + ')'
 
 class MFCCLSTM(nn.Module):
     '''

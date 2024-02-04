@@ -15,7 +15,7 @@ import transformers
 from transformers import AutoFeatureExtractor, TrainingArguments, Trainer, AutoProcessor
 from dataloader.dataloadermultimodal import DaicWozDatasetWithFeatures
 from training.utilities import calc_classification_metrics, compute_metrics
-from models.pure_ast import multistream_ast_model
+from cluster.models.get_models import multistream_ast_model
 from tooling.latest_model import load_latest_checkpoint
 import logging
 from datasets import load_dataset, DatasetDict

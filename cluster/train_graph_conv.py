@@ -10,7 +10,7 @@ os.chdir('/home/snag0027/speech-depression/cluster')
 import argparse
 from transformers import AutoFeatureExtractor, AutoProcessor
 from dataloader.dataloader import DaicWozDataset
-from models.pure_ast import get_graph_conv_model
+from cluster.models.get_models import get_graph_conv_model
 import logging
 from datasets import load_dataset, DatasetDict
 from dataclasses import dataclass
