@@ -55,5 +55,6 @@ If you use this work, please cite it as follows:
   number={},
   pages={1323-1328},
   keywords={Deep learning;Analytical models;Information processing;Transformers;Depression;Convolutional neural networks;Mel frequency cepstral coefficient},
-  doi={10.1109/APSIPAASC58517.2023.10317141}}
+  doi={10.1109/APSIPAASC58517.2023.10317141}
+}
 ```
